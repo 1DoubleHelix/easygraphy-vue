@@ -1,14 +1,8 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
 
-const routes = [
-    {
-        path: "/test",
-        component: () => import("../views/Test.vue")
-    },
-    {
-        path: '/',
-        redirect: 'home'
-    },
+let routes = [
+    {path: "/test", component: () => import("../views/Test.vue")},
+    {path: '/', redirect: 'home'},
     {
         path: '/home',
         name: 'home',
@@ -18,12 +12,22 @@ const routes = [
         }
     },
     {
-        path: '/admin',
-        name: 'admin',
-        component: () => import('../views/admin/Admin.vue'),
+        path: '/dashboard',
+        name: 'dashboard',
+        component: () => import('../views/dashboard/Dashboard.vue'),
         meta: {
             title: '后台管理-EasyGraphy'
-        }
+        },
+        children: [
+            {
+                path: "/dashboard/tag",
+                component: () => import("../views/dashboard/Tag.vue")
+            },
+            {
+                path: "/dashboard/blog",
+                component: () => import("../views/dashboard/Blog.vue")
+            }
+        ]
     },
     {
         path: '/devices',
@@ -68,9 +72,10 @@ const routes = [
 
 
 ]
+
 const router = createRouter({
     history: createWebHashHistory(),
     routes,
-})
+});
 
-export { router, routes }
+export {router, routes};

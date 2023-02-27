@@ -1,7 +1,15 @@
-# Vue 3 + Vite
+# 摄影知识库网站前端，使用 Vue 3 + Vite
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 正在编写需求
 
-## Recommended IDE Setup
+- token，直接判断，没有就直接return，后期再添加jwt支持
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## 已经完成需求
+
+- 基本路由
+
+## 待完成需求
+
+## 教程进度
+
+https://www.bilibili.com/video/BV1t3411F7VH?t=2.1&p=20
