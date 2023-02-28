@@ -59,7 +59,7 @@ const login = async () => {
     account: admin.account,
     password: admin.password,
   });
-  console.log(result);
+  // console.log(result);
 
   // 如果登录成功（200） 将token通过pinia写入adminStores
   if (result.data.code == 200) {

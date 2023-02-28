@@ -20,6 +20,7 @@ app.provide("axios", axios)
 app.provide("message", message)
 app.provide("notification", notification)
 app.provide("dialog", dialog)
+app.provide("serverURL", axios.defaults.baseURL) // 需要完整URL的地方直接注入
 
 app.use(naive)
 app.use(createPinia())
