@@ -8,7 +8,7 @@
             <n-space align="center">
               <div>发布时间：{{ blog.create_time }}</div>
               <n-button @click="toUpdate(blog)">修改</n-button>
-              <n-button>删除</n-button>
+              <n-button @click="deleteBlog(blog)">删除</n-button>
             </n-space>
           </template>
         </n-card>
@@ -184,7 +184,7 @@ const toUpdate = async (blog) => {
   updateBlogTemp.title = res.data.results.title;
   updateBlogTemp.tagId = res.data.results.tag_id;
   updateBlogTemp.content = res.data.results.content;
-  // 跳转修改页面
+  // 跳转修改页面 必须加载数据后再跳转 否则编辑器没有内容
   tabValue.value = "update";
 
   // console.log(res);
@@ -193,8 +193,36 @@ const toUpdate = async (blog) => {
 
 // 修改文章
 const updateBlog = async () => {
-  let res = await axios.put("/blog/update");
+  let res = await axios.put("/blog/update", updateBlogTemp);
+  if (res.data.code == 200) {
+    message.info(res.data.msg);
+    loadBlogs();
+    tabValue.value = "list";
+  } else {
+    message.error(res.data.msg);
+  }
+
   console.log(res);
+};
+
+// 删除文章
+const deleteBlog = async (blog) => {
+  dialog.warning({
+    title: "警告",
+    content: "是否要删除",
+    positiveText: "确定",
+    negativeText: "取消",
+    onPositiveClick: async () => {
+      let res = await axios.delete("/blog/delete?id=" + blog.id);
+      if (res.data.code == 200) {
+        message.info(res.data.msg);
+        loadBlogs();
+      } else {
+        message.error(res.data.msg);
+      }
+    },
+    onNegativeClick: () => {},
+  });
 };
 
 // export default {
