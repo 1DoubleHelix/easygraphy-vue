@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import naive from 'naive-ui'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 import { createDiscreteApi } from 'naive-ui'
 import { createPinia } from 'pinia'
 import axios from 'axios'
@@ -23,6 +25,7 @@ app.provide("dialog", dialog)
 app.provide("serverURL", axios.defaults.baseURL) // 需要完整URL的地方直接注入
 
 app.use(naive)
+app.use(ElementPlus)
 app.use(createPinia())
 app.use(router)
 
