@@ -3,16 +3,17 @@ import { createRouter, createWebHashHistory } from "vue-router";
 let routes = [
     { path: "/test", component: () => import("../views/Test.vue") },
     { path: "/detail", component: () => import("../views/knowledge/Detail.vue") },
-    { path: '/', redirect: 'home' },
     {
+        // 主页
         path: '/home',
         name: 'home',
         component: () => import('../views/home/Home.vue'),
         meta: {
             title: 'EasyGraphy'
-        }
+        },
     },
     {
+        // 后台
         path: '/dashboard',
         name: 'dashboard',
         component: () => import('../views/dashboard/Dashboard.vue'),
@@ -21,24 +22,36 @@ let routes = [
         },
         children: [
             {
-                path: "/dashboard/tag",
+                path: "tag",
                 component: () => import("../views/dashboard/Tag.vue")
             },
             {
-                path: "/dashboard/blog",
+                path: "blog",
                 component: () => import("../views/dashboard/Blog.vue")
             }
         ]
     },
     {
+        // 设备数据库
         path: '/devices',
         name: 'devices',
         component: () => import('../views/devices/Devices.vue'),
         meta: {
             title: '设备库-EasyGraphy'
-        }
+        },
+        children: [
+            {
+                path: "camera",
+                component: () => import("../views/devices/Camera.vue")
+            },
+            {
+                path: "lens",
+                component: () => import("../views/devices/Lens.vue")
+            }
+        ]
     },
     {
+        // 知识区
         path: '/knowledge',
         name: 'knowledge',
         component: () => import('../views/knowledge/Knowledge.vue'),
@@ -47,6 +60,36 @@ let routes = [
         }
     },
     {
+        // 设备推荐
+        path: '/recommend',
+        name: 'recommend',
+        component: () => import('../views/recommend/Recommend.vue'),
+        meta: {
+            title: '套装推荐-EasyGraphy'
+        },
+        children: [
+            // 挑选
+            {
+                path: 'combine',
+                name: 'combine',
+                component: () => import('../views/recommend/Combine.vue'),
+                meta: {
+                    title: '套装推荐-EasyGraphy'
+                }
+            },
+            // 全部组合
+            {
+                path: 'combinations',
+                name: 'combinations',
+                component: () => import('../views/recommend/Combinations.vue'),
+                meta: {
+                    title: '套装推荐-EasyGraphy'
+                }
+            }
+        ]
+    },
+    {
+        // 登录
         path: '/login',
         name: 'login',
         component: () => import('../views/login/Login.vue'),
@@ -54,24 +97,6 @@ let routes = [
             title: '登录-EasyGraphy'
         }
     },
-    {
-        path: '/member',
-        name: 'member',
-        component: () => import('../views/member/Member.vue'),
-        meta: {
-            title: '个人中心-EasyGraphy'
-        }
-    },
-    {
-        path: '/recommend',
-        name: 'recommend',
-        component: () => import('../views/recommend/Recommend.vue'),
-        meta: {
-            title: '套装推荐-EasyGraphy'
-        }
-    },
-
-
 ]
 
 const router = createRouter({

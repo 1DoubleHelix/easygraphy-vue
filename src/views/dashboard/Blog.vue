@@ -21,13 +21,14 @@
         </div>
       </n-space>
     </n-tab-pane>
+
     <n-tab-pane name="add" tab="添加文章">
       <n-form>
         <n-form-item label="标题">
-          <n-input v-model:value="addBlogTemp.title" placeholder="请输入标题" />
+          <n-input v-model:value="addBlogTemp.title" placeholder="请输入标题"/>
         </n-form-item>
         <n-form-item label="选择文章标签">
-          <n-select v-model:value="addBlogTemp.tagId" :options="tagOptions" />
+          <n-select v-model:value="addBlogTemp.tagId" :options="tagOptions"/>
         </n-form-item>
         <n-form-item label="文章内容">
           <RichTextEditor v-model="addBlogTemp.content"></RichTextEditor>
@@ -37,18 +38,19 @@
         </n-form-item>
       </n-form>
     </n-tab-pane>
+
     <n-tab-pane name="update" tab="修改文章">
       <n-form>
         <n-form-item label="标题">
           <n-input
-            v-model:value="updateBlogTemp.title"
-            placeholder="请输入标题"
+              v-model:value="updateBlogTemp.title"
+              placeholder="请输入标题"
           />
         </n-form-item>
         <n-form-item label="选择文章标签">
           <n-select
-            v-model:value="updateBlogTemp.tagId"
-            :options="tagOptions"
+              v-model:value="updateBlogTemp.tagId"
+              :options="tagOptions"
           />
         </n-form-item>
         <n-form-item label="文章内容">
@@ -58,15 +60,15 @@
           <n-button @click="updateBlog">提交</n-button>
         </n-form-item>
       </n-form>
-    </n-tab-pane>
+    </n-tab-pane>    
   </n-tabs>
   <!-- {{ addBlogTemp.content }} -->
 </template>
 
 <script setup>
-import { AdminStore } from "../../stores/AdminStores";
-import { ref, reactive, inject, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import {AdminStore} from "../../stores/AdminStores";
+import {ref, reactive, inject, onMounted} from "vue";
+import {useRouter, useRoute} from "vue-router";
 import RichTextEditor from "../../components/RichTextEditor.vue";
 // 使用 moment 时间戳格式化
 import moment from "moment";
@@ -119,7 +121,7 @@ onMounted(() => {
 // 读取文章列表
 const loadBlogs = async () => {
   let res = await axios.get(
-    `/blog/search?page=${pageInfo.page}&pageSize=${pageInfo.pageSize}`
+      `/blog/search?page=${pageInfo.page}&pageSize=${pageInfo.pageSize}`
   );
 
   let rows = res.data.data.rows;
@@ -221,7 +223,8 @@ const deleteBlog = async (blog) => {
         message.error(res.data.msg);
       }
     },
-    onNegativeClick: () => {},
+    onNegativeClick: () => {
+    },
   });
 };
 

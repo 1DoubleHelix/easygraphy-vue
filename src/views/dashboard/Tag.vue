@@ -164,7 +164,7 @@ const updateTag = async () => {
 const loadDatas = async () => {
   let res = await axios.get("/tag/list");
   tagList.value = res.data.results;
-  console.log(res);
+  // console.log(res);
 };
 </script>
 
