@@ -17,6 +17,7 @@
         <el-menu-item index="/dashboard/blog">文章管理</el-menu-item>
         <el-menu-item index="/dashboard/tag">标签管理</el-menu-item>
         <el-menu-item index="/dashboard/user">用户管理</el-menu-item>
+        <el-menu-item index="/dashboard/devices">设备管理</el-menu-item>
 
         <el-menu-item index="/login">退出</el-menu-item>
       </el-menu>

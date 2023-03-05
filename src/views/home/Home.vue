@@ -27,9 +27,7 @@
       </el-menu>
     </el-header>
   </div>
-  <div style="padding: 20px; width: 100%">
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script setup>
@@ -53,7 +51,7 @@ const dialog = inject("dialog");
 const axios = inject("axios");
 
 const activeIndex = ref("");
-const handleSelect = (key, keyPath) => {
+const handleSelect = (key) => {
   // console.log(key);
   // switch (key) {
   //   case "1":

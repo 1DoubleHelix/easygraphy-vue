@@ -27,9 +27,7 @@
       </el-menu>
     </el-header>
   </div>
-  <div style="padding: 20px; width: 100%">
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script setup>
@@ -46,7 +44,7 @@ moment.locale("zh-cn", momentCN);
 const router = useRouter();
 const route = useRoute();
 
-const activeIndex = ref(null);
+const activeIndex = ref("");
 </script>
 
 <style lang="scss" scoped>

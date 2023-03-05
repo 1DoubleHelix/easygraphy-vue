@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-container">
+  <el-container>
     <el-header class="nav-container">
       <!-- 导航栏 -->
       <el-menu
@@ -26,10 +26,13 @@
         </el-sub-menu>
       </el-menu>
     </el-header>
-  </div>
-  <div style="padding: 20px; width: 100%">
-    <router-view></router-view>
-  </div>
+
+    <el-main>
+      <router-view></router-view>
+    </el-main>
+
+    <el-footer></el-footer>
+  </el-container>
 </template>
 
 <script setup>
@@ -47,14 +50,7 @@ const router = useRouter();
 const route = useRoute();
 
 const activeIndex = ref("");
-const handleSelect = (key, keyPath) => {
-  // console.log(key);
-  // switch (key) {
-  //   case "1":
-  //     router.push("/");
-  //     break;
-  // }
-};
+const handleSelect = (key) => {};
 
 onMounted(() => {});
 </script>

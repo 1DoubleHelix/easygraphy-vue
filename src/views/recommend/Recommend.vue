@@ -27,13 +27,19 @@
       </el-menu>
     </el-header>
   </div>
-  <div style="padding: 20px; width: 100%">
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
 
-<script>
-export default {};
+<script setup>
+import { ref, reactive, inject, onMounted, computed } from "vue";
+// 自定义组件
+import { useRouter, useRoute } from "vue-router";
+
+const router = useRouter();
+const route = useRoute();
+
+const activeIndex = ref("");
+const handleSelect = (key) => {};
 </script>
 
 <style lang="scss" scoped>

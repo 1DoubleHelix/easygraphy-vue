@@ -28,7 +28,15 @@ let routes = [
             {
                 path: "blog",
                 component: () => import("../views/dashboard/Blog.vue")
-            }
+            },
+            {
+                path: "user",
+                component: () => import("../views/dashboard/User.vue")
+            },
+            {
+                path: "devices",
+                component: () => import("../views/dashboard/Devices.vue")
+            },
         ]
     },
     {
