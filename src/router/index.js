@@ -35,7 +35,7 @@ let routes = [
             },
             {
                 path: "devices",
-                component: () => import("../views/dashboard/Devices.vue")
+                component: () => import("../views/dashboard/Devices.vue"),
             },
         ]
     },
@@ -43,18 +43,22 @@ let routes = [
         // 设备数据库
         path: '/devices',
         name: 'devices',
-        component: () => import('../views/devices/Devices.vue'),
-        meta: {
-            title: '设备库-EasyGraphy'
-        },
         children: [
             {
+                path: "all-camera",
+                component: () => import("../views/devices/AllCamera.vue")
+            },
+            {
+                path: "all-lens",
+                component: () => import("../views/devices/AllLens.vue")
+            },
+            {
                 path: "camera",
-                component: () => import("../views/devices/Camera.vue")
+                component: () => import("../views/devices/Camera.vue"),
             },
             {
                 path: "lens",
-                component: () => import("../views/devices/Lens.vue")
+                component: () => import("../views/devices/Lens.vue"),
             }
         ]
     },
@@ -97,14 +101,20 @@ let routes = [
         ]
     },
     {
-        // 登录
-        path: '/login',
-        name: 'login',
-        component: () => import('../views/login/Login.vue'),
+        // 管理员登录
+        path: '/login-admin',
+        name: 'login-admin',
+        component: () => import('../views/login/LoginAdmin.vue'),
         meta: {
             title: '登录-EasyGraphy'
         }
     },
+    {
+        // 普通用户登录
+        path: '/login',
+        name: 'login',
+        component: () => import('../views/login/Login.vue')
+    }
 ]
 
 const router = createRouter({

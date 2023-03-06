@@ -19,7 +19,7 @@
         <el-menu-item index="/dashboard/user">用户管理</el-menu-item>
         <el-menu-item index="/dashboard/devices">设备管理</el-menu-item>
 
-        <el-menu-item index="/login">退出</el-menu-item>
+        <el-menu-item index="/login-admin">退出</el-menu-item>
       </el-menu>
     </el-header>
   </div>

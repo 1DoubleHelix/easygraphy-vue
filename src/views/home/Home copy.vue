@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="main-container">
     <div class="nav">
       <div @click="home">首页</div>
       <div>
@@ -166,7 +166,7 @@ const dahsboard = () => {
 .search {
   margin-bottom: 15px;
 }
-.container {
+.main-container {
   width: 1000px;
   margin: 0 auto;
 }

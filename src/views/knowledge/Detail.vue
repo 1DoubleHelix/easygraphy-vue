@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="main-container">
     <n-button>首页</n-button>
 
     <n-h1>{{ blogInfo.title }}</n-h1>
@@ -39,7 +39,7 @@ const loadBlogs = async () => {
 </script>
 
 <style lang="scss">
-.container {
+.main-container {
   width: 1000px;
   margin: 0 auto;
 }
