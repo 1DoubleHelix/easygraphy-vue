@@ -23,13 +23,10 @@
 
 <script setup>
 import {ref, reactive, inject} from "vue";
-import {AdminStore} from "../../stores/AdminStores";
 import {useRouter, useRoute} from 'vue-router'
 
 const router = useRouter();
 const route = useRoute();
-const adminStore = AdminStore();
-
 const axios = inject("axios");
 // 提示信息 使用Naive的独立API
 const message = inject("message");
@@ -63,9 +60,9 @@ const login = async () => {
 
   // 如果登录成功（200） 将token通过pinia写入adminStores
   if (result.data.code == 200) {
-    adminStore.token = result.data.data.token;
-    adminStore.account = result.data.data.account;
-    adminStore.id = result.data.data.id;
+    // adminStore.token = result.data.data.token;
+    // adminStore.account = result.data.data.account;
+    // adminStore.id = result.data.data.id;
 
     // 记住我 把数据存储到localStorage
     if (admin.rember) {

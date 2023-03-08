@@ -60,19 +60,19 @@
           <n-button @click="updateBlog">提交</n-button>
         </n-form-item>
       </n-form>
-    </n-tab-pane>    
+    </n-tab-pane>
   </n-tabs>
   <!-- {{ addBlogTemp.content }} -->
 </template>
 
 <script setup>
-import {AdminStore} from "../../stores/AdminStores";
 import {ref, reactive, inject, onMounted} from "vue";
 import {useRouter, useRoute} from "vue-router";
 import RichTextEditor from "../../components/RichTextEditor.vue";
 // 使用 moment 时间戳格式化
 import moment from "moment";
 import momentCN from "../../utils/monentCN";
+
 moment.locale("zh-cn", momentCN);
 
 const router = useRouter();
@@ -83,8 +83,6 @@ const message = inject("message");
 const dialog = inject("dialog");
 
 const axios = inject("axios");
-const adminStore = AdminStore();
-
 // 添加文章 临时数据
 const addBlogTemp = reactive({
   tagId: "",

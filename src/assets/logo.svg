@@ -1,0 +1,15 @@
+<svg width="504" height="153" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <filter id="svg_8_blur" x="-50%" y="-50%" width="200%" height="200%">
+   <feGaussianBlur in="SourceGraphic" stdDeviation="10"/>
+  </filter>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <path fill="#56ffff" stroke="#000" opacity="NaN" d="m12.65652,111.49951l403.9983,-81.49993l-270.99556,90.99851" id="svg_8" filter="url(#svg_8_blur)" transform="rotate(6, 214.656, 75.4988)"/>
+  <text transform="matrix(0.696456, 0, 0, 0.737371, 60.7088, 31.1471)" fill="#000000" stroke="#000" stroke-width="0" x="195.6924" y="54.39344" id="svg_1" font-size="62" font-family="'MuseoModerno'" text-anchor="start" xml:space="preserve" font-weight="bold">Photography</text>
+  <text fill="#000000" stroke="#000" stroke-width="0" x="202.99989" y="107.99921" id="svg_2" font-size="26" font-family="'Cabin'" text-anchor="start" xml:space="preserve" font-weight="normal">easy to start</text>
+  <line fill="none" stroke="#000" x1="180" y1="35.50075" x2="179.99211" y2="112.49949" id="svg_3" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-width="3"/>
+  <path fill="#ffffff" stroke="#000" opacity="NaN" d="m84.99366,55.50042l63.00389,-13.50105l-11.9998,66.9989l-76.99874,-33.99944l61.99898,-35.99941l30.99949,60.999l-63.99895,-0.99998c0.99507,0.50126 45.99433,-22.49836 4.995,-32.4982" id="svg_6" stroke-width="2"/>
+ </g>
+</svg>

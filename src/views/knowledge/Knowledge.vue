@@ -3,7 +3,6 @@
 </template>
 
 <script setup>
-import { AdminStore } from "../../stores/AdminStores";
 import { ref, reactive, inject, onMounted, computed } from "vue";
 // 自定义组件
 import { useRouter, useRoute } from "vue-router";

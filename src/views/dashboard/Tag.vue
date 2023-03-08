@@ -66,7 +66,6 @@
 </template>
 
 <script setup>
-import { AdminStore } from "../../stores/AdminStores";
 import { ref, reactive, inject, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
@@ -78,8 +77,6 @@ const message = inject("message");
 const dialog = inject("dialog");
 
 const axios = inject("axios");
-const adminStore = AdminStore();
-
 onMounted(() => {
   // 挂载页面时请求数据
   loadDatas();

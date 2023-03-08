@@ -1,0 +1,45 @@
+<svg width="494" height="121" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <filter id="svg_27_blur" x="-50%" y="-50%" width="200%" height="200%">
+   <feGaussianBlur in="SourceGraphic" stdDeviation="10"/>
+  </filter>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <path fill="#B1FFFF" stroke="#000" stroke-width="0" opacity="NaN" d="m9,57.75998l271.75781,-12.18164c0.24219,0.18164 514.24219,50.18164 -127.75781,34.18164" id="svg_27" filter="url(#svg_27_blur)"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" x="203.82943" y="113.55048" id="svg_2" font-size="24" font-family="'MuseoModerno'" text-anchor="start" xml:space="preserve" transform="matrix(1.64324, 0, 0, 1.56653, -187.183, -115.831)">PHOTOGRAPHY</text>
+  <text fill="#000000" stroke="#000" stroke-width="0" x="163.36493" y="48.27424" id="svg_4" font-size="24" font-family="'Noto Sans Display'" text-anchor="start" xml:space="preserve" transform="matrix(1.12422, 0, 0, 0.959163, -36.7482, 44.4598)">easy to start</text>
+  <line fill="none" stroke="#000" x1="133.65763" y1="37.11785" x2="133.65763" y2="94.27708" id="svg_9" transform="rotate(-0.174588, 133.658, 65.6973)"/>
+  <path fill="#000000" stroke="#000" stroke-width="0" opacity="NaN" d="m87.64352,52.36516l31.11429,40.21318l-55.62857,-7.48152l-10.37143,-37.40761c0,0 99.94286,-42.08356 31.11429,26.18532" id="svg_23"/>
+  <g id="svg_16">
+   <defs transform="translate(-158.242, -206.422) translate(5916.26) translate(0, 4486.34)">
+    <filter id="svg_8" x="-50%" y="-50%" width="200%" height="200%">
+     <feGaussianBlur in="SourceGraphic" stdDeviation="10"/>
+    </filter>
+   </defs>
+   <g id="svg_17">
+    <title>Layer 1</title>
+    <path fill="#B1FFFF" stroke="#000" stroke-width="0" opacity="NaN" d="m5916.25977,4522.09689l271.75781,-12.18164c0.24219,0.18164 514.24219,50.18164 -127.75781,34.18164" id="svg_7" filter="url(#svg_8)"/>
+    <text fill="#000000" stroke="#000" stroke-width="0" x="3796.28077" y="2965.92926" id="svg_6" font-size="24" font-family="'MuseoModerno'" text-anchor="start" xml:space="preserve" transform="matrix(1.64324, 0, 0, 1.56653, -187.183, -115.831)">PHOTOGRAPHY</text>
+    <text fill="#000000" stroke="#000" stroke-width="0" x="5417.90577" y="4702.68329" id="svg_5" font-size="24" font-family="'Noto Sans Display'" text-anchor="start" xml:space="preserve" transform="matrix(1.12422, 0, 0, 0.959163, -36.7482, 44.4598)">easy to start</text>
+    <line fill="none" stroke="#000" x1="6040.9174" y1="4501.45476" x2="6040.9174" y2="4558.61399" id="svg_3" transform="rotate(-0.174588, 6040.92, 4530.04)"/>
+    <path fill="#000000" stroke="#000" stroke-width="0" opacity="NaN" d="m5994.90329,4516.70207l31.11429,40.21318l-55.62857,-7.48152l-10.37143,-37.40761c0,0 99.94286,-42.08356 31.11429,26.18532" id="svg_1"/>
+   </g>
+  </g>
+  <g id="svg_18">
+   <defs transform="translate(-158.242, -206.422) translate(5916.26) translate(0, 4486.11)">
+    <filter id="svg_15" x="-50%" y="-50%" width="200%" height="200%">
+     <feGaussianBlur in="SourceGraphic" stdDeviation="10"/>
+    </filter>
+   </defs>
+   <g id="svg_19">
+    <title>Layer 1</title>
+    <path fill="#B1FFFF" stroke="#000" stroke-width="0" opacity="NaN" d="m5916.25977,4521.8674l271.75781,-12.18164c0.24219,0.18164 514.24219,50.18164 -127.75781,34.18164" id="svg_14" filter="url(#svg_15)"/>
+    <text fill="#000000" stroke="#000" stroke-width="0" x="3796.28077" y="2965.78278" id="svg_13" font-size="24" font-family="'MuseoModerno'" text-anchor="start" xml:space="preserve" transform="matrix(1.64324, 0, 0, 1.56653, -187.183, -115.831)">PHOTOGRAPHY</text>
+    <text fill="#000000" stroke="#000" stroke-width="0" x="5417.90577" y="4702.44404" id="svg_12" font-size="24" font-family="'Noto Sans Display'" text-anchor="start" xml:space="preserve" transform="matrix(1.12422, 0, 0, 0.959163, -36.7482, 44.4598)">easy to start</text>
+    <line fill="none" stroke="#000" x1="6040.9174" y1="4501.22527" x2="6040.9174" y2="4558.3845" id="svg_11" transform="rotate(-0.174588, 6040.92, 4529.81)"/>
+    <path fill="#000000" stroke="#000" stroke-width="0" opacity="NaN" d="m5994.90329,4516.47258l31.11429,40.21318l-55.62857,-7.48152l-10.37143,-37.40761c0,0 99.94286,-42.08356 31.11429,26.18532" id="svg_10"/>
+   </g>
+  </g>
+ </g>
+</svg>

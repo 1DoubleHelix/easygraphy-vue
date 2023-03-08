@@ -114,6 +114,12 @@ let routes = [
         path: '/login',
         name: 'login',
         component: () => import('../views/login/Login.vue')
+    },
+    {
+        // 个人中心
+        path: '/center',
+        name: 'center',
+        component: () => import('../views/personal/Center.vue')
     }
 ]
 
