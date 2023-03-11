@@ -46,7 +46,9 @@
                 <p style="cursor: pointer" @click="logout">退出</p>
               </div>
               <template #reference>
-                <el-button @click="visible = true">个人中心</el-button>
+                <el-button @click="visible = true">{{
+                  store.username
+                }}</el-button>
               </template>
             </el-popover>
           </div>
@@ -82,16 +84,20 @@ const login = () => {
   router.push("/login");
 };
 const logout = () => {
-  router.push("/logout");
+  localStorage.clear();
+  // router.push("/home");
+  // 应该跳转到主页重新加载 暂未实现
+  location.reload();
 };
 // 跳转到个人页面 应改用post好些
 const toCenter = (id) => {
-  router.push({ path: "/center", query: { id: id } });
+  router.push({ path: "/space", query: { id: store.id } });
 };
 </script>
 
 <style lang="scss" scoped>
 .nav-container {
+  position: sticky;
   margin: 0;
   padding: 0;
 
@@ -99,7 +105,7 @@ const toCenter = (id) => {
     position: relative;
     border-bottom: 1px solid #dcdfe6;
     img {
-      height: 100%;
+      height: 90%;
       position: absolute;
       left: 50%;
       top: 50%;

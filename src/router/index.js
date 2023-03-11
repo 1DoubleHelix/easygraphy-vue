@@ -117,9 +117,9 @@ let routes = [
     },
     {
         // 个人中心
-        path: '/center',
-        name: 'center',
-        component: () => import('../views/personal/Center.vue')
+        path: '/space',
+        name: 'space',
+        component: () => import('../views/space/Space.vue')
     }
 ]
 

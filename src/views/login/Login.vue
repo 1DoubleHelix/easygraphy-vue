@@ -71,6 +71,7 @@ import { ref, reactive, inject } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { ElMessage } from "element-plus";
 import { userStore } from "../../stores/userStore.js";
+import * as api from "../../api/index.js";
 
 const router = useRouter();
 const route = useRoute();
@@ -130,18 +131,17 @@ const registerRules = ref({
 
 // 登录
 const login = async () => {
-  let req = await axios.post("/user/login", {
+  let req = await api.login({
     username: loginMsg.username,
     password: loginMsg.password,
   });
-  console.log(req);
 
-  if (req.data.code === 200) {
+  if (req.code === 200) {
     // 数据持久化
-    store.id = req.data.id;
-    store.username = req.data.username;
-    store.nickname = req.data.nickname;
-    store.token = req.data.token;
+    store.id = req.id;
+    store.username = req.username;
+    store.nickname = req.nickname;
+    store.token = req.token;
 
     // if (loginMsg.remember) {
     //   // 保存账号密码
@@ -161,17 +161,22 @@ const login = async () => {
 
 // 注册
 const register = async () => {
-  let req = await axios.post("/user/register", {
+  let req = await api.register({
     username: registerMsg.username,
     password: registerMsg.password,
   });
 
-  if (req.data.code === 200) {
-    // 直接登录
-    req = await axios.post("/user/login", {
+  if (req.code === 200) {
+    // 注册成功后直接登录
+    req = await api.login({
       username: registerMsg.username,
       password: registerMsg.password,
     });
+    // 数据持久化
+    store.id = req.id;
+    store.username = req.username;
+    store.nickname = req.nickname;
+    store.token = req.token;
 
     // 这里拿到token
     console.log(req);

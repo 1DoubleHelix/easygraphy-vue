@@ -15,6 +15,7 @@
     "moment": "^2.29.4",
     "pinia": "^2.0.32",
     "pinia-plugin-persistedstate": "^3.1.0",
+    "qs": "^6.11.1",
     "sass": "^1.58.3",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"

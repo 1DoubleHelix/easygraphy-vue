@@ -1,4 +1,5 @@
 <template>
+  <!-- 展示区 -->
   <div class="camera-info">
     <el-row>
       <el-col :span="8">
@@ -15,7 +16,6 @@
         </div>
       </el-col>
     </el-row>
-
     <div class="device-info">
       <el-row :gutter="10">
         <el-col :span="12">
@@ -40,16 +40,51 @@
       </el-row>
     </div>
   </div>
-
-  <div class="comment"></div>
+  <!-- 评论区 -->
+  <div class="comment-area">
+    <div class="add-comment">
+      <el-row>
+        <el-col :span="20">
+          <el-input
+            v-model="textarea"
+            :rows="3"
+            resize="none"
+            maxlength="150"
+            type="textarea"
+            show-word-limit
+            placeholder="正在安装镜头... ..."
+          />
+        </el-col>
+        <el-col :span="4">
+          <el-button @click="addComment" plain>发表评论</el-button>
+        </el-col>
+      </el-row>
+    </div>
+    <!-- 全部评论 -->
+    <div class="comments">
+      <div v-for="(comment, index) in commentsInfo" class="comment">
+        <el-row>
+          <el-col :span="2">
+            <el-avatar shape="square" :size="60" :fit="fit" :src="url" />
+          </el-col>
+          <el-col :span="22">
+            <el-card shadow="hover"> {{ comment.content }} </el-card>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref, reactive, inject, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import * as api from "../../api/index.js";
+
 // 使用 moment 时间戳格式化
 import moment from "moment";
 import momentCN from "../../utils/monentCN";
+import request from "../../utils/request";
 
 moment.locale("zh-cn", momentCN);
 
@@ -59,23 +94,52 @@ const router = useRouter();
 const route = useRoute();
 
 let cameraInfo = ref({});
+let commentsInfo = ref([]);
+const textarea = ref("");
 
 onMounted(() => {
   loadCamera();
+  laodComments();
 });
 
 // 加载相机数据
 const loadCamera = async () => {
-  let res = await axios.get("/camera/detail?id=" + route.query.id);
-  cameraInfo.value = res.data.results;
+  let res = await api.cameraDetail(route.query.id);
+  cameraInfo.value = res.results;
+};
+
+// 加载评论区
+const laodComments = async () => {
+  let res = await api.searchComment({
+    kind: "camera",
+    id: route.query.id,
+  });
+
+  // 时间戳格式化
+  let comments = res.data.rows;
+  for (let comment of comments) {
+    comment.create_time = moment(comment.create_time).format("lll");
+  }
+  commentsInfo.value = comments;
+};
+
+// 添加评论
+const addComment = async () => {
+  let res = await api.addComment({
+    kind: "camera",
+    objectId: route.query.id,
+    content: textarea.value,
+  });
+  textarea.value = "";
+  laodComments();
 };
 </script>
 
 <style lang="scss" scoped>
 .camera-info {
+  margin: auto;
   margin-top: 30px;
-  //background-color: #bfa;
-
+  width: 1000px;
   .device-logo {
     width: 300px;
     height: 300px;
@@ -117,9 +181,19 @@ const loadCamera = async () => {
     }
   }
 }
-.comment {
+.comment-area {
+  width: 1000px;
+  margin: auto;
   margin-top: 20px;
-  background-color: #cccccc;
-  height: 300px;
+  background-color: #bfa;
+  .add-comment {
+    background-color: blanchedalmond;
+  }
+
+  .comments {
+    .comment{
+      margin-top: 20px;
+    }
+  }
 }
 </style>
