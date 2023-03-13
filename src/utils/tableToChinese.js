@@ -1,4 +1,5 @@
 // 将表格中的值转为可读的中文
+// datas[{},{}]
 const tableToChinese = (datas) => {
     for (let data of datas) {
         // 品牌

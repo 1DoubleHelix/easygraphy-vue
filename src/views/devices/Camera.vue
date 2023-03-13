@@ -65,7 +65,12 @@
       <div v-for="(comment, index) in commentsInfo" class="comment">
         <el-row>
           <el-col :span="2">
-            <el-avatar shape="square" :size="60" :fit="fit" :src="url" />
+            <el-avatar
+              shape="square"
+              :size="60"
+              fit="cover"
+              src="../../assets/avatar/default.jpeg"
+            />
           </el-col>
           <el-col :span="22">
             <el-card shadow="hover"> {{ comment.content }} </el-card>
@@ -87,8 +92,6 @@ import momentCN from "../../utils/monentCN";
 import request from "../../utils/request";
 
 moment.locale("zh-cn", momentCN);
-
-const axios = inject("axios");
 
 const router = useRouter();
 const route = useRoute();
@@ -191,7 +194,7 @@ const addComment = async () => {
   }
 
   .comments {
-    .comment{
+    .comment {
       margin-top: 20px;
     }
   }

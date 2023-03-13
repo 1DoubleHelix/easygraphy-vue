@@ -4,13 +4,17 @@
     <div class="combine-devices">
       <el-row>
         <el-col :span="8" class="camera">
-          <el-card v-if="combineInfo.camera_id != ''">有相机</el-card>
+          <el-card v-if="combineInfo.camera_id != ''"
+            >{{ combineTemp.camera.name }}
+            <el-button @click="deleteCamera">移除</el-button>
+          </el-card>
           <el-card v-else>没相机</el-card>
         </el-col>
         <el-col :span="16" class="lens">
           <el-card v-if="combineInfo.lensGroup.length">
-            <div v-for="lensID in combineInfo.lensGroup" key="i">
-              {{ lensID }}
+            <div v-for="(lens, index) in combineTemp.lensGroup" :key="index">
+              {{ lens.name }}
+              <el-button @click="deleteLens(lens.id)">移除</el-button>
             </div>
           </el-card>
           <el-card v-else>没镜头</el-card>
@@ -226,7 +230,7 @@ const mountOptions = [
   { value: "RF", label: "RF 佳能" },
   { value: "X", label: "X 富士" },
   { value: "L", label: "L 松下、适马、徕卡" },
-  { value: "E", label: "EF 佳能" },
+  { value: "EF", label: "EF 佳能" },
   { value: "F", label: "F 尼康" },
   { value: "K", label: "K 宾得" },
 ];
@@ -272,8 +276,11 @@ const combineInfo = reactive({
   camera_id: "",
   lensGroup: ref([]),
 });
-// 组合数据 临时展示
-const combineTemp = reactive({});
+// 组合数据 临时展示已选设备
+const combineTemp = reactive({
+  camera: {},
+  lensGroup: ref([]),
+});
 
 onMounted(() => {
   loadCamera();
@@ -396,18 +403,22 @@ const loadLens = async () => {
   lensPageInfo.count = res.data.count;
 };
 
-// 添加/删除 相机
-const addCamera = (id) => {
+// 添加相机
+const addCamera = async (id) => {
   if (combineInfo.camera_id != "") {
     ElMessage("组合最多只能有 1 台相机");
   } else {
     combineInfo.camera_id = id;
+    // 添加临时数据
+    let res = await api.cameraDetail(id);
+    combineTemp.camera = res.results;
     ElMessage({
       message: "添加相机成功",
       type: "success",
     });
   }
 };
+// 删除相机
 const deleteCamera = () => {
   if (combineInfo.camera_id == "") {
     ElMessage("组合中没有相机");
@@ -415,8 +426,8 @@ const deleteCamera = () => {
     combineInfo.camera_id = "";
   }
 };
-// 添加/删除 镜头
-const addLens = (id) => {
+// 添加镜头
+const addLens = async (id) => {
   if (combineInfo.lensGroup.length >= 5) {
     ElMessage("组合最多有 5 只镜头");
   } else if (combineInfo.lensGroup.includes(id)) {
@@ -426,12 +437,16 @@ const addLens = (id) => {
     });
   } else {
     combineInfo.lensGroup.push(id);
+    // 添加临时数据
+    let res = await api.lensDetail(id);
+    combineTemp.lensGroup.push(res.results);
     ElMessage({
       message: "添加镜头成功",
       type: "success",
     });
   }
 };
+// 删除镜头
 const deleteLens = (id) => {
   if (combineInfo.lensGroup.length == 0) {
     ElMessage("组合中没有镜头");
@@ -439,6 +454,7 @@ const deleteLens = (id) => {
     for (let i = combineInfo.lensGroup.length - 1; i >= 0; i--) {
       if (combineInfo.lensGroup[i] == id) {
         combineInfo.lensGroup.splice(i, 1);
+        combineTemp.lensGroup.splice(i, 1);
       }
     }
   }

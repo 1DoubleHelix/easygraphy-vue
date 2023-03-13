@@ -8,18 +8,14 @@ let routes = [
         path: '/home',
         name: 'home',
         component: () => import('../views/home/Home.vue'),
-        meta: {
-            title: 'EasyGraphy'
-        },
+        meta: { title: 'EasyGraphy' },
     },
     {
         // 后台
         path: '/dashboard',
         name: 'dashboard',
         component: () => import('../views/dashboard/Dashboard.vue'),
-        meta: {
-            title: '后台管理-EasyGraphy'
-        },
+        meta: { title: '后台管理-EasyGraphy' },
         children: [
             {
                 path: "tag",
@@ -67,37 +63,35 @@ let routes = [
         path: '/knowledge',
         name: 'knowledge',
         component: () => import('../views/knowledge/Knowledge.vue'),
-        meta: {
-            title: '知识区-EasyGraphy'
-        }
     },
     {
         // 设备推荐
         path: '/recommend',
         name: 'recommend',
-        component: () => import('../views/recommend/Recommend.vue'),
-        meta: {
-            title: '套装推荐-EasyGraphy'
-        },
         children: [
+            {
+                path: 'auto-match',
+                component: () => import('../views/recommend/AutoMatch.vue'),
+                meta: { title: '套装推荐-EasyGraphy' }
+            },
             // 挑选
             {
                 path: 'combine',
-                name: 'combine',
                 component: () => import('../views/recommend/Combine.vue'),
-                meta: {
-                    title: '套装推荐-EasyGraphy'
-                }
+                meta: { title: '套装推荐-EasyGraphy' }
             },
             // 全部组合
             {
                 path: 'combinations',
-                name: 'combinations',
                 component: () => import('../views/recommend/Combinations.vue'),
-                meta: {
-                    title: '套装推荐-EasyGraphy'
-                }
-            }
+                meta: { title: '套装推荐-EasyGraphy' }
+            },
+            // 组合详情页
+            {
+                path: 'detail',
+                component: () => import('../views/recommend/Detail.vue'),
+                meta: { title: '套装推荐-EasyGraphy' }
+            },
         ]
     },
     {
@@ -105,9 +99,7 @@ let routes = [
         path: '/login-admin',
         name: 'login-admin',
         component: () => import('../views/login/LoginAdmin.vue'),
-        meta: {
-            title: '登录-EasyGraphy'
-        }
+        meta: { title: '登录-EasyGraphy' }
     },
     {
         // 普通用户登录
@@ -119,7 +111,21 @@ let routes = [
         // 个人中心
         path: '/space',
         name: 'space',
-        component: () => import('../views/space/Space.vue')
+        component: () => import('../views/space/Space.vue'),
+        children: [
+            {
+                path: 'blog',
+                component: () => import('../views/space/Blog.vue')
+            },
+            {
+                path: 'favlist',
+                component: () => import('../views/space/FavList.vue')
+            },
+            {
+                path: 'combine',
+                component: () => import('../views/space/Combine.vue')
+            }
+        ]
     }
 ]
 

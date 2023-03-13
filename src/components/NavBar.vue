@@ -26,10 +26,13 @@
             </el-sub-menu>
             <el-sub-menu index="/recommend">
               <template #title>入门设备推荐</template>
-              <el-menu-item index="/recommend/combine">挑选</el-menu-item>
+              <el-menu-item index="/recommend/auto-match"
+                >自动推荐</el-menu-item
+              >
+              <el-menu-item index="/recommend/combine">开始挑选</el-menu-item>
               <el-menu-item index="/recommend/combinations"
-                >全部组合
-              </el-menu-item>
+                >全部组合</el-menu-item
+              >
             </el-sub-menu>
           </el-menu>
         </el-col>
@@ -90,8 +93,8 @@ const logout = () => {
   location.reload();
 };
 // 跳转到个人页面 应改用post好些
-const toCenter = (id) => {
-  router.push({ path: "/space", query: { id: store.id } });
+const toCenter = () => {
+  router.push({ path: "/space", params: { userID: store.id } });
 };
 </script>
 

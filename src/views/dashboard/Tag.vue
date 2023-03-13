@@ -94,7 +94,7 @@ const addTagTemp = reactive({
 });
 const tagList = ref([]);
 const addTag = async () => {
-  let res = await axios.post("/tag/add", {
+  let res = await axios.post("/api/tag/add", {
     name: addTagTemp.name,
   });
 
@@ -117,7 +117,7 @@ const deleteTag = async (tag) => {
     positiveText: "确定",
     negativeText: "取消",
     onPositiveClick: async () => {
-      let res = await axios.delete(`/tag/delete?id=${tag.id}`);
+      let res = await axios.delete(`/api/tag/delete?id=${tag.id}`);
       if (res.data.code == 200) {
         loadDatas();
         message.info(res.data.msg);
@@ -141,7 +141,7 @@ const toUpdate = async (tag) => {
 };
 // 真正提交数据
 const updateTag = async () => {
-  let res = await axios.put("/tag/update", {
+  let res = await axios.put("/api/tag/update", {
     id: updateTagTemp.id,
     name: updateTagTemp.name,
   });
@@ -159,7 +159,7 @@ const updateTag = async () => {
 
 // 加载数据 修改表后使用 重新加载
 const loadDatas = async () => {
-  let res = await axios.get("/tag/list");
+  let res = await axios.get("/api/tag/list");
   tagList.value = res.data.results;
   // console.log(res);
 };

@@ -25,10 +25,10 @@
     <n-tab-pane name="add" tab="添加文章">
       <n-form>
         <n-form-item label="标题">
-          <n-input v-model:value="addBlogTemp.title" placeholder="请输入标题"/>
+          <n-input v-model:value="addBlogTemp.title" placeholder="请输入标题" />
         </n-form-item>
         <n-form-item label="选择文章标签">
-          <n-select v-model:value="addBlogTemp.tagId" :options="tagOptions"/>
+          <n-select v-model:value="addBlogTemp.tagId" :options="tagOptions" />
         </n-form-item>
         <n-form-item label="文章内容">
           <RichTextEditor v-model="addBlogTemp.content"></RichTextEditor>
@@ -43,14 +43,14 @@
       <n-form>
         <n-form-item label="标题">
           <n-input
-              v-model:value="updateBlogTemp.title"
-              placeholder="请输入标题"
+            v-model:value="updateBlogTemp.title"
+            placeholder="请输入标题"
           />
         </n-form-item>
         <n-form-item label="选择文章标签">
           <n-select
-              v-model:value="updateBlogTemp.tagId"
-              :options="tagOptions"
+            v-model:value="updateBlogTemp.tagId"
+            :options="tagOptions"
           />
         </n-form-item>
         <n-form-item label="文章内容">
@@ -66,8 +66,8 @@
 </template>
 
 <script setup>
-import {ref, reactive, inject, onMounted} from "vue";
-import {useRouter, useRoute} from "vue-router";
+import { ref, reactive, inject, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import RichTextEditor from "../../components/RichTextEditor.vue";
 // 使用 moment 时间戳格式化
 import moment from "moment";
@@ -119,7 +119,7 @@ onMounted(() => {
 // 读取文章列表
 const loadBlogs = async () => {
   let res = await axios.get(
-      `/blog/search?page=${pageInfo.page}&pageSize=${pageInfo.pageSize}`
+    `/api/blog/search?page=${pageInfo.page}&pageSize=${pageInfo.pageSize}`
   );
 
   let rows = res.data.data.rows;
@@ -140,7 +140,7 @@ const loadBlogs = async () => {
 
 // 加载标签数据
 const loadTags = async () => {
-  let res = await axios.get("/tag/list");
+  let res = await axios.get("/api/tag/list");
   // console.log(res.data.results);
   // 转换data格式到naive选项的格式
   tagOptions.value = res.data.results.map((item) => {
@@ -154,7 +154,7 @@ const loadTags = async () => {
 
 // 添加文章
 const addBlog = async () => {
-  let res = await axios.post("/blog/add", {
+  let res = await axios.post("/api/blog/add", {
     title: addBlogTemp.title,
     tagId: addBlogTemp.tagId,
     content: addBlogTemp.content,
@@ -179,21 +179,18 @@ const toPage = (pageNum) => {
 
 // 传入并修改文章
 const toUpdate = async (blog) => {
-  let res = await axios.get("/blog/detail?id=" + blog.id);
+  let res = await axios.get("/api/blog/detail?id=" + blog.id);
   updateBlogTemp.id = blog.id;
   updateBlogTemp.title = res.data.results.title;
   updateBlogTemp.tagId = res.data.results.tag_id;
   updateBlogTemp.content = res.data.results.content;
   // 跳转修改页面 必须加载数据后再跳转 否则编辑器没有内容
   tabValue.value = "update";
-
-  // console.log(res);
-  // console.log(updateBlogTemp.content);
 };
 
 // 修改文章
 const updateBlog = async () => {
-  let res = await axios.put("/blog/update", updateBlogTemp);
+  let res = await axios.put("/api/blog/update", updateBlogTemp);
   if (res.data.code == 200) {
     message.info(res.data.msg);
     loadBlogs();
@@ -213,7 +210,7 @@ const deleteBlog = async (blog) => {
     positiveText: "确定",
     negativeText: "取消",
     onPositiveClick: async () => {
-      let res = await axios.delete("/blog/delete?id=" + blog.id);
+      let res = await axios.delete("/api/blog/delete?id=" + blog.id);
       if (res.data.code == 200) {
         message.info(res.data.msg);
         loadBlogs();
@@ -221,8 +218,7 @@ const deleteBlog = async (blog) => {
         message.error(res.data.msg);
       }
     },
-    onNegativeClick: () => {
-    },
+    onNegativeClick: () => {},
   });
 };
 

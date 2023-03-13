@@ -1,5 +1,5 @@
 <template>
-  <router-view></router-view>
+  <div>自动组合</div>
 </template>
 
 <script setup>
@@ -11,9 +11,4 @@ const router = useRouter();
 const route = useRoute();
 </script>
 
-<style lang="scss" scoped>
-.nav-container {
-  margin: 0;
-  padding: 0;
-}
-</style>
+<style lang="scss" scoped></style>

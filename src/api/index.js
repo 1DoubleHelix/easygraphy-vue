@@ -21,3 +21,12 @@ export const addComment = (params) => request.post("/comment/add", params)
 
 // combine
 export const addCombine = (params) => request.post("/combine/add", params)
+export const deleteCombine = (params) => request.delete(`/combine/delete?id=${params}`)
+export const detailCombine = (params) => request.get(`/api/combine/detail?id=${params}`)
+export const searchCombine = (params) => request.get(`/api/combine/search?id=${qs.stringify(params)}`)
+
+// dashboard
+
+// blog
+export const searchBlog = (params) => request.get(`/api/blog/search?${qs.stringify(params)}`)
+export const deleteBlog = (params) => request.delete(`/api/blog/delete?id=${params}`)
