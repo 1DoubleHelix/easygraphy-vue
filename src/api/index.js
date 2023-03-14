@@ -30,3 +30,9 @@ export const searchCombine = (params) => request.get(`/api/combine/search?id=${q
 // blog
 export const searchBlog = (params) => request.get(`/api/blog/search?${qs.stringify(params)}`)
 export const deleteBlog = (params) => request.delete(`/api/blog/delete?id=${params}`)
+export const blogDetail = (params) => request.get(`/api/blog/detail?id=${params}`)
+export const blogUpdate = (params) => request.put("/blog/update", params)
+export const blogAdd = (params) => request.post("/blog/add", params)
+
+// tag
+export const tagList = () => request.get("/api/tag/list")

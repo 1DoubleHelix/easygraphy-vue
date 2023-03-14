@@ -198,8 +198,6 @@ const updateBlog = async () => {
   } else {
     message.error(res.data.msg);
   }
-
-  console.log(res);
 };
 
 // 删除文章
