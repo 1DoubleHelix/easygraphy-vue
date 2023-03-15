@@ -131,7 +131,7 @@ const addComment = async () => {
 .lens-info {
   margin: auto;
   margin-top: 30px;
-  width: 1000px;
+  width: 1200px;
   .device-logo {
     width: 300px;
     height: 300px;
@@ -174,7 +174,7 @@ const addComment = async () => {
   }
 }
 .comment-area {
-  width: 1000px;
+  width: 1200px;
   margin: auto;
   margin-top: 20px;
   background-color: #bfa;

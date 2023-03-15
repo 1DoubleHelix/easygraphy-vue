@@ -1,19 +1,6 @@
 <template>
   <div class="try">演练场，射就完了</div>
-  <div class="test">
-    <p>试试新axios</p>
-    <div>
-      <el-button @click="testAxios">发发发！</el-button>
-    </div>
 
-    <div class="slider-demo-block">
-      <el-slider v-model="slider" range show-stops :max="100" />
-    </div>
-    <el-select clearable placeholder="请选择">
-      <el-option label="Zone one" value="shanghai" />
-      <el-option label="Zone two" value="beijing" />
-    </el-select>
-  </div>
 </template>
 
 <script setup>

@@ -37,6 +37,7 @@
           <n-button @click="addBlog">提交</n-button>
         </n-form-item>
       </n-form>
+      {{ addBlogTemp.content }}
     </n-tab-pane>
 
     <n-tab-pane name="update" tab="修改文章">
@@ -60,15 +61,17 @@
           <n-button @click="updateBlog">提交</n-button>
         </n-form-item>
       </n-form>
+      {{ updateBlogTemp.content }}
     </n-tab-pane>
   </n-tabs>
-  <!-- {{ addBlogTemp.content }} -->
 </template>
 
 <script setup>
 import { ref, reactive, inject, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import RichTextEditor from "../../components/RichTextEditor.vue";
+import * as api from "../../api/index.js";
+
 // 使用 moment 时间戳格式化
 import moment from "moment";
 import momentCN from "../../utils/monentCN";
@@ -179,12 +182,12 @@ const toPage = (pageNum) => {
 
 // 传入并修改文章
 const toUpdate = async (blog) => {
-  let res = await axios.get("/api/blog/detail?id=" + blog.id);
+  // let res = await axios.get("/api/blog/detail?id=" + blog.id);
+  let res = await api.blogDetail(blog.id);
   updateBlogTemp.id = blog.id;
-  updateBlogTemp.title = res.data.results.title;
-  updateBlogTemp.tagId = res.data.results.tag_id;
-  updateBlogTemp.content = res.data.results.content;
-  // 跳转修改页面 必须加载数据后再跳转 否则编辑器没有内容
+  updateBlogTemp.title = res.results.title;
+  updateBlogTemp.tagId = res.results.tag_id;
+  updateBlogTemp.content = res.results.content;
   tabValue.value = "update";
 };
 
@@ -219,10 +222,6 @@ const deleteBlog = async (blog) => {
     onNegativeClick: () => {},
   });
 };
-
-// export default {
-//   name: "Blog.vue"
-// }
 </script>
 
 <style scoped></style>

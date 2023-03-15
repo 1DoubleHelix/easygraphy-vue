@@ -86,11 +86,11 @@ const loadCamera = async () => {
 <style lang="scss" scoped>
 .camera-search {
   margin: 20px auto;
-  width: 1000px;
+  width: 1200px;
 }
 
 .camera-table {
   margin: auto;
-  width: 1000px;
+  width: 1200px;
 }
 </style>

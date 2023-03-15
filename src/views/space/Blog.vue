@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
-    <el-tabs v-model="activeTab">
-      <el-tab-pane label="我的文章" name="blogList">
+    <n-tabs v-model:value="activeTab" type="line" animated>
+      <n-tab-pane tab="我的文章" name="blogList">
         <div class="blog-list">
           <div v-for="(blog, index) in blogInfo">
             <el-card>
@@ -24,8 +24,8 @@
             </el-card>
           </div>
         </div>
-      </el-tab-pane>
-      <el-tab-pane label="编写文章" name="blogEdit">
+      </n-tab-pane>
+      <n-tab-pane tab="编写文章" name="blogEdit">
         <el-form>
           <el-form-item label="标题">
             <el-input v-model="addBlogTemp.title" placeholder="请输入标题" />
@@ -47,8 +47,8 @@
             <el-button @click="addBlog">提交</el-button>
           </el-form-item>
         </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="修改文章" name="blogUpdate">
+      </n-tab-pane>
+      <n-tab-pane tab="修改文章" name="blogUpdate">
         <el-form>
           <el-form-item label="标题">
             <el-input v-model="updateBlogTemp.title" placeholder="请输入标题" />
@@ -67,12 +67,11 @@
             <RichTextEditor v-model="updateBlogTemp.content"></RichTextEditor>
           </el-form-item>
           <el-form-item label="">
-            <el-button @click="updateBlog">提交</el-button>
+            <el-button @click="updateBlog">提交修改</el-button>
           </el-form-item>
         </el-form>
-        {{ updateBlogTemp.content }}
-      </el-tab-pane>
-    </el-tabs>
+      </n-tab-pane>
+    </n-tabs>
   </div>
 </template>
 
@@ -86,7 +85,6 @@ import { userStore } from "../../stores/userStore.js";
 // 使用 moment 时间戳格式化
 import moment from "moment";
 import momentCN from "../../utils/monentCN";
-import request from "../../utils/request";
 import { ElMessage } from "element-plus";
 const store = userStore();
 
@@ -95,16 +93,6 @@ moment.locale("zh-cn", momentCN);
 const router = useRouter();
 const route = useRoute();
 
-const activeTab = ref("blogList");
-const blogInfo = ref({});
-const tagOptions = ref([]);
-
-const blogPageInfo = reactive({
-  page: 1,
-  pageSize: 4,
-  count: 0,
-});
-
 // 添加文章 临时数据
 const addBlogTemp = reactive({
   tagId: "",
@@ -112,11 +100,24 @@ const addBlogTemp = reactive({
   content: "",
 });
 
+// 修改文章 临时数据
 const updateBlogTemp = reactive({
   id: 0,
   tagId: "",
   title: "",
   content: "",
+});
+
+// 标签页
+const tagOptions = ref([]);
+const blogInfo = ref({});
+const activeTab = ref("blogList");
+
+// 分页参数
+const blogPageInfo = reactive({
+  page: 1,
+  pageSize: 4,
+  count: 0,
 });
 
 onMounted(() => {
@@ -160,6 +161,7 @@ const addBlog = async () => {
     addBlogTemp.title = "";
     addBlogTemp.content = "";
     loadBlogs();
+    activeTab.value = "blogList";
   } else {
     ElMessage({ message: res.msg, type: "warning" });
   }
@@ -172,7 +174,6 @@ const toUpdate = async (blog) => {
   updateBlogTemp.title = res.results.title;
   updateBlogTemp.tagId = res.results.tag_id;
   updateBlogTemp.content = res.results.content;
-  // 加载数据后再跳转修改页面
   activeTab.value = "blogUpdate";
 };
 

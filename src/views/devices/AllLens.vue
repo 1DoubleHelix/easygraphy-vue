@@ -86,10 +86,10 @@ const loadLens = async () => {
 <style lang="scss" scoped>
 .lens-search {
   margin: 20px auto;
-  width: 1000px;
+  width: 1200px;
 }
 .lens-table {
   margin: auto;
-  width: 1000px;
+  width: 1200px;
 }
 </style>
