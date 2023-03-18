@@ -25,7 +25,7 @@
     <div class="remarks">
       <el-input
         v-model="combineInfo.title"
-        maxlength="30"
+        maxlength="20"
         show-word-limit
         placeholder="输入标题"
       />

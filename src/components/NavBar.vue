@@ -25,9 +25,9 @@
               <el-menu-item index="/devices/all-lens">镜头</el-menu-item>
             </el-sub-menu>
             <el-sub-menu index="/recommend">
-              <template #title>入门设备推荐</template>
-              <el-menu-item index="/recommend/auto-match"
-                >自动推荐</el-menu-item
+              <template #title>设备组合</template>
+              <el-menu-item index="/recommend/helper"
+                >挑选助手</el-menu-item
               >
               <el-menu-item index="/recommend/combine">开始挑选</el-menu-item>
               <el-menu-item index="/recommend/combinations"

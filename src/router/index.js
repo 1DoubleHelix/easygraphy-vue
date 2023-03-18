@@ -70,8 +70,8 @@ let routes = [
         name: 'recommend',
         children: [
             {
-                path: 'auto-match',
-                component: () => import('../views/recommend/AutoMatch.vue'),
+                path: 'helper',
+                component: () => import('../views/recommend/Helper.vue'),
                 meta: { title: '套装推荐-EasyGraphy' }
             },
             // 挑选

@@ -42,4 +42,6 @@ export const favoriteAdd = (params) => request.post("/favorite/add", params)
 export const favoriteDelete = (params) => request.delete(`/favorite/delete?id=${params}`)
 export const favoriteList = (params) => request.get(`/favorite/list?${qs.stringify(params)}`)
 
-// auto match
+// helper
+export const cameraHelper = (params) => request.get(`/api/helper/camera?${qs.stringify(params)}`)
+export const lensHelper = (params) => request.get(`/api/helper/lens?${qs.stringify(params)}`)
