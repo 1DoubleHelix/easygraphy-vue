@@ -41,6 +41,12 @@
                   placeholder="请输入用户名"
                 />
               </el-form-item>
+              <el-form-item prop="nickname">
+                <el-input
+                  v-model="registerMsg.nickname"
+                  placeholder="请输入昵称"
+                />
+              </el-form-item>
               <el-form-item prop="password">
                 <el-input
                   v-model="registerMsg.password"
@@ -125,6 +131,7 @@ const checkRePassword = (rule, value, callback) => {
 };
 const registerRules = ref({
   username: [{ validator: checkUsername, trigger: "blur" }],
+  nickname: [{ required: true, message: "请输入昵称", trigger: "blur" }],
   password: [{ validator: checkPassword, trigger: "blur" }],
   rePassword: [{ validator: checkRePassword, trigger: "blur" }],
 });

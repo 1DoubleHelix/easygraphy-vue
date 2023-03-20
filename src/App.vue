@@ -1,6 +1,6 @@
 <template>
   <!-- 登录、后台不加载导航栏 未实现 -->
-  <NavBar></NavBar>
+  <NavBar v-if="showNavBar"></NavBar>
   <router-view></router-view>
 </template>
 
@@ -11,6 +11,9 @@ import NavBar from "./components/NavBar.vue";
 
 const router = useRouter();
 const route = useRoute();
+
+// 登录页面不显示导航栏
+const showNavBar = computed(() => route.meta.showNavBar !== false);
 
 onMounted(() => {});
 </script>

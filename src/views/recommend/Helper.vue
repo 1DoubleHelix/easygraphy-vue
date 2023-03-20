@@ -45,11 +45,7 @@
     <div class="select">
       <el-form :model="selectFilter">
         <el-form-item label="卡口">
-          <el-select
-            v-model="selectFilter.mount"
-            clearable
-            placeholder="请选择"
-          >
+          <el-select v-model="selectFilter.mount" placeholder="请选择">
             <el-option-group
               v-for="group in mountOptions"
               :key="group.label"
@@ -65,32 +61,20 @@
           </el-select>
         </el-form-item>
         <el-form-item label="传感器尺寸">
-          <el-select
-            v-model="selectFilter.frame"
-            clearable
-            placeholder="请选择"
-          >
+          <el-select v-model="selectFilter.frame" placeholder="请选择">
             <el-option label="全画幅" value="FX" />
             <el-option label="半画幅" value="DX" />
           </el-select>
         </el-form-item>
         <el-form-item label="摄影风格">
-          <el-select
-            v-model="selectFilter.style"
-            clearable
-            placeholder="请选择"
-          >
+          <el-select v-model="selectFilter.style" placeholder="请选择">
             <el-option label="日常" value="daily" />
             <el-option label="人像" value="portrait" />
             <el-option label="风光" value="landscape" />
           </el-select>
         </el-form-item>
         <el-form-item label="预算限制">
-          <el-select
-            v-model="selectFilter.budget"
-            clearable
-            placeholder="请选择"
-          >
+          <el-select v-model="selectFilter.budget" placeholder="请选择">
             <el-option label="低" value="1" />
             <el-option label="标准" value="2" />
             <el-option label="高" value="3" />
@@ -117,24 +101,102 @@
         </el-table-column>
       </el-table>
       <!-- 镜头表格 -->
-      <!-- 使用v-if判断五个种类的镜头表格是否显示 -->
-      <el-table :data="lensInfo.prime" stripe border style="width: 100%">
-        <el-table-column prop="brand" label="品牌" />
-        <el-table-column prop="name" label="型号" />
-        <el-table-column prop="mount" label="卡口" />
-        <el-table-column prop="frame" label="画幅" />
-        <el-table-column prop="min_focal" label="焦段" />
-        <el-table-column prop="max_aperture" label="最大光圈" />
-        <el-table-column prop="price" label="参考价格(元)" />
-        <el-table-column label="操作">
-          <!-- 自定义列模板 -->
-          <template #default="scope">
-            <el-button size="small" @click="addLens(scope.row.id)"
-              >添加</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
+      <!-- 使用v-if判断5个种类的镜头表格是否显示 -->
+      <div v-if="lensInfo.prime.length" class="lens">
+        <el-table :data="lensInfo.prime" stripe border style="width: 100%">
+          <el-table-column prop="brand" label="品牌" />
+          <el-table-column prop="name" label="型号" />
+          <el-table-column prop="mount" label="卡口" />
+          <el-table-column prop="frame" label="画幅" />
+          <el-table-column prop="min_focal" label="焦段" />
+          <el-table-column prop="max_aperture" label="最大光圈" />
+          <el-table-column prop="price" label="参考价格(元)" />
+          <el-table-column label="操作">
+            <!-- 自定义列模板 -->
+            <template #default="scope">
+              <el-button size="small" @click="addLens(scope.row.id)"
+                >添加</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div v-if="lensInfo.zoom.length" class="lens">
+        <el-table :data="lensInfo.zoom" stripe border style="width: 100%">
+          <el-table-column prop="brand" label="品牌" />
+          <el-table-column prop="name" label="型号" />
+          <el-table-column prop="mount" label="卡口" />
+          <el-table-column prop="frame" label="画幅" />
+          <el-table-column prop="min_focal" label="焦段" />
+          <el-table-column prop="max_aperture" label="最大光圈" />
+          <el-table-column prop="price" label="参考价格(元)" />
+          <el-table-column label="操作">
+            <!-- 自定义列模板 -->
+            <template #default="scope">
+              <el-button size="small" @click="addLens(scope.row.id)"
+                >添加</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div v-if="lensInfo.teleZoom.length" class="lens">
+        <el-table :data="lensInfo.teleZoom" stripe border style="width: 100%">
+          <el-table-column prop="brand" label="品牌" />
+          <el-table-column prop="name" label="型号" />
+          <el-table-column prop="mount" label="卡口" />
+          <el-table-column prop="frame" label="画幅" />
+          <el-table-column prop="min_focal" label="焦段" />
+          <el-table-column prop="max_aperture" label="最大光圈" />
+          <el-table-column prop="price" label="参考价格(元)" />
+          <el-table-column label="操作">
+            <!-- 自定义列模板 -->
+            <template #default="scope">
+              <el-button size="small" @click="addLens(scope.row.id)"
+                >添加</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div v-if="lensInfo.widePrime.length" class="lens">
+        <el-table :data="lensInfo.widePrime" stripe border style="width: 100%">
+          <el-table-column prop="brand" label="品牌" />
+          <el-table-column prop="name" label="型号" />
+          <el-table-column prop="mount" label="卡口" />
+          <el-table-column prop="frame" label="画幅" />
+          <el-table-column prop="min_focal" label="焦段" />
+          <el-table-column prop="max_aperture" label="最大光圈" />
+          <el-table-column prop="price" label="参考价格(元)" />
+          <el-table-column label="操作">
+            <!-- 自定义列模板 -->
+            <template #default="scope">
+              <el-button size="small" @click="addLens(scope.row.id)"
+                >添加</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div v-if="lensInfo.wideZoom.length" class="lens">
+        <el-table :data="lensInfo.wideZoom" stripe border style="width: 100%">
+          <el-table-column prop="brand" label="品牌" />
+          <el-table-column prop="name" label="型号" />
+          <el-table-column prop="mount" label="卡口" />
+          <el-table-column prop="frame" label="画幅" />
+          <el-table-column prop="min_focal" label="焦段" />
+          <el-table-column prop="max_aperture" label="最大光圈" />
+          <el-table-column prop="price" label="参考价格(元)" />
+          <el-table-column label="操作">
+            <!-- 自定义列模板 -->
+            <template #default="scope">
+              <el-button size="small" @click="addLens(scope.row.id)"
+                >添加</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
   </div>
 </template>
@@ -181,13 +243,12 @@ const selectFilter = reactive({
 });
 
 const cameraInfo = ref([]);
-const lensInfo = ref({
-  prime: [],
-  zoom: [],
-  teleZoom: [],
-  widePrime: [],
-  wideZoom: [],
-  teleZoom: [],
+const lensInfo = reactive({
+  prime: ref([]),
+  zoom: ref([]),
+  teleZoom: ref([]),
+  widePrime: ref([]),
+  wideZoom: ref([]),
 });
 
 // 组合数据 待发送
@@ -211,7 +272,15 @@ const loadInfo = async () => {
   cameraInfo.value = cameraRes.data;
   let lensRes = await api.lensHelper(selectFilter);
   console.log(lensRes);
-  lensInfo.value = lensRes.data;
+  // lensInfo = lensRes.data;
+  lensInfo.prime = lensRes.data.prime == null ? [] : lensRes.data.prime;
+  lensInfo.zoom = lensRes.data.zoom == null ? [] : lensRes.data.zoom;
+  lensInfo.teleZoom =
+    lensRes.data.teleZoom == null ? [] : lensRes.data.teleZoom;
+  lensInfo.widePrime =
+    lensRes.data.widePrime == null ? [] : lensRes.data.widePrime;
+  lensInfo.wideZoom =
+    lensRes.data.wideZoom == null ? [] : lensRes.data.wideZoom;
 };
 
 // 添加相机
@@ -280,7 +349,7 @@ const addCombine = async () => {
 
 <style lang="scss" scoped>
 .main-container {
-  width: 1000px;
+  width: 1200px;
   margin: auto;
   background-color: #cfa;
 }

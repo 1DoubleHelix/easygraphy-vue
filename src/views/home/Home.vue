@@ -1,5 +1,15 @@
 <template>
-  <router-view></router-view>
+  <div class="main-container">
+    <div class="wrapper">这里是大卡片，放网站的主要介绍，或者是轮播图</div>
+    <el-row>
+      <el-col :span="8">
+        <div>这里是图片</div>
+      </el-col>
+      <el-col :span="16">
+        <div>这里是介绍</div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script setup>
@@ -26,37 +36,13 @@ onMounted(() => {});
 </script>
 
 <style lang="scss" scoped>
-.nav-container {
-  margin: 0;
-  padding: 0;
-}
-
-.search {
-  margin-bottom: 15px;
-}
-
 .main-container {
-  width: 1000px;
-  margin: 0 auto;
-}
-
-.nav {
-  display: flex;
-  font-size: 20px;
-  padding-top: 20px;
-  color: #64676a;
-
-  div {
-    cursor: pointer;
-    margin-right: 15px;
-
-    &:hover {
-      color: orange;
-    }
-
-    span {
-      font-size: 15px;
-    }
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  .wrapper {
+    height: 500px;
+    background-color: #bfa;
   }
 }
 </style>

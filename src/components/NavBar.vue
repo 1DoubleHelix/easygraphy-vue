@@ -18,7 +18,7 @@
             router
           >
             <el-menu-item index="/home">首页</el-menu-item>
-            <el-menu-item index="/knowledge">知识区</el-menu-item>
+            <el-menu-item index="/knowledge/all">知识区</el-menu-item>
             <el-sub-menu index="/devices">
               <template #title>设备数据库</template>
               <el-menu-item index="/devices/all-camera">相机</el-menu-item>

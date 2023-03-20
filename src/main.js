@@ -11,14 +11,7 @@ import axios from 'axios'
 import { router } from './router/index'
 
 axios.defaults.baseURL = "http://localhost:8088"
-// axios.interceptors.request.use((config) => {
-//     if (["/user/login", "/user/register"].indexOf(config.url) === 1) {
-//         const token = localStorage.getItem("token")
-//         if (token) {
-//             config.headers.Authorization = token
-//         }
-//     }
-// })
+
 // 独立API
 const { message, notification, dialog } = createDiscreteApi(["message", "notification", "dialog"])
 

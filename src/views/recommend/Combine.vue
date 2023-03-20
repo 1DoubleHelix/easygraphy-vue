@@ -469,7 +469,7 @@ const addCombine = async () => {
 
 <style lang="scss" scoped>
 .main-container {
-  width: 1000px;
+  width: 1200px;
   margin: auto;
   background-color: #bfa;
 }

@@ -62,7 +62,16 @@ let routes = [
         // 知识区
         path: '/knowledge',
         name: 'knowledge',
-        component: () => import('../views/knowledge/Knowledge.vue'),
+        children: [
+            {
+                path: 'all',
+                component: () => import('../views/knowledge/Knowledge.vue'),
+            },
+            {
+                path: 'blog',
+                component: () => import('../views/knowledge/Blog.vue'),
+            }
+        ]
     },
     {
         // 设备推荐
@@ -105,7 +114,8 @@ let routes = [
         // 普通用户登录
         path: '/login',
         name: 'login',
-        component: () => import('../views/login/Login.vue')
+        component: () => import('../views/login/Login.vue'),
+        meta: { showNavBar: false }
     },
     {
         // 个人中心

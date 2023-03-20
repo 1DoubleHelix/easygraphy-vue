@@ -143,12 +143,12 @@ const loadTagOptions = async () => {
   let res = await api.tagList();
   let rows = res.results;
   // 准换标签数据格式
-  for (let row of rows) {
-    tagOptions.value.push({
-      value: row.id,
-      label: row.name,
-    });
-  }
+  tagOptions.value = res.results.map((item) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
 };
 
 // 添加文章

@@ -1,19 +1,17 @@
 <!-- 管理员后台 -->
 <template>
-  <div class="nav-container">
-    <el-header class="nav-container">
+  <el-container>
+    <el-aside width="200px">
       <!-- 导航栏 -->
       <el-menu
-          :default-active="activeIndex"
-          class="el-menu-demo"
-          mode="horizontal"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b"
-          @select="handleSelect"
-          router
+        :default-active="activeIndex"
+        class="el-menu-demo"
+        background-color="#fff"
+        text-color="#3C393B"
+        active-text-color="#000"
+        @select="handleSelect"
+        router
       >
-        <el-menu-item index="/home">首页</el-menu-item>
         <el-menu-item index="/dashboard/blog">文章管理</el-menu-item>
         <el-menu-item index="/dashboard/tag">标签管理</el-menu-item>
         <el-menu-item index="/dashboard/user">用户管理</el-menu-item>
@@ -21,17 +19,19 @@
 
         <el-menu-item index="/login-admin">退出</el-menu-item>
       </el-menu>
-    </el-header>
-  </div>
-  <div style="padding: 20px; width: 100%">
-    <!--二级路由-->
-    <router-view></router-view>
-  </div>
+    </el-aside>
+    <el-main>
+      <div style="width: 100%">
+        <!--二级路由-->
+        <router-view></router-view>
+      </div>
+    </el-main>
+  </el-container>
 </template>
 
 <script setup>
-import {ref, reactive, inject} from "vue";
-import {useRouter, useRoute} from "vue-router";
+import { ref, reactive, inject } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
 const route = useRoute();
@@ -59,5 +59,4 @@ const handleSelect = (key) => {
 .flex-grow {
   flex-grow: 1;
 }
-
 </style>

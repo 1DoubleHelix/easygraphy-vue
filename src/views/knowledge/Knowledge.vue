@@ -12,8 +12,8 @@
       <el-main>
         <div class="blog-list-header">全部文章</div>
         <div class="blog-container">
-          <div v-for="(blog, index) in blogListInfo">
-            <el-card>
+          <div v-for="(blog, index) in blogListInfo" @click="toDetail(blog)">
+            <el-card shadow="hover">
               <div class="header">
                 <span>{{ blog.title }}</span>
               </div>
@@ -32,7 +32,6 @@
       </el-main>
     </el-container>
   </div>
-  <router-view></router-view>
 </template>
 
 <script setup>
@@ -103,6 +102,11 @@ const loadBlogs = async () => {
   }
   blogListInfo.value = rows;
   pageInfo.count = res.data.count;
+};
+
+// 跳转详情页
+const toDetail = (blog) => {
+  router.push({ path: "/knowledge/blog", query: { id: blog.id } });
 };
 </script>
 

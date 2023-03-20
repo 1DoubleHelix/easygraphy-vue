@@ -2,24 +2,33 @@
   <n-tabs v-model:value="tabValue" type="line" animated>
     <n-tab-pane name="list" tab="文章列表">
       <div v-for="(blog, index) in blogListInfo" style="margin-bottom: 15px">
-        <n-card :title="blog.title">
-          {{ blog.content }}
-          <template #footer>
-            <n-space align="center">
-              <div>发布时间：{{ blog.create_time }}</div>
-              <n-button @click="toUpdate(blog)">修改</n-button>
-              <n-button @click="deleteBlog(blog)">删除</n-button>
-            </n-space>
-          </template>
-        </n-card>
-      </div>
-      <n-space>
-        <div @click="toPage(pageNum)" v-for="pageNum in pageInfo.pageCount">
-          <div :style="'color:' + (pageNum == pageInfo.page ? 'blue' : '')">
-            {{ pageNum }}
+        <el-card>
+          <div class="header">
+            <span>{{ blog.title }}</span>
+            <el-button @click="toUpdate(blog)">修改</el-button>
+            <el-popconfirm
+              title="确认删除?"
+              confirm-button-text="确认"
+              cancel-button-text="取消"
+              @confirm="deleteBlog(blog)"
+            >
+              <template #reference>
+                <el-button>删除</el-button>
+              </template>
+            </el-popconfirm>
           </div>
-        </div>
-      </n-space>
+          <div>{{ blog.content }}</div>
+          <div>{{ blog.create_time }}</div>
+        </el-card>
+      </div>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="pageInfo.count"
+        :page-size="pageInfo.pageSize"
+        v-model:current-page="pageInfo.page"
+        @update:current-page="loadBlogs"
+      />
     </n-tab-pane>
 
     <n-tab-pane name="add" tab="添加文章">
@@ -121,11 +130,14 @@ onMounted(() => {
 
 // 读取文章列表
 const loadBlogs = async () => {
-  let res = await axios.get(
-    `/api/blog/search?page=${pageInfo.page}&pageSize=${pageInfo.pageSize}`
-  );
+  let res = await api.searchBlog({
+    page: pageInfo.page,
+    pageSize: pageInfo.pageSize,
+  });
 
-  let rows = res.data.data.rows;
+  console.log(res);
+
+  let rows = res.data.rows;
   for (let row of rows) {
     // 内容已裁剪至50个字符 这里追加省略号
     row.content += " ...";
@@ -135,7 +147,7 @@ const loadBlogs = async () => {
   blogListInfo.value = rows;
 
   // 算总页码
-  pageInfo.count = res.data.data.count;
+  pageInfo.count = res.data.count;
   pageInfo.pageCount = Math.ceil(pageInfo.count / pageInfo.pageSize);
 
   // console.log(res);
@@ -143,13 +155,12 @@ const loadBlogs = async () => {
 
 // 加载标签数据
 const loadTags = async () => {
-  let res = await axios.get("/api/tag/list");
-  // console.log(res.data.results);
-  // 转换data格式到naive选项的格式
-  tagOptions.value = res.data.results.map((item) => {
+  let res = await api.tagList();
+  // 转换data到选项格式
+  tagOptions.value = res.results.map((item) => {
     return {
-      label: item.name,
       value: item.id,
+      label: item.name,
     };
   });
   // console.log(tagOptions.value);
@@ -157,32 +168,22 @@ const loadTags = async () => {
 
 // 添加文章
 const addBlog = async () => {
-  let res = await axios.post("/api/blog/add", {
-    title: addBlogTemp.title,
-    tagId: addBlogTemp.tagId,
-    content: addBlogTemp.content,
-  });
-
-  if (res.data.code == 200) {
-    message.info(res.data.msg);
-    // 添加成功后置空
+  let res = await api.blogAdd(addBlogTemp);
+  if (res.code === 200) {
+    ElMessage({ message: "添加成功", type: "success" });
+    // 清空输入框
     addBlogTemp.tagId = "";
     addBlogTemp.title = "";
     addBlogTemp.content = "";
+    loadBlogs();
+    activeTab.value = "blogList";
   } else {
-    message.error(res.data.msg);
+    ElMessage({ message: res.msg, type: "warning" });
   }
-};
-
-// 切换分页
-const toPage = (pageNum) => {
-  pageInfo.page = pageNum;
-  loadBlogs();
 };
 
 // 传入并修改文章
 const toUpdate = async (blog) => {
-  // let res = await axios.get("/api/blog/detail?id=" + blog.id);
   let res = await api.blogDetail(blog.id);
   updateBlogTemp.id = blog.id;
   updateBlogTemp.title = res.results.title;
@@ -193,34 +194,23 @@ const toUpdate = async (blog) => {
 
 // 修改文章
 const updateBlog = async () => {
-  let res = await axios.put("/api/blog/update", updateBlogTemp);
-  if (res.data.code == 200) {
-    message.info(res.data.msg);
+  let res = await api.blogUpdate(updateBlogTemp);
+  if (res.code === 200) {
+    ElMessage({ message: "修改成功", type: "success" });
     loadBlogs();
-    tabValue.value = "list";
+    activeTab.value = "blogList";
   } else {
-    message.error(res.data.msg);
+    ElMessage({ message: res.msg, type: "warning" });
   }
 };
 
 // 删除文章
 const deleteBlog = async (blog) => {
-  dialog.warning({
-    title: "警告",
-    content: "是否要删除",
-    positiveText: "确定",
-    negativeText: "取消",
-    onPositiveClick: async () => {
-      let res = await axios.delete("/api/blog/delete?id=" + blog.id);
-      if (res.data.code == 200) {
-        message.info(res.data.msg);
-        loadBlogs();
-      } else {
-        message.error(res.data.msg);
-      }
-    },
-    onNegativeClick: () => {},
-  });
+  // 这里没有token 无法完成删除 需要token
+  let res = await api.deleteBlog(blog.id);
+  if (res.code === 200) {
+    loadBlogs();
+  }
 };
 </script>
 

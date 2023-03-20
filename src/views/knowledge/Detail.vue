@@ -33,7 +33,6 @@ const loadBlogs = async () => {
   let res = await axios.get("/blog/detail?id=" + route.query.id);
   blogInfo.value = res.data.results;
   console.log(blogInfo.value);
-  // console.log(route.query.id);
 };
 </script>
 
