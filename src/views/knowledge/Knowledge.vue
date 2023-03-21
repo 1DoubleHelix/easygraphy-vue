@@ -3,8 +3,12 @@
     <el-container>
       <el-aside>
         <div class="tag">
-          <div @click="resetTag">全部文章</div>
-          <div v-for="(tag, index) in tagList" @click="changeTag(tag)">
+          <!-- <div @click="resetTag">全部文章</div> -->
+          <div
+            v-for="(tag, index) in tagList"
+            @click="changeTag(tag)"
+            class="title"
+          >
             {{ tag.name }}
           </div>
         </div>
@@ -12,13 +16,21 @@
       <el-main>
         <div class="blog-list-header">全部文章</div>
         <div class="blog-container">
-          <div v-for="(blog, index) in blogListInfo" @click="toDetail(blog)">
-            <el-card shadow="hover">
+          <div
+            v-for="(blog, index) in blogListInfo"
+            @click="toDetail(blog)"
+            class="blog"
+          >
+            <div class="blog-content">
               <div class="header">
                 <span>{{ blog.title }}</span>
+                <div>{{ blog.create_time }}</div>
               </div>
-              <div>{{ blog.create_time }}</div>
-            </el-card>
+              <div class="main">
+                <img :src="blog.img || imgsrc" alt="" />
+                <div>username</div>
+              </div>
+            </div>
           </div>
           <el-pagination
             background
@@ -32,6 +44,7 @@
       </el-main>
     </el-container>
   </div>
+  <div class="bg"></div>
 </template>
 
 <script setup>
@@ -53,7 +66,7 @@ const route = useRoute();
 // 查询和分页参数
 const pageInfo = reactive({
   page: 1,
-  pageSize: 5,
+  pageSize: 9,
   count: 0,
   keyword: "",
   tagId: 0,
@@ -62,6 +75,9 @@ const pageInfo = reactive({
 // tag列表
 const tagList = ref([]);
 const blogListInfo = ref([]);
+const imgsrc = ref(
+  "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+);
 
 onMounted(() => {
   loadTags();
@@ -114,11 +130,74 @@ const toDetail = (blog) => {
 .main-container {
   width: 1200px;
   margin: auto;
+  margin-top: 300px;
   .el-aside {
-    background-color: #fba;
+    background-color: #f0f0f0;
   }
   .el-main {
-    background-color: rgb(194, 194, 194);
+    background-color: #f0f0f0;
+    .blog-container {
+      // height: 600px;
+      position: relative;
+      padding-bottom: 40px;
+      .blog {
+        width: 100%;
+        background-color: #fff;
+        margin: 20px auto;
+        cursor: pointer;
+        border-radius: 10px;
+        padding: 10px 10px;
+        box-sizing: border-box;
+        .blog-content {
+          .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+          }
+          .main {
+            display: flex;
+            margin-top: 8px;
+            img {
+              width: 30px;
+              height: 30px;
+              background-color: white;
+              border: 1px solid #000;
+              border-radius: 50%;
+              margin-right: 10px;
+            }
+            div:nth-child(2) {
+              line-height: 30px;
+            }
+          }
+        }
+      }
+      .el-pagination {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+      }
+    }
   }
+  .title {
+    cursor: pointer;
+    height: 50px;
+    line-height: 50px;
+    font-size: 20px;
+    text-align: center;
+    width: 240px;
+    border-radius: 10px;
+    margin: 25px auto;
+    background-color: #ffe1b9;
+  }
+}
+.bg {
+  position: fixed;
+  top: 0;
+  z-index: -1;
+  height: 100vh;
+  width: 100vw;
+  background-image: url("@/assets/picture/12.jpg");
+  background-size: cover;
 }
 </style>

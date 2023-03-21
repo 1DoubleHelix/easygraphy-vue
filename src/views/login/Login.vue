@@ -1,74 +1,81 @@
 <template>
-  <div class="login-container">
-    <el-card class="login-card">
-      <el-tabs v-model="activeName" class="login-tabs" @tab-click="clickTab">
-        <el-tab-pane label="登录" name="first">
-          <div class="login">
-            <el-form :model="loginMsg" :rules="loginRules">
-              <el-form-item prop="username">
-                <el-input
-                  v-model="loginMsg.username"
-                  placeholder="请输入用户名"
-                />
-              </el-form-item>
-              <el-form-item prop="password">
-                <el-input
-                  v-model="loginMsg.password"
-                  type="password"
-                  placeholder="请输入密码"
-                  show-password
-                />
-              </el-form-item>
-              <el-checkbox
-                v-model="loginMsg.remember"
-                label="记住密码"
-              ></el-checkbox>
-            </el-form>
-            <el-button type="primary" @click="login">登录</el-button>
-          </div>
-        </el-tab-pane>
+  <div class="login">
+    <div class="login-container">
+      <el-card class="login-card">
+        <el-tabs v-model="activeName" class="login-tabs" @tab-click="clickTab">
+          <el-tab-pane label="登录" name="first">
+            <div class="login">
+              <el-form
+                :model="loginMsg"
+                :rules="loginRules"
+                label-position="top"
+              >
+                <el-form-item prop="username" label="用户名:">
+                  <el-input
+                    v-model="loginMsg.username"
+                    placeholder="请输入用户名"
+                  />
+                </el-form-item>
+                <el-form-item prop="password" label="密码:">
+                  <el-input
+                    v-model="loginMsg.password"
+                    type="password"
+                    placeholder="请输入密码"
+                    show-password
+                  />
+                </el-form-item>
+                <el-checkbox
+                  v-model="loginMsg.remember"
+                  label="记住密码"
+                ></el-checkbox>
+              </el-form>
+              <el-button type="primary" @click="login">登录</el-button>
+            </div>
+          </el-tab-pane>
 
-        <el-tab-pane label="注册" name="second">
-          <div class="register">
-            <el-form
-              ref="registerFormRef"
-              :model="registerMsg"
-              :rules="registerRules"
-            >
-              <el-form-item prop="username">
-                <el-input
-                  v-model="registerMsg.username"
-                  placeholder="请输入用户名"
-                />
-              </el-form-item>
-              <el-form-item prop="nickname">
-                <el-input
-                  v-model="registerMsg.nickname"
-                  placeholder="请输入昵称"
-                />
-              </el-form-item>
-              <el-form-item prop="password">
-                <el-input
-                  v-model="registerMsg.password"
-                  type="password"
-                  placeholder="请输入密码"
-                  show-password
-                />
-              </el-form-item>
-              <el-form-item prop="rePassword">
-                <el-input
-                  v-model="registerMsg.rePassword"
-                  type="password"
-                  placeholder="请再次输入密码"
-                  show-password
-                />
-              </el-form-item>
-            </el-form>
-            <el-button type="primary" @click="register">注册</el-button>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
-    </el-card>
+          <el-tab-pane label="注册" name="second">
+            <div class="register">
+              <el-form
+                ref="registerFormRef"
+                :model="registerMsg"
+                :rules="registerRules"
+                label-position="top"
+              >
+                <el-form-item prop="username" label="用户名:">
+                  <el-input
+                    v-model="registerMsg.username"
+                    placeholder="请输入用户名"
+                  />
+                </el-form-item>
+                <el-form-item prop="nickname" label="昵称:">
+                  <el-input
+                    v-model="registerMsg.nickname"
+                    placeholder="请输入昵称"
+                  />
+                </el-form-item>
+                <el-form-item prop="password" label="密码:">
+                  <el-input
+                    v-model="registerMsg.password"
+                    type="password"
+                    placeholder="请输入密码"
+                    show-password
+                  />
+                </el-form-item>
+                <el-form-item prop="rePassword" label="确认密码">
+                  <el-input
+                    v-model="registerMsg.rePassword"
+                    type="password"
+                    placeholder="请再次输入密码"
+                    show-password
+                  />
+                </el-form-item>
+              </el-form>
+              <el-button type="primary" @click="register">注册</el-button>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -130,10 +137,10 @@ const checkRePassword = (rule, value, callback) => {
   }
 };
 const registerRules = ref({
-  username: [{ validator: checkUsername, trigger: "blur" }],
+  username: [{ required: true, validator: checkUsername, trigger: "blur" }],
   nickname: [{ required: true, message: "请输入昵称", trigger: "blur" }],
-  password: [{ validator: checkPassword, trigger: "blur" }],
-  rePassword: [{ validator: checkRePassword, trigger: "blur" }],
+  password: [{ required: true, validator: checkPassword, trigger: "blur" }],
+  rePassword: [{ required: true, validator: checkRePassword, trigger: "blur" }],
 });
 
 // 登录
@@ -208,26 +215,45 @@ const clickTab = () => {
 </script>
 
 <style lang="scss" scoped>
-.login-container {
-  width: 500px;
-  margin: 50px auto;
-
-  .login-card {
-    .el-button {
-      width: 100px;
-    }
-
-    .login {
-      .input {
-        margin-bottom: 20px;
+.login {
+  position: relative;
+  .login-container {
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 20%);
+    .login-card {
+      height: 480px;
+      .el-button {
+        width: 100%;
+        margin-top: 20px;
       }
-    }
 
-    .register {
-      .input {
-        margin-bottom: 20px;
+      .login {
+        .input {
+          margin-bottom: 20px;
+        }
+      }
+
+      .register {
+        .input {
+          margin-bottom: 20px;
+        }
       }
     }
   }
+}
+.login::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  left: 0;
+  top: -60px;
+  background-image: url(@/assets/picture/03.jpg);
+  background-size: cover;
+  z-index: -1;
 }
 </style>

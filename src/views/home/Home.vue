@@ -1,13 +1,30 @@
 <template>
   <div class="main-container">
-    <div class="wrapper">这里是大卡片，放网站的主要介绍，或者是轮播图</div>
+    <div class="wrapper"></div>
     <el-row>
-      <el-col :span="8">
-        <div>这里是图片</div>
-      </el-col>
-      <el-col :span="16">
-        <div>这里是介绍</div>
-      </el-col>
+      <div class="title-pic">
+        <div class="title">
+          <h3>交流知识</h3>
+          <p>阅读官方教程、发表文章和评论，一起互动！</p>
+        </div>
+        <div class="pic pic1" />
+      </div>
+      <div class="title-pic">
+        <div class="pic pic2" />
+        <div class="title">
+          <h3>设备数据库</h3>
+          <p>
+            精简，但不简单，包含主流性能的摄影设备数据库，轻松找到想要的设备
+          </p>
+        </div>
+      </div>
+      <div class="title-pic">
+        <div class="title">
+          <h3>设备挑选助手</h3>
+          <p>没有经验？试试设备挑选助手，一定能找到心仪的组合</p>
+        </div>
+        <div class="pic pic3" />
+      </div>
     </el-row>
   </div>
 </template>
@@ -41,8 +58,46 @@ onMounted(() => {});
   height: 100%;
   background-color: #f5f5f5;
   .wrapper {
-    height: 500px;
-    background-color: #bfa;
+    height: 700px;
+    width: 100%;
+    background-image: url("@/assets/picture/08.jpg");
+    background-size: cover;
+  }
+  .el-row {
+    height: 700px;
+    width: 100%;
+    .title-pic {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      .title {
+        flex: 1;
+        padding: 80px 150px;
+        h3 {
+          font-size: 3vw;
+          font-weight: 500;
+        }
+        p {
+          font-size: 1.5vw;
+          font-weight: 400;
+        }
+      }
+      .pic {
+        height: 100%;
+        width: 753px;
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+      .pic1 {
+        background-image: url("@/assets/picture/05.jpg");
+      }
+      .pic2 {
+        background-image: url("@/assets/picture/09.jpg");
+      }
+      .pic3 {
+        background-image: url("@/assets/picture/10.jpg");
+      }
+    }
   }
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
   <!-- 登录、后台不加载导航栏 未实现 -->
-  <NavBar v-if="showNavBar"></NavBar>
-  <router-view></router-view>
+  <NavBar v-if="showNavBar" class="nav-bar"></NavBar>
+  <div class="router-view">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script setup>
@@ -18,8 +20,14 @@ const showNavBar = computed(() => route.meta.showNavBar !== false);
 onMounted(() => {});
 </script>
 <style scoped>
-.nav-container {
-  margin: 0;
-  padding: 0;
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+.router-view {
+  margin-top: 59px;
 }
 </style>
