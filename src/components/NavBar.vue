@@ -26,9 +26,7 @@
             </el-sub-menu>
             <el-sub-menu index="/recommend">
               <template #title>设备组合</template>
-              <el-menu-item index="/recommend/helper"
-                >挑选助手</el-menu-item
-              >
+              <el-menu-item index="/recommend/helper">挑选助手</el-menu-item>
               <el-menu-item index="/recommend/combine">开始挑选</el-menu-item>
               <el-menu-item index="/recommend/combinations"
                 >全部组合</el-menu-item
@@ -107,6 +105,7 @@ const toCenter = () => {
   .logo {
     position: relative;
     border-bottom: 1px solid #dcdfe6;
+    background-color: #fff;
     img {
       height: 90%;
       position: absolute;
@@ -119,6 +118,7 @@ const toCenter = () => {
   .login-menu {
     position: relative;
     border-bottom: 1px solid #dcdfe6;
+    background-color: #fff;
     div {
       position: absolute;
       left: 50%;

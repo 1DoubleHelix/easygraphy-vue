@@ -42,7 +42,7 @@
       <el-button @click="addCombine">提交</el-button>
     </div>
     <!-- 选择相机 -->
-    <div class="select-camera">
+    <div class="camera-filter">
       <el-form :model="cameraFilter" :rules="cameraFilterRules">
         <el-form-item label="按型号搜索">
           <el-input v-model="cameraFilter.keyword" placeholder="通过型号查找" />
@@ -123,7 +123,7 @@
       />
     </div>
     <!-- 选择镜头 -->
-    <div class="select-lens">
+    <div class="lens-filter">
       <el-form :model="lensFilter" :rules="lensFilterRules">
         <el-form-item label="按型号搜索">
           <el-input v-model="lensFilter.keyword" placeholder="通过型号查找" />
@@ -306,7 +306,7 @@ const checkCameraMaxPixel = (rule, value, callback) => {
     callback();
   }
 };
-const checkMinPrice = (rule, value, callback) => {
+const checkCameraMinPrice = (rule, value, callback) => {
   if (value < 0) {
     callback(new Error("价格不能为负数"));
   } else if (value > cameraFilter.maxPrice) {
@@ -315,10 +315,28 @@ const checkMinPrice = (rule, value, callback) => {
     callback();
   }
 };
-const checkMaxPrice = (rule, value, callback) => {
+const checkCameraMaxPrice = (rule, value, callback) => {
   if (value > 200000) {
     callback(new Error("价格不高于200000"));
   } else if (value < cameraFilter.minPrice) {
+    callback(new Error("不小于最低价格"));
+  } else {
+    callback();
+  }
+};
+const checkLensMinPrice = (rule, value, callback) => {
+  if (value < 0) {
+    callback(new Error("价格不能为负数"));
+  } else if (value > lensFilter.maxPrice) {
+    callback(new Error("不大于最高价格"));
+  } else {
+    callback();
+  }
+};
+const checkLensMaxPrice = (rule, value, callback) => {
+  if (value > 200000) {
+    callback(new Error("价格不高于200000"));
+  } else if (value < lensFilter.minPrice) {
     callback(new Error("不小于最低价格"));
   } else {
     callback();
@@ -346,15 +364,15 @@ const checkLensMaxFocal = (rule, value, callback) => {
 const cameraFilterRules = ref({
   minPixel: [{ validator: checkCameraMinPixel, trigger: "change" }],
   maxPixel: [{ validator: checkCameraMaxPixel, trigger: "change" }],
-  minPrice: [{ validator: checkMinPrice, trigger: "change" }],
-  maxPrice: [{ validator: checkMaxPrice, trigger: "change" }],
+  minPrice: [{ validator: checkCameraMinPrice, trigger: "change" }],
+  maxPrice: [{ validator: checkCameraMaxPrice, trigger: "change" }],
 });
 // 镜头筛选
 const lensFilterRules = ref({
   minFocal: [{ validator: checkLensMinFocal, trigger: "change" }],
   maxFocal: [{ validator: checkLensMaxFocal, trigger: "change" }],
-  minPrice: [{ validator: checkMinPrice, trigger: "change" }],
-  maxPrice: [{ validator: checkMaxPrice, trigger: "change" }],
+  minPrice: [{ validator: checkLensMinPrice, trigger: "change" }],
+  maxPrice: [{ validator: checkLensMaxPrice, trigger: "change" }],
 });
 
 // 加载相机数据
@@ -390,7 +408,7 @@ const loadLens = async () => {
     maxFocal: lensFilter.maxFocal,
     minPrice: lensFilter.minPrice,
     maxPrice: lensFilter.maxPrice,
-    keyword: cameraFilter.keyword,
+    keyword: lensFilter.keyword,
     page: lensPageInfo.page,
     pageSize: lensPageInfo.pageSize,
   });

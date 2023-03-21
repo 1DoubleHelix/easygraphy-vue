@@ -43,7 +43,7 @@
     </div>
     <!-- 输入条件 -->
     <div class="select">
-      <el-form :model="selectFilter">
+      <el-form :model="selectFilter" :rules="filterRules">
         <el-form-item label="卡口">
           <el-select v-model="selectFilter.mount" placeholder="请选择">
             <el-option-group
@@ -60,7 +60,7 @@
             </el-option-group>
           </el-select>
         </el-form-item>
-        <el-form-item label="传感器尺寸">
+        <el-form-item label="传感器尺寸" prop="frame">
           <el-select v-model="selectFilter.frame" placeholder="请选择">
             <el-option label="全画幅" value="FX" />
             <el-option label="半画幅" value="DX" />
@@ -86,7 +86,7 @@
       <el-table :data="cameraInfo" stripe border style="width: 100%">
         <el-table-column prop="brand" label="品牌" />
         <el-table-column prop="name" label="型号" />
-        <el-table-column prop="mount" label="卡口" />
+
         <el-table-column prop="frame" label="传感器尺寸" />
         <el-table-column prop="w_pixel" label="像素(万)" />
         <el-table-column prop="score" label="评分" />
@@ -106,7 +106,6 @@
         <el-table :data="lensInfo.prime" stripe border style="width: 100%">
           <el-table-column prop="brand" label="品牌" />
           <el-table-column prop="name" label="型号" />
-          <el-table-column prop="mount" label="卡口" />
           <el-table-column prop="frame" label="画幅" />
           <el-table-column prop="min_focal" label="焦段" />
           <el-table-column prop="max_aperture" label="最大光圈" />
@@ -125,7 +124,6 @@
         <el-table :data="lensInfo.zoom" stripe border style="width: 100%">
           <el-table-column prop="brand" label="品牌" />
           <el-table-column prop="name" label="型号" />
-          <el-table-column prop="mount" label="卡口" />
           <el-table-column prop="frame" label="画幅" />
           <el-table-column prop="min_focal" label="焦段" />
           <el-table-column prop="max_aperture" label="最大光圈" />
@@ -144,7 +142,6 @@
         <el-table :data="lensInfo.teleZoom" stripe border style="width: 100%">
           <el-table-column prop="brand" label="品牌" />
           <el-table-column prop="name" label="型号" />
-          <el-table-column prop="mount" label="卡口" />
           <el-table-column prop="frame" label="画幅" />
           <el-table-column prop="min_focal" label="焦段" />
           <el-table-column prop="max_aperture" label="最大光圈" />
@@ -163,7 +160,6 @@
         <el-table :data="lensInfo.widePrime" stripe border style="width: 100%">
           <el-table-column prop="brand" label="品牌" />
           <el-table-column prop="name" label="型号" />
-          <el-table-column prop="mount" label="卡口" />
           <el-table-column prop="frame" label="画幅" />
           <el-table-column prop="min_focal" label="焦段" />
           <el-table-column prop="max_aperture" label="最大光圈" />
@@ -182,7 +178,6 @@
         <el-table :data="lensInfo.wideZoom" stripe border style="width: 100%">
           <el-table-column prop="brand" label="品牌" />
           <el-table-column prop="name" label="型号" />
-          <el-table-column prop="mount" label="卡口" />
           <el-table-column prop="frame" label="画幅" />
           <el-table-column prop="min_focal" label="焦段" />
           <el-table-column prop="max_aperture" label="最大光圈" />
@@ -265,6 +260,19 @@ const combineTemp = reactive({
 });
 
 onMounted(() => {});
+
+// 表单规则
+const checkFrame = (rule, value, callback) => {
+  if (value == "FX" && selectFilter.mount == "X") {
+    callback(new Error("此卡口没有全画幅产品"));
+  }
+  if (value == "DX" && selectFilter.mount == "L") {
+    callback(new Error("此卡口没有半画幅产品"));
+  }
+};
+const filterRules = ref({
+  frame: [{ validator: checkFrame, trigger: "change" }],
+});
 
 // 加载筛选后的数据
 const loadInfo = async () => {
