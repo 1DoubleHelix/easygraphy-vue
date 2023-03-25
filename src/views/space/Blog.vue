@@ -4,7 +4,7 @@
       <n-tab-pane tab="我的文章" name="blogList">
         <div class="blog-list">
           <div v-for="(blog, index) in blogInfo">
-            <el-card>
+            <el-card shadow="hover">
               <div class="header">
                 <span>{{ blog.title }}</span>
                 <el-button @click="toUpdate(blog)">修改</el-button>
@@ -202,6 +202,18 @@ const deleteBlog = async (blog) => {
 .main-container {
   width: 100%;
   height: 100%;
-  background-color: #f5f5f5;
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+    .el-card {
+      margin-bottom: 10px;
+      width: 900px;
+      height: 100px;
+      border-radius: 10px;
+      .header {
+        font-size: 18px;
+      }
+    }
+  }
 }
 </style>

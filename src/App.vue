@@ -28,6 +28,6 @@ onMounted(() => {});
   z-index: 100;
 }
 .router-view {
-  margin-top: 59px;
+  margin-top: 60px;
 }
 </style>

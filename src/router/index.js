@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
 let routes = [
-    { path: "/test", component: () => import("../views/Test.vue") },
     { path: "/detail", component: () => import("../views/knowledge/Detail.vue") },
     {
         // 主页
@@ -15,7 +14,7 @@ let routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: () => import('../views/dashboard/Dashboard.vue'),
-        meta: { title: '后台管理-EasyGraphy' },
+        meta: { showNavBar: false, title: '后台管理-EasyGraphy' },
         children: [
             {
                 path: "tag",
@@ -122,6 +121,7 @@ let routes = [
         path: '/space',
         name: 'space',
         component: () => import('../views/space/Space.vue'),
+        meta: { requireAuth: true },
         children: [
             {
                 path: 'blog',
@@ -134,6 +134,10 @@ let routes = [
             {
                 path: 'combine',
                 component: () => import('../views/space/Combine.vue')
+            },
+            {
+                path: 'info',
+                component: () => import('../views/space/Info.vue')
             }
         ]
     }
@@ -142,6 +146,16 @@ let routes = [
 const router = createRouter({
     history: createWebHashHistory(),
     routes,
+});
+
+// 登录 导航守卫
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('main');
+    if (to.meta.requireAuth && !token) {
+        next('/login')
+    } else {
+        next();
+    }
 });
 
 export { router, routes };

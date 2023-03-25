@@ -28,17 +28,22 @@ import {
   shallowRef,
 } from "vue";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
+import { userStore } from "../stores/userStore.js";
+
+const store = userStore();
 
 const serverURL = inject("serverURL");
 // 编辑器实例，必须用 shallowRef，重要！
 const editorRef = shallowRef();
 const toolbarConfig = { excludeKeys: ["uploadVideo"] };
-const editorConfig = { placeholder: "请输入内容..." };
+const editorConfig = { placeholder: "请输入内容...", autoFocus: false };
 editorConfig.MENU_CONF = {};
 editorConfig.MENU_CONF["uploadImage"] = {
   // 10kB以内的图片直接Base64存放在文档中
   base64LimitSize: 10 * 1024,
-  server: serverURL + "/upload/rich_editor_upload",
+  server: serverURL + "/upload/images",
+  // 上传图片需要验证token
+  headers: { Authorization: store.token },
 };
 editorConfig.MENU_CONF["insertImage"] = {
   // 服务器返回的地址不带http前缀 拼接serverURL
@@ -50,9 +55,8 @@ editorConfig.MENU_CONF["insertImage"] = {
   },
 };
 
-const mode = ref("default");
+const mode = ref("simple");
 const valueHtml = ref("");
-
 
 const props = defineProps({
   modelValue: {

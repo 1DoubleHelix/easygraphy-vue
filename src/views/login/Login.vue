@@ -2,7 +2,7 @@
   <div class="login">
     <div class="login-container">
       <el-card class="login-card">
-        <el-tabs v-model="activeName" class="login-tabs" @tab-click="clickTab">
+        <el-tabs v-model="activeName" class="login-tabs">
           <el-tab-pane label="登录" name="first">
             <div class="login">
               <el-form
@@ -155,6 +155,7 @@ const login = async () => {
     store.id = req.id;
     store.username = req.username;
     store.nickname = req.nickname;
+    store.email = req.email;
     store.token = req.token;
 
     // if (loginMsg.remember) {
@@ -190,6 +191,7 @@ const register = async () => {
     store.id = req.id;
     store.username = req.username;
     store.nickname = req.nickname;
+    store.email = rerq.email;
     store.token = req.token;
 
     // 这里拿到token
@@ -206,9 +208,6 @@ const register = async () => {
       type: "warning",
     });
   }
-};
-const clickTab = () => {
-  // 清空密码
 };
 
 // 表单验证

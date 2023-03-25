@@ -80,6 +80,7 @@ import { ref, reactive, inject, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import RichTextEditor from "../../components/RichTextEditor.vue";
 import * as api from "../../api/index.js";
+import { ElMessage } from "element-plus";
 
 // 使用 moment 时间戳格式化
 import moment from "moment";

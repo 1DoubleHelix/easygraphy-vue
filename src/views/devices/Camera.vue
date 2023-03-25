@@ -97,7 +97,6 @@ import * as api from "../../api/index.js";
 // 使用 moment 时间戳格式化
 import moment from "moment";
 import momentCN from "../../utils/monentCN";
-import request from "../../utils/request";
 import { Star, StarFilled } from "@element-plus/icons-vue";
 
 moment.locale("zh-cn", momentCN);

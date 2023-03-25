@@ -103,6 +103,9 @@
       <!-- 镜头表格 -->
       <!-- 使用v-if判断5个种类的镜头表格是否显示 -->
       <div v-if="lensInfo.prime.length" class="lens">
+        <div class="tips">
+          <span> 合理地使用定焦镜头可以虚化背景, 突出主体, 营造氛围 </span>
+        </div>
         <el-table :data="lensInfo.prime" stripe border style="width: 100%">
           <el-table-column prop="brand" label="品牌" />
           <el-table-column prop="name" label="型号" />
@@ -121,6 +124,12 @@
         </el-table>
       </div>
       <div v-if="lensInfo.zoom.length" class="lens">
+        <div class="tips">
+          <span>
+            标准变焦镜头, 适应大多数日常拍摄状况, 如果预算充足,
+            可以选择最大光圈恒定为F1.8的"大三元"镜头
+          </span>
+        </div>
         <el-table :data="lensInfo.zoom" stripe border style="width: 100%">
           <el-table-column prop="brand" label="品牌" />
           <el-table-column prop="name" label="型号" />
@@ -139,6 +148,13 @@
         </el-table>
       </div>
       <div v-if="lensInfo.teleZoom.length" class="lens">
+        <div class="tips">
+          <span>
+            远摄变焦镜头, 常用于风光拍摄, 在人像摄影中也可以用于虚化背景,
+            突出被摄主体, 但是请注意, 焦段相同的镜头,
+            较大的光圈可以带来更浅的景深
+          </span>
+        </div>
         <el-table :data="lensInfo.teleZoom" stripe border style="width: 100%">
           <el-table-column prop="brand" label="品牌" />
           <el-table-column prop="name" label="型号" />

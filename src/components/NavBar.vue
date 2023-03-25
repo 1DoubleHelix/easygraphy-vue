@@ -27,7 +27,7 @@
             <el-sub-menu index="/recommend">
               <template #title>设备组合</template>
               <el-menu-item index="/recommend/helper">挑选助手</el-menu-item>
-              <el-menu-item index="/recommend/combine">开始挑选</el-menu-item>
+              <el-menu-item index="/recommend/combine">自由挑选</el-menu-item>
               <el-menu-item index="/recommend/combinations"
                 >全部组合</el-menu-item
               >
@@ -75,7 +75,6 @@ const store = userStore();
 
 onMounted(() => {});
 
-// const token = ref(store.token);
 let { token } = storeToRefs(store);
 
 const activeIndex = ref("");

@@ -10,6 +10,7 @@ export const register = (params) => request.post("/api/user/register", params)
 // camera
 export const searchCamera = (params) => request.get(`/api/camera/search?${qs.stringify(params)}`)
 export const cameraDetail = (params) => request.get(`/api/camera/detail?id=${params}`)
+export const cameraDelete = (params) => request.delete(`/api/camera/delete?id=${params}`)
 
 // lens
 export const searchLens = (params) => request.get(`/api/lens/search?${qs.stringify(params)}`)

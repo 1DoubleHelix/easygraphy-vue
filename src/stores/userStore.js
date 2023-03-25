@@ -6,7 +6,8 @@ export const userStore = defineStore('main', {
             id: 0,
             username: "",
             nickname: "",
-            token: ""
+            token: "",
+            email: "",
         }
     },
     getters: {},

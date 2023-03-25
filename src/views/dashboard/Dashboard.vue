@@ -2,21 +2,20 @@
 <template>
   <el-container>
     <el-aside width="200px">
-      <!-- 导航栏 -->
+      <!-- 侧边导航栏 -->
       <el-menu
         :default-active="activeIndex"
         class="el-menu-demo"
         background-color="#fff"
         text-color="#3C393B"
         active-text-color="#000"
-        @select="handleSelect"
         router
       >
+        <el-menu-item index="/home">首页</el-menu-item>
         <el-menu-item index="/dashboard/blog">文章管理</el-menu-item>
         <el-menu-item index="/dashboard/tag">标签管理</el-menu-item>
         <el-menu-item index="/dashboard/user">用户管理</el-menu-item>
         <el-menu-item index="/dashboard/devices">设备管理</el-menu-item>
-
         <el-menu-item index="/login-admin">退出</el-menu-item>
       </el-menu>
     </el-aside>
@@ -40,23 +39,10 @@ const axios = inject("axios");
 const message = inject("message");
 
 const activeIndex = ref("");
-const handleSelect = (key) => {
-  // console.log(activeIndex.value);
-  // switch (key) {
-  //   case "1":
-  //     router.push("/home");
-  //     break;
-  // }
-};
 </script>
 
 <style lang="scss" scoped>
-.nav-container {
-  margin: 0;
-  padding: 0;
-}
-
-.flex-grow {
-  flex-grow: 1;
+.el-container {
+  margin-top: -60px;
 }
 </style>

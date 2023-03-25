@@ -14,6 +14,14 @@
           <br />
           分数:{{ lensInfo.score }}
         </div>
+        <div class="favorite" @click="favorite">
+          <el-icon v-if="favoriteId === ''" :size="20">
+            <Star />
+          </el-icon>
+          <el-icon v-else :size="20">
+            <StarFilled />
+          </el-icon>
+        </div>
       </el-col>
     </el-row>
     <div class="device-info">
@@ -73,6 +81,7 @@
 import { ref, reactive, inject, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import * as api from "../../api/index.js";
+import { Star, StarFilled } from "@element-plus/icons-vue";
 
 // 使用 moment 时间戳格式化
 import moment from "moment";
@@ -88,16 +97,56 @@ const route = useRoute();
 let lensInfo = ref({});
 let commentsInfo = ref([]);
 const textarea = ref("");
+const favoriteId = ref("");
 
 onMounted(() => {
   loadLens();
   laodComments();
+  loadFavorite();
 });
 
 // 加载镜头数据
 const loadLens = async () => {
   let res = await api.lensDetail(route.query.id);
   lensInfo.value = res.results;
+};
+
+// 加载收藏状态
+const loadFavorite = async () => {
+  let res = await api.favoriteList({
+    kind: "lens",
+    id: route.query.id,
+  });
+
+  // 寻找收藏条目
+  let index = res.data.rows.findIndex(
+    (item) => item.lens_id == route.query.id
+  );
+
+  if (index != -1) {
+    favoriteId.value = res.data.rows[index].id;
+  }
+  console.log(favoriteId.value);
+};
+
+// 修改收藏状态
+const favorite = async () => {
+  if (favoriteId.value == "") {
+    // 添加
+    let res = await api.favoriteAdd({
+      kind: "lens",
+      objectId: route.query.id,
+    });
+    console.log(res);
+    favoriteId.value = res.id;
+    console.log(favoriteId.value);
+  } else {
+    // 取消
+    let res = await api.favoriteDelete(favoriteId.value);
+    favoriteId.value = "";
+    console.log(res);
+    console.log(favoriteId.value);
+  }
 };
 
 // 加载评论区

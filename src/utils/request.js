@@ -1,6 +1,6 @@
 import axios from "axios";
-import {ElMessage} from "element-plus";
-import {userStore} from "../stores/userStore.js";
+import { ElMessage } from "element-plus";
+import { userStore } from "../stores/userStore.js";
 
 const store = userStore()
 
@@ -17,11 +17,6 @@ request.interceptors.request.use((config) => {
     }
     return config
 })
-
-// request.interceptors.request.use((config) => {
-//     config.headers.common["Authorization"] = store.token == null ? null : store.token
-//     return config
-// })
 
 // 响应拦截器
 request.interceptors.response.use((res) => {
