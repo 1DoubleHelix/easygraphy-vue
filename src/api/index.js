@@ -11,10 +11,15 @@ export const register = (params) => request.post("/api/user/register", params)
 export const searchCamera = (params) => request.get(`/api/camera/search?${qs.stringify(params)}`)
 export const cameraDetail = (params) => request.get(`/api/camera/detail?id=${params}`)
 export const cameraDelete = (params) => request.delete(`/api/camera/delete?id=${params}`)
+export const cameraUpdate = (params) => request.put("/api/camera/update", params)
+export const cameraAdd = (params) => request.post("/api/camera/add", params)
 
 // lens
 export const searchLens = (params) => request.get(`/api/lens/search?${qs.stringify(params)}`)
 export const lensDetail = (params) => request.get(`/api/lens/detail?id=${params}`)
+export const lensAdd = (params) => request.post("/api/lens/add", params)
+export const lensUpdate = (params) => request.put("/api/lens/update", params)
+export const lensDelete = (params) => request.delete(`/api/lens/delete?id=${params}`)
 
 // comment
 export const searchComment = (params) => request.get(`/api/comment/search?${qs.stringify(params)}`)

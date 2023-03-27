@@ -1,5 +1,5 @@
 <template>
-  <div class="camera-editor">
+  <div class="lens-editor">
     <el-dialog
       width="1000px"
       :title="dialogTitle"
@@ -7,7 +7,7 @@
       :before-close="handleClose"
       class="dialog-component"
     >
-      <el-form :model="formInfo">
+      <el-form ref="formInfo" :model="formInfo">
         <el-form-item label="品牌" prop="brand">
           <el-select v-model="formInfo.brand">
             <el-option label="尼康" value="Nikon"></el-option>
@@ -30,65 +30,44 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="类型" prop="type">
-          <el-input v-model="formInfo.type"></el-input>
+        <el-form-item label="是否变焦" prop="zoom">
+          <el-input v-model="formInfo.zoom"></el-input>
         </el-form-item>
         <el-form-item label="传感器尺寸" prop="frame">
           <el-input v-model="formInfo.frame"></el-input>
         </el-form-item>
-        <el-form-item label="发布年份" prop="release_year">
-          <el-input v-model="formInfo.release_year"></el-input>
+        <el-form-item label="最小焦距" prop="min_focal">
+          <el-input v-model="formInfo.min_focal"></el-input>
+        </el-form-item>
+        <el-form-item label="最大焦距" prop="max_focal">
+          <el-input v-model="formInfo.max_focal"></el-input>
+        </el-form-item>
+        <el-form-item label="等效焦距" prop="equivalent_focal">
+          <el-input v-model="formInfo.equivalent_focal"></el-input>
+        </el-form-item>
+        <el-form-item label="最大光圈" prop="max_aperture">
+          <el-input v-model="formInfo.max_aperture"></el-input>
         </el-form-item>
         <el-form-item label="参考价格(元)" prop="price">
           <el-input v-model="formInfo.price"></el-input>
         </el-form-item>
-        <el-form-item label="像素(万)" prop="w_pixel">
-          <el-input v-model="formInfo.w_pixel"></el-input>
-        </el-form-item>
-        <el-form-item label="评分" prop="score">
-          <el-input v-model="formInfo.score"></el-input>
-        </el-form-item>
-        <el-form-item label="处理器" prop="processor">
-          <el-input v-model="formInfo.processor"></el-input>
-        </el-form-item>
         <el-form-item label="防抖" prop="ois">
           <el-input v-model="formInfo.ois"></el-input>
-        </el-form-item>
-        <el-form-item label="对焦方式" prop="focus">
-          <el-input v-model="formInfo.focus"></el-input>
-        </el-form-item>
-        <el-form-item label="对焦点数量" prop="focal_point">
-          <el-input v-model="formInfo.focal_point"></el-input>
-        </el-form-item>
-        <el-form-item label="眼部追踪" prop="eye_focus">
-          <el-input v-model="formInfo.eye_focus"></el-input>
-        </el-form-item>
-        <el-form-item label="感光度" prop="iso">
-          <el-input v-model="formInfo.iso"></el-input>
-        </el-form-item>
-        <el-form-item label="取景器" prop="viewfinder">
-          <el-input v-model="formInfo.viewfinder"></el-input>
-        </el-form-item>
-        <el-form-item label="连拍速度" prop="shoot_speed">
-          <el-input v-model="formInfo.shoot_speed"></el-input>
         </el-form-item>
         <el-form-item label="重量" prop="weight">
           <el-input v-model="formInfo.weight"></el-input>
         </el-form-item>
-        <el-form-item label="最高视频规格" prop="video">
-          <el-input v-model="formInfo.video"></el-input>
+        <el-form-item label="滤镜尺寸" prop="filter_size">
+          <el-input v-model="formInfo.filter_size"></el-input>
         </el-form-item>
-        <el-form-item label="视频色深" prop="video_color_depth">
-          <el-input v-model="formInfo.video_color_depth"></el-input>
+        <el-form-item label="最小对焦距离" prop="min_focus_distance">
+          <el-input v-model="formInfo.min_focus_distance"></el-input>
         </el-form-item>
-        <el-form-item label="色度采样" prop="yuv">
-          <el-input v-model="formInfo.yuv"></el-input>
+        <el-form-item label="放大倍率" prop="magnification">
+          <el-input v-model="formInfo.magnification"></el-input>
         </el-form-item>
-        <el-form-item label="双原生ISO" prop="dual_iso">
-          <el-input v-model="formInfo.dual_iso"></el-input>
-        </el-form-item>
-        <el-form-item label="卡槽数量" prop="card_slot">
-          <el-input v-model="formInfo.card_slot"></el-input>
+        <el-form-item label="发布年份" prop="release_year">
+          <el-input v-model="formInfo.release_year"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="other">
           <el-input v-model="formInfo.other"></el-input>
@@ -100,7 +79,7 @@
             @click="handleUpdate(formInfo.id)"
             >修改
           </el-button>
-          <el-button v-else type="primary" @click="handleAdd">修改 </el-button>
+          <el-button v-else type="primary" @click="handleAdd">添加 </el-button>
           <el-button @click="handleClose">取消</el-button>
         </el-form-item>
       </el-form>
@@ -109,7 +88,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onUpdated } from "vue";
+import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import * as api from "../api/index";
 
@@ -119,10 +98,6 @@ const props = defineProps({
   formInfo: Object,
   isAdd: Boolean,
 });
-
-// 深拷贝 避免影响原始数据
-// const formInfo = ref(JSON.parse(JSON.stringify(props.cameraInfo)));
-// const formInfo = reactive(props.cameraInfo);
 
 const mountOptions = [
   { value: "E", label: "E 索尼" },
@@ -135,9 +110,11 @@ const mountOptions = [
   { value: "K", label: "K 宾得" },
 ];
 
+// 应该对表单数据深拷贝，不然会影响到原始数据
+
 // 添加
 const handleAdd = async () => {
-  let res = await api.cameraAdd(props.formInfo);
+  let res = await api.lensAdd(props.formInfo);
   if (res.code === 200) {
     ElMessage.success(res.msg);
     dialogVisible.value = false;
@@ -148,7 +125,7 @@ const handleAdd = async () => {
 
 // 修改
 const handleUpdate = async (id) => {
-  let res = await api.cameraUpdate(props.formInfo);
+  let res = await api.lensUpdate(props.formInfo);
   if (res.code === 200) {
     ElMessage.success(res.msg);
     dialogVisible.value = false;
