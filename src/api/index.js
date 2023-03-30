@@ -6,6 +6,9 @@ export const test = (params) => request.get("/api/test/test", params)
 // user
 export const login = (params) => request.post("/api/user/login", params)
 export const register = (params) => request.post("/api/user/register", params)
+export const userList = (params) => request.get(`/api/user/list?${qs.stringify(params)}`)
+export const userUpdate = (params) => request.put("/api/user/update", params)
+export const userDelete = (params) => request.delete(`/api/user/delete?id=${params}`)
 
 // camera
 export const searchCamera = (params) => request.get(`/api/camera/search?${qs.stringify(params)}`)

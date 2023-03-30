@@ -7,7 +7,8 @@
       :before-close="handleClose"
       class="dialog-component"
     >
-      <el-form :model="formInfo">
+      <span>{{ formInfo }}</span>
+      <el-form ref="formInfo" :model="formInfo">
         <el-form-item label="品牌" prop="brand">
           <el-select v-model="formInfo.brand">
             <el-option label="尼康" value="Nikon"></el-option>
@@ -109,7 +110,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onUpdated } from "vue";
+import { ref, reactive, onUpdated, watch } from "vue";
 import { ElMessage } from "element-plus";
 import * as api from "../api/index";
 
@@ -121,7 +122,7 @@ const props = defineProps({
 });
 
 // 深拷贝 避免影响原始数据
-// const formInfo = ref(JSON.parse(JSON.stringify(props.cameraInfo)));
+// const formInfo = reactive({});
 // const formInfo = reactive(props.cameraInfo);
 
 const mountOptions = [
@@ -159,8 +160,19 @@ const handleUpdate = async (id) => {
 
 // 关闭弹窗
 const handleClose = () => {
+  // console.log(formInfo.value);
   dialogVisible.value = false;
 };
+// watch(
+//   () => props.cameraInfo,
+//   (newVal) => {
+//     console.log("watch", newVal);
+//     console.log(formInfo);
+//     // 深拷贝
+//     formInfo = JSON.parse(JSON.stringify(newVal));
+//     console.log(formInfo);
+//   }
+// );
 
 defineExpose({
   dialogVisible,

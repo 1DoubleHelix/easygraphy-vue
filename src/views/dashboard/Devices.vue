@@ -33,7 +33,7 @@
         </div>
         <el-button @click="addCamera">添加相机</el-button>
         <!-- 全部相机 -->
-        <div class="camera-table">
+        <div class="camera-list">
           <el-table :data="cameraInfo" stripe border style="width: 100%">
             <el-table-column prop="brand" label="品牌" />
             <el-table-column label="型号">
