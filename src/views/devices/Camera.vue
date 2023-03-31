@@ -25,27 +25,27 @@
       </el-col>
     </el-row>
     <div class="device-info">
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <div class="info-card">画幅{{ cameraInfo.frame }}</div>
-        </el-col>
-        <el-col :span="12"> <div class="info-card"></div></el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-      </el-row>
+      <el-descriptions title="详细参数" border size="small">
+        <el-descriptions-item label="卡口">{{ cameraInfo.mount }}</el-descriptions-item>
+        <el-descriptions-item label="传感器尺寸">{{ cameraInfo.frame }}</el-descriptions-item>
+        <el-descriptions-item label="类型">{{ cameraInfo.type }}</el-descriptions-item>
+        <el-descriptions-item label="像素(万)">{{ cameraInfo.w_pixel }}</el-descriptions-item>
+        <el-descriptions-item label="重量(g)">{{ cameraInfo.weight }}</el-descriptions-item>
+        <el-descriptions-item label="存储卡数量">{{ cameraInfo.card_slot }}</el-descriptions-item>
+        <el-descriptions-item label="对焦方式">{{ cameraInfo.focus }}</el-descriptions-item>
+        <el-descriptions-item label="对焦点">{{ cameraInfo.focal_point }}</el-descriptions-item>
+        <el-descriptions-item label="眼部识别对焦">{{ cameraInfo.eye_focus }}</el-descriptions-item>
+        <el-descriptions-item label="取景器">{{ cameraInfo.viewfinder }}</el-descriptions-item>
+        <el-descriptions-item label="防抖">{{ cameraInfo.ois }}</el-descriptions-item>
+        <el-descriptions-item label="感光度">{{ cameraInfo.iso }}</el-descriptions-item>
+        <el-descriptions-item label="双原生ISO">{{ cameraInfo.dual_iso }}</el-descriptions-item>
+        <el-descriptions-item label="处理器">{{ cameraInfo.processor }}</el-descriptions-item>
+        <el-descriptions-item label="最高连拍速度">{{ cameraInfo.shoot_speed }}</el-descriptions-item>
+        <el-descriptions-item label="最高视频规格">{{ cameraInfo.video }}</el-descriptions-item>
+        <el-descriptions-item label="视频色深">{{ cameraInfo.video_color_depth }}</el-descriptions-item>
+        <el-descriptions-item label="色度采样">{{ cameraInfo.yuv }}</el-descriptions-item>
+        <el-descriptions-item label="备注">{{ cameraInfo.other }}</el-descriptions-item>
+      </el-descriptions>
     </div>
   </div>
   <!-- 评论区 -->
@@ -118,6 +118,11 @@ onMounted(() => {
 // 加载相机数据
 const loadCamera = async () => {
   let res = await api.cameraDetail(route.query.id);
+  // 布尔值转换为具体名称
+  res.results.frame = res.results.frame == "FX" ? "全画幅" : "半画幅";
+  res.results.dual_iso = res.results.dual_iso == 1 ? "支持" : "不支持";
+  res.results.eye_focus = res.results.eye_focus == 1 ? "支持" : "不支持";
+  res.results.type = res.results.type == 1 ? "单反" : "无反";
   cameraInfo.value = res.results;
 };
 
@@ -219,17 +224,6 @@ const addComment = async () => {
   .device-info {
     margin-top: 20px;
     padding: 0 5px;
-    .el-row {
-      margin-bottom: 10px;
-    }
-    .info-card {
-      height: 40px;
-      border-radius: 6px;
-      background: #f6f6f6;
-
-      font-size: 18px;
-      text-align: center;
-    }
   }
 }
 .comment-area {

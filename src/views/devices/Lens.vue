@@ -25,27 +25,19 @@
       </el-col>
     </el-row>
     <div class="device-info">
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <div class="info-card">画幅{{ lensInfo.frame }}</div>
-        </el-col>
-        <el-col :span="12"> <div class="info-card"></div></el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-        <el-col :span="8"><div class="info-card"></div></el-col>
-      </el-row>
+      <el-descriptions title="详细参数" border size="small">
+        <el-descriptions-item label="支持卡口">{{ lensInfo.mount }}</el-descriptions-item>
+        <el-descriptions-item label="传感器尺寸">{{ lensInfo.frame }}</el-descriptions-item>
+        <el-descriptions-item label="类型">{{ lensInfo.zoom }}</el-descriptions-item>
+        <el-descriptions-item label="重量(g)">{{ lensInfo.weight }}</el-descriptions-item>
+        <el-descriptions-item label="最大光圈">{{ lensInfo.max_aperture }}</el-descriptions-item>
+        <el-descriptions-item label="滤镜尺寸">{{ lensInfo.filter_size }}</el-descriptions-item>
+        <el-descriptions-item label="等效焦段(mm)">{{ lensInfo.equivalent_focal }}</el-descriptions-item>
+        <el-descriptions-item label="最近对焦距离(mm)">{{ lensInfo.min_focus_distance }}</el-descriptions-item>
+        <el-descriptions-item label="防抖">{{ lensInfo.ois }}</el-descriptions-item>
+        <el-descriptions-item label="放大倍率">{{ lensInfo.magnification }}</el-descriptions-item>
+        <el-descriptions-item label="备注">{{ lensInfo.other }}</el-descriptions-item>
+      </el-descriptions>
     </div>
   </div>
   <!-- 评论区 -->
@@ -89,8 +81,6 @@ import momentCN from "../../utils/monentCN";
 
 moment.locale("zh-cn", momentCN);
 
-const axios = inject("axios");
-
 const router = useRouter();
 const route = useRoute();
 
@@ -108,6 +98,11 @@ onMounted(() => {
 // 加载镜头数据
 const loadLens = async () => {
   let res = await api.lensDetail(route.query.id);
+  // 布尔值转换为具体名称
+  res.results.frame = res.results.frame == "FX" ? "全画幅" : "半画幅";
+  res.results.ois = res.results.ois == 1 ? "支持" : "不支持";
+  res.results.zoom = res.results.zoom == 1 ? "变焦" : "定焦";
+  res.results.type = res.results.type == 1 ? "单反" : "无反";
   lensInfo.value = res.results;
 };
 
@@ -119,9 +114,7 @@ const loadFavorite = async () => {
   });
 
   // 寻找收藏条目
-  let index = res.data.rows.findIndex(
-    (item) => item.lens_id == route.query.id
-  );
+  let index = res.data.rows.findIndex((item) => item.lens_id == route.query.id);
 
   if (index != -1) {
     favoriteId.value = res.data.rows[index].id;

@@ -3,7 +3,7 @@
     <el-container>
       <el-aside>
         <div class="tag">
-          <!-- <div @click="resetTag">全部文章</div> -->
+          <div @click="resetTag" class="title">全部文章</div>
           <div
             v-for="(tag, index) in tagList"
             @click="changeTag(tag)"
@@ -188,7 +188,7 @@ const toDetail = (blog) => {
     width: 240px;
     border-radius: 10px;
     margin: 25px auto;
-    background-color: #ffe1b9;
+    background-color: #46be46;
   }
 }
 .bg {

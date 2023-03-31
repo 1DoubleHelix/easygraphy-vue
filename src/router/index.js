@@ -151,6 +151,7 @@ const router = createRouter({
 // 登录 导航守卫
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('main');
+    // 如果meta字段有requireAuth字段，且为true，且token不存在，则跳转到登录页面
     if (to.meta.requireAuth && !token) {
         next('/login')
     } else {
