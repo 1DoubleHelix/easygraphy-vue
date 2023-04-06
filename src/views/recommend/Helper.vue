@@ -42,6 +42,7 @@
       <el-button @click="addCombine">提交</el-button>
     </div>
     <!-- 输入条件 -->
+    <div class="tips"><span>这里需要给出挑选相机的技巧</span></div>
     <div class="select">
       <el-form :model="selectFilter" :rules="filterRules">
         <el-form-item label="卡口">
@@ -82,6 +83,13 @@
         </el-form-item>
       </el-form>
       <el-button @click="loadInfo">筛选</el-button>
+
+      <div class="tips">
+        <span
+          >某些尼康入门相机没有对焦马达, 如果选择了(F卡口 半画幅)需要提示</span
+        >
+      </div>
+
       <!-- 相机表格 -->
       <el-table :data="cameraInfo" stripe border style="width: 100%">
         <el-table-column prop="brand" label="品牌" />

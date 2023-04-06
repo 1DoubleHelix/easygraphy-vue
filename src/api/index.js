@@ -3,6 +3,9 @@ import qs from 'qs'
 
 export const test = (params) => request.get("/api/test/test", params)
 
+// admin
+export const adminLogin = (params) => request.post("/api/admin/login", params)
+
 // user
 export const login = (params) => request.post("/api/user/login", params)
 export const register = (params) => request.post("/api/user/register", params)
