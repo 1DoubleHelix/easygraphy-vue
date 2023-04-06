@@ -1,3 +1,4 @@
+<!-- 相机信息编辑 -->
 <template>
   <div class="camera-editor">
     <el-dialog

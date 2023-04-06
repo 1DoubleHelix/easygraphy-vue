@@ -14,7 +14,7 @@ let routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: () => import('../views/dashboard/Dashboard.vue'),
-        meta: { showNavBar: false, title: '后台管理-EasyGraphy' },
+        meta: { requireAdmin: true, showNavBar: false, title: '后台管理-EasyGraphy' },
         children: [
             {
                 path: "tag",
@@ -151,12 +151,20 @@ const router = createRouter({
 // 登录 导航守卫
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('main');
+
     // 如果meta字段有requireAuth字段，且为true，且token不存在，则跳转到登录页面
     if (to.meta.requireAuth && !token) {
         next('/login')
-    } else {
+    }
+    // 后台管理 requireAdmin
+    else if (to.meta.requireAdmin && !token) {
+        next('/login-admin');
+    }
+
+    else {
         next();
     }
+
 });
 
 export { router, routes };

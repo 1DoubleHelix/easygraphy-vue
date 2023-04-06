@@ -89,7 +89,6 @@ import * as api from "../../api/index.js";
 const router = useRouter();
 const route = useRoute();
 const store = userStore();
-const axios = inject("axios");
 
 const activeName = ref("first");
 
@@ -145,18 +144,18 @@ const registerRules = ref({
 
 // 登录
 const login = async () => {
-  let req = await api.login({
+  let res = await api.login({
     username: loginMsg.username,
     password: loginMsg.password,
   });
 
-  if (req.code === 200) {
+  if (res.code === 200) {
     // 数据持久化
-    store.id = req.id;
-    store.username = req.username;
-    store.nickname = req.nickname;
-    store.email = req.email;
-    store.token = req.token;
+    store.id = res.id;
+    store.username = res.username;
+    store.nickname = res.nickname;
+    store.email = res.email;
+    store.token = res.token;
 
     // if (loginMsg.remember) {
     //   // 保存账号密码

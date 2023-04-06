@@ -16,7 +16,7 @@
         <el-menu-item index="/dashboard/tag">标签管理</el-menu-item>
         <el-menu-item index="/dashboard/user">用户管理</el-menu-item>
         <el-menu-item index="/dashboard/devices">设备管理</el-menu-item>
-        <el-menu-item index="/login-admin">退出</el-menu-item>
+        <el-menu-item index="/login-admin" @click="logout">退出</el-menu-item>
       </el-menu>
     </el-aside>
     <el-main>
@@ -39,6 +39,13 @@ const axios = inject("axios");
 const message = inject("message");
 
 const activeIndex = ref("");
+
+const logout = () => {
+  localStorage.clear();
+  // router.push("/home");
+  // 应该跳转到主页重新加载 暂未实现
+  location.reload();
+};
 </script>
 
 <style lang="scss" scoped>
