@@ -28,7 +28,7 @@
               </div>
               <div class="main">
                 <img :src="blog.img || imgsrc" alt="" />
-                <div>username</div>
+                <div>{{ blog.nickname }}</div>
               </div>
             </div>
           </div>
@@ -132,10 +132,24 @@ const toDetail = (blog) => {
   margin: auto;
   margin-top: 300px;
   .el-aside {
-    background-color: #f0f0f0;
+    background-color: #fff;
+    width: 200px;
+    margin: 10px;
+    .title {
+      cursor: pointer;
+      height: 50px;
+      line-height: 50px;
+      font-size: 18px;
+      text-align: center;
+      width: 170px;
+      border-radius: 3px;
+      margin: 15px auto;
+      background-color: #eaf2ff;
+    }
   }
   .el-main {
-    background-color: #f0f0f0;
+    background-color: #fff;
+    margin: 10px;
     .blog-container {
       // height: 600px;
       position: relative;
@@ -179,17 +193,6 @@ const toDetail = (blog) => {
       }
     }
   }
-  .title {
-    cursor: pointer;
-    height: 50px;
-    line-height: 50px;
-    font-size: 20px;
-    text-align: center;
-    width: 240px;
-    border-radius: 10px;
-    margin: 25px auto;
-    background-color: #46be46;
-  }
 }
 .bg {
   position: fixed;
@@ -197,7 +200,8 @@ const toDetail = (blog) => {
   z-index: -1;
   height: 100vh;
   width: 100vw;
-  background-image: url("@/assets/picture/12.jpg");
-  background-size: cover;
+  background-color: #f2f3f5;
+  // background-image: url("@/assets/picture/12.jpg");
+  // background-size: cover;
 }
 </style>

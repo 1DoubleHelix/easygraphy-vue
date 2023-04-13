@@ -10,6 +10,7 @@
       </div>
     </div>
   </div>
+  <div class="bg"></div>
 </template>
 
 <script setup>
@@ -65,5 +66,16 @@ const loadCombine = async () => {
   width: 1000px;
   margin: auto;
   background-color: #bfc;
+}
+
+.bg {
+  position: fixed;
+  top: 0;
+  z-index: -1;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f2f3f5;
+  // background-image: url("@/assets/picture/12.jpg");
+  // background-size: cover;
 }
 </style>

@@ -24,38 +24,7 @@
     </div>
     <!-- 评论区 -->
     <div class="comment-area">
-      <!-- 添加评论 -->
-      <div class="add-comment">
-        <el-row>
-          <el-col :span="20">
-            <el-input
-              v-model="textarea"
-              :rows="3"
-              resize="none"
-              maxlength="150"
-              type="textarea"
-              show-word-limit
-              placeholder="正在安装镜头... ..."
-            />
-          </el-col>
-          <el-col :span="4">
-            <el-button @click="addComment" plain>发表评论</el-button>
-          </el-col>
-        </el-row>
-      </div>
-      <!-- 全部评论 -->
-      <div class="comments">
-        <div v-for="(comment, index) in commentsInfo" class="comment">
-          <el-row>
-            <el-col :span="2">
-              <el-avatar shape="square" :size="60" :fit="fit" :src="url" />
-            </el-col>
-            <el-col :span="22">
-              <el-card shadow="hover"> {{ comment.content }}</el-card>
-            </el-col>
-          </el-row>
-        </div>
-      </div>
+      <Comment type="combine" :id="route.query.id" />
     </div>
   </div>
 </template>
@@ -68,7 +37,7 @@ import * as api from "../../api/index.js";
 // 使用 moment 时间戳格式化
 import moment from "moment";
 import momentCN from "../../utils/monentCN";
-import request from "../../utils/request";
+import Comment from "../../components/Comment.vue";
 
 moment.locale("zh-cn", momentCN);
 

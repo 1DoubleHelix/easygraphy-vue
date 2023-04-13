@@ -68,6 +68,7 @@
 <script setup>
 import { ref, reactive, inject, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import * as api from "../../api/index.js";
 
 const router = useRouter();
 const route = useRoute();
@@ -141,7 +142,7 @@ const toUpdate = async (tag) => {
 };
 // 真正提交数据
 const updateTag = async () => {
-  let res = await axios.put("/api/tag/update", {
+  let res = await api.tagUpdate({
     id: updateTagTemp.id,
     name: updateTagTemp.name,
   });
@@ -159,9 +160,9 @@ const updateTag = async () => {
 
 // 加载数据 修改表后使用 重新加载
 const loadDatas = async () => {
-  let res = await axios.get("/api/tag/list");
-  tagList.value = res.data.results;
+  let res = await api.tagList();
   // console.log(res);
+  tagList.value = res.results;
 };
 </script>
 

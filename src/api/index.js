@@ -47,6 +47,9 @@ export const blogUpdate = (params) => request.put("/blog/update", params)
 export const blogAdd = (params) => request.post("/blog/add", params)
 
 // tag
+export const tagAdd = () => request.post("/tag/add", params)
+export const tagDelete = () => request.delete(`/tag/delete?id=${params}`)
+export const tagUpdate = () => request.put("/tag/update", params)
 export const tagList = () => request.get("/api/tag/list")
 
 // favorite

@@ -178,6 +178,7 @@ const register = async () => {
   let req = await api.register({
     username: registerMsg.username,
     password: registerMsg.password,
+    nickname: registerMsg.nickname,
   });
 
   if (req.code === 200) {
@@ -190,7 +191,7 @@ const register = async () => {
     store.id = req.id;
     store.username = req.username;
     store.nickname = req.nickname;
-    store.email = rerq.email;
+    store.email = req.email;
     store.token = req.token;
 
     // 这里拿到token
@@ -203,7 +204,7 @@ const register = async () => {
     await router.push("/home");
   } else {
     ElMessage({
-      message: "注册失败",
+      message: req.msg,
       type: "warning",
     });
   }

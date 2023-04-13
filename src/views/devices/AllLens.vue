@@ -90,6 +90,7 @@
       />
     </div>
   </div>
+  <div class="bg"></div>
 </template>
 
 <script setup>
@@ -225,5 +226,15 @@ const loadLens = async () => {
     margin: auto;
     width: 1200px;
   }
+}
+.bg {
+  position: fixed;
+  top: 0;
+  z-index: -1;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f2f3f5;
+  // background-image: url("@/assets/picture/12.jpg");
+  // background-size: cover;
 }
 </style>
