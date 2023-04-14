@@ -1,82 +1,85 @@
 <template>
-  <n-tabs v-model:value="tabValue" type="line" animated>
-    <n-tab-pane name="list" tab="文章列表">
-      <div v-for="(blog, index) in blogListInfo" style="margin-bottom: 15px">
-        <el-card>
-          <div class="header">
-            <span>{{ blog.title }}</span>
-            <el-button @click="toUpdate(blog)">修改</el-button>
-            <el-popconfirm
-              title="确认删除?"
-              confirm-button-text="确认"
-              cancel-button-text="取消"
-              @confirm="deleteBlog(blog)"
-            >
-              <template #reference>
-                <el-button>删除</el-button>
-              </template>
-            </el-popconfirm>
-          </div>
-          <div>{{ blog.content }}</div>
-          <div>{{ blog.create_time }}</div>
-        </el-card>
-      </div>
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="pageInfo.count"
-        :page-size="pageInfo.pageSize"
-        v-model:current-page="pageInfo.page"
-        @update:current-page="loadBlogs"
-      />
-    </n-tab-pane>
+  <div class="main-container">
+    <el-button @click="toAdd">添加文章</el-button>
+    <div v-for="(blog, index) in blogListInfo" style="margin-bottom: 15px">
+      <el-card>
+        <div class="header">
+          <span>{{ blog.title }}</span>
+          <el-button @click="toUpdate(blog)">修改</el-button>
+          <el-popconfirm
+            title="确认删除?"
+            confirm-button-text="确认"
+            cancel-button-text="取消"
+            @confirm="deleteBlog(blog)"
+          >
+            <template #reference>
+              <el-button>删除</el-button>
+            </template>
+          </el-popconfirm>
+        </div>
+        <div>{{ blog.content }}</div>
+        <div>{{ blog.create_time }}</div>
+      </el-card>
+    </div>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="pageInfo.count"
+      :page-size="pageInfo.pageSize"
+      v-model:current-page="pageInfo.page"
+      @update:current-page="loadBlogs"
+    />
+  </div>
 
-    <n-tab-pane name="add" tab="添加文章">
-      <n-form>
-        <n-form-item label="标题">
-          <n-input v-model:value="addBlogTemp.title" placeholder="请输入标题" />
-        </n-form-item>
-        <n-form-item label="选择文章标签">
-          <n-select v-model:value="addBlogTemp.tagId" :options="tagOptions" />
-        </n-form-item>
-        <n-form-item label="文章内容">
-          <RichTextEditor v-model="addBlogTemp.content"></RichTextEditor>
-        </n-form-item>
-        <n-form-item label="">
-          <n-button @click="addBlog">提交</n-button>
-        </n-form-item>
-      </n-form>
-      {{ addBlogTemp.content }}
-    </n-tab-pane>
+  <!-- 编辑文章 -->
+  <div class="edit-blog">
+    <el-dialog
+      v-model="dialogEditVisible"
+      :title="dialogTitle"
+      destroy-on-close
+    >
+      <el-form :model="blogTemp">
+        <el-form-item label="标题">
+          <el-input v-model="blogTemp.title" placeholder="请输入标题" />
+        </el-form-item>
+        <el-form-item label="选择文章标签">
+          <el-select v-model="blogTemp.tagId">
+            <el-option
+              v-for="item in tagOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <RichTextEditor v-model="blogTemp.content"></RichTextEditor>
+        </el-form-item>
+      </el-form>
 
-    <n-tab-pane name="update" tab="修改文章">
-      <n-form>
-        <n-form-item label="标题">
-          <n-input
-            v-model:value="updateBlogTemp.title"
-            placeholder="请输入标题"
-          />
-        </n-form-item>
-        <n-form-item label="选择文章标签">
-          <n-select
-            v-model:value="updateBlogTemp.tagId"
-            :options="tagOptions"
-          />
-        </n-form-item>
-        <n-form-item label="文章内容">
-          <RichTextEditor v-model="updateBlogTemp.content"></RichTextEditor>
-        </n-form-item>
-        <n-form-item label="">
-          <n-button @click="updateBlog">提交</n-button>
-        </n-form-item>
-      </n-form>
-      {{ updateBlogTemp.content }}
-    </n-tab-pane>
-  </n-tabs>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogEditVisible = false">取消</el-button>
+          <el-button
+            v-if="dialogType == 'edit'"
+            type="primary"
+            @click="updateBlog"
+            >修改</el-button
+          >
+          <el-button
+            v-else-if="dialogType == 'add'"
+            type="primary"
+            @click="addBlog"
+            >提交</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <script setup>
-import { ref, reactive, inject, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import RichTextEditor from "../../components/RichTextEditor.vue";
 import * as api from "../../api/index.js";
@@ -91,20 +94,12 @@ moment.locale("zh-cn", momentCN);
 const router = useRouter();
 const route = useRoute();
 
-// 使用Naive的独立API 提示信息组件
-const message = inject("message");
-const dialog = inject("dialog");
+const dialogTitle = ref("");
+const dialogType = ref("");
+const dialogEditVisible = ref(false);
 
-const axios = inject("axios");
-// 添加文章 临时数据
-const addBlogTemp = reactive({
-  tagId: "",
-  title: "",
-  content: "",
-});
-
-// 修改文章 临时数据
-const updateBlogTemp = reactive({
+// 文章临时数据
+const blogTemp = reactive({
   id: 0,
   tagId: "",
   title: "",
@@ -114,12 +109,11 @@ const updateBlogTemp = reactive({
 // 标签选项
 const tagOptions = ref([]);
 const blogListInfo = ref([]);
-const tabValue = ref("list");
 
 // 分页参数
 const pageInfo = reactive({
   page: 1,
-  pageSize: 4,
+  pageSize: 6,
   count: 0,
   pageCount: 0,
 });
@@ -135,9 +129,6 @@ const loadBlogs = async () => {
     page: pageInfo.page,
     pageSize: pageInfo.pageSize,
   });
-
-  console.log(res);
-
   let rows = res.data.rows;
   for (let row of rows) {
     // 内容已裁剪至50个字符 这里追加省略号
@@ -150,8 +141,6 @@ const loadBlogs = async () => {
   // 算总页码
   pageInfo.count = res.data.count;
   pageInfo.pageCount = Math.ceil(pageInfo.count / pageInfo.pageSize);
-
-  // console.log(res);
 };
 
 // 加载标签数据
@@ -164,42 +153,49 @@ const loadTags = async () => {
       label: item.name,
     };
   });
-  // console.log(tagOptions.value);
+};
+
+// 打开添加弹窗
+const toAdd = () => {
+  blogTemp.tagId = "";
+  blogTemp.title = "";
+  blogTemp.content = "";
+  dialogTitle.value = "添加文章";
+  dialogType.value = "add";
+  dialogEditVisible.value = true;
 };
 
 // 添加文章
 const addBlog = async () => {
-  let res = await api.blogAdd(addBlogTemp);
+  let res = await api.blogAdd(blogTemp);
   if (res.code === 200) {
     ElMessage({ message: "添加成功", type: "success" });
-    // 清空输入框
-    addBlogTemp.tagId = "";
-    addBlogTemp.title = "";
-    addBlogTemp.content = "";
     loadBlogs();
-    activeTab.value = "blogList";
+    dialogEditVisible.value = false;
   } else {
     ElMessage({ message: res.msg, type: "warning" });
   }
 };
 
-// 传入并修改文章
+// 打开修改文章弹窗
 const toUpdate = async (blog) => {
   let res = await api.blogDetail(blog.id);
-  updateBlogTemp.id = blog.id;
-  updateBlogTemp.title = res.results.title;
-  updateBlogTemp.tagId = res.results.tag_id;
-  updateBlogTemp.content = res.results.content;
-  tabValue.value = "update";
+  blogTemp.id = res.results.id;
+  blogTemp.tagId = res.results.tag_id;
+  blogTemp.title = res.results.title;
+  blogTemp.content = res.results.content;
+  dialogTitle.value = "修改文章";
+  dialogType.value = "edit";
+  dialogEditVisible.value = true;
 };
 
 // 修改文章
 const updateBlog = async () => {
-  let res = await api.blogUpdate(updateBlogTemp);
+  let res = await api.blogUpdate(blogTemp);
   if (res.code === 200) {
     ElMessage({ message: "修改成功", type: "success" });
     loadBlogs();
-    activeTab.value = "blogList";
+    dialogEditVisible.value = false;
   } else {
     ElMessage({ message: res.msg, type: "warning" });
   }
@@ -207,7 +203,6 @@ const updateBlog = async () => {
 
 // 删除文章
 const deleteBlog = async (blog) => {
-  // 这里没有token 无法完成删除 需要token
   let res = await api.deleteBlog(blog.id);
   if (res.code === 200) {
     loadBlogs();
@@ -215,4 +210,11 @@ const deleteBlog = async (blog) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.main-container {
+  padding: 10px;
+}
+.edit-blog {
+  width: 1200px;
+}
+</style>

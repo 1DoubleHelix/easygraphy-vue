@@ -1,84 +1,74 @@
 <template>
   <div class="main-container">
-    <n-tabs v-model:value="activeTab" type="line">
-      <n-tab-pane name="list" tab="全部用户">
-        <div class="user-filter">
-          <!-- 筛选 -->
-          <el-form :model="userFilter">
-            <el-form-item label="昵称">
-              <el-input v-model="userFilter.nickname" />
-            </el-form-item>
-            <el-form-item label="用户ID">
-              <el-input v-model="userFilter.id" />
-            </el-form-item>
-          </el-form>
-          <el-button @click="loadUser">筛选</el-button>
-        </div>
-        <!-- 全部用户 -->
-        <div class="user-list">
-          <el-table :data="userInfo" stripe border style="width: 100%">
-            <el-table-column prop="id" label="用户ID" />
-            <el-table-column prop="username" label="用户名" />
-            <el-table-column prop="nickname" label="昵称" />
-            <el-table-column prop="email" label="邮箱" />
-            <el-table-column prop="create_time" label="注册时间" />
-            <el-table-column label="操作">
-              <!-- 自定义列模板 -->
-              <template #default="scope">
-                <el-button @click="toUpdate(scope.row)">修改</el-button>
-                <el-popconfirm
-                  title="确认删除?"
-                  confirm-button-text="确认"
-                  cancel-button-text="取消"
-                  @confirm="deleteUser(scope.row.id)"
-                >
-                  <template #reference>
-                    <el-button>删除</el-button>
-                  </template>
-                </el-popconfirm>
+    <div class="user-filter">
+      <!-- 筛选 -->
+      <el-form :model="userFilter" inline>
+        <el-form-item label="昵称">
+          <el-input v-model="userFilter.nickname" />
+        </el-form-item>
+        <el-form-item label="用户ID">
+          <el-input v-model="userFilter.id" />
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="loadUser">查找</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <!-- 全部用户 -->
+    <div class="user-list">
+      <el-table :data="userInfo" stripe border style="width: 100%">
+        <el-table-column prop="id" label="用户ID" />
+        <el-table-column prop="username" label="用户名" />
+        <el-table-column prop="nickname" label="昵称" />
+        <el-table-column prop="email" label="邮箱" />
+        <el-table-column prop="create_time" label="注册时间" />
+        <el-table-column label="操作">
+          <!-- 自定义列模板 -->
+          <template #default="scope">
+            <el-button @click="toUpdate(scope.row)">修改</el-button>
+            <el-popconfirm
+              title="确认删除?"
+              confirm-button-text="确认"
+              cancel-button-text="取消"
+              @confirm="deleteUser(scope.row.id)"
+            >
+              <template #reference>
+                <el-button>删除</el-button>
               </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </n-tab-pane>
-      <n-tab-pane name="edit" tab="修改信息">
-        {{ updateUserInfo }}
-        <div class="user-info">
-          <span>用户ID:{{ updateUserInfo.id }}</span>
-        </div>
-        <el-form :model="updateUserInfo">
-          <el-form-item label="用户名">
-            <el-input v-model="updateUserInfo.username" />
-          </el-form-item>
-          <el-form-item label="昵称">
-            <el-input v-model="updateUserInfo.nickname" />
-          </el-form-item>
-          <el-form-item label="邮箱">
-            <el-input v-model="updateUserInfo.email" />
-          </el-form-item>
-          <el-form-item label="密码">
-            <el-input v-model="updateUserInfo.password" />
-          </el-form-item>
-        </el-form>
-        <el-popconfirm
-          title="确认修改?"
-          confirm-button-text="确认"
-          cancel-button-text="取消"
-          @confirm="updateUser"
-        >
-          <template #reference>
-            <el-button>修改</el-button>
+            </el-popconfirm>
           </template>
-        </el-popconfirm>
-      </n-tab-pane>
-    </n-tabs>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
+
+  <el-dialog v-model="dialogVisible" title="修改用户信息">
+    <el-form :model="updateUserInfo">
+      <el-form-item label="用户名">
+        <el-input v-model="updateUserInfo.username" />
+      </el-form-item>
+      <el-form-item label="昵称">
+        <el-input v-model="updateUserInfo.nickname" />
+      </el-form-item>
+      <el-form-item label="邮箱">
+        <el-input v-model="updateUserInfo.email" />
+      </el-form-item>
+      <el-form-item label="密码">
+        <el-input v-model="updateUserInfo.password" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="updateUser"> 修改 </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
 import { ref, reactive, inject, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import RichTextEditor from "../../components/RichTextEditor.vue";
 import * as api from "../../api/index.js";
 
 // 使用 moment 时间戳格式化
@@ -91,7 +81,7 @@ moment.locale("zh-cn", momentCN);
 const router = useRouter();
 const route = useRoute();
 
-const activeTab = ref("list");
+const dialogVisible = ref(false);
 const userFilter = reactive({
   id: "",
   nickname: "",
@@ -138,14 +128,13 @@ const loadUser = async () => {
   }
 };
 
-// 传入用户 跳转修改页
+// 传入用户信息 打开弹窗
 const toUpdate = (row) => {
+  dialogVisible.value = true;
   updateUserInfo.id = row.id;
   updateUserInfo.username = row.username;
   updateUserInfo.nickname = row.nickname;
   updateUserInfo.email = row.email;
-  activeTab.value = "edit";
-  console.log(updateUserInfo);
 };
 // 修改用户信息
 const updateUser = async () => {
@@ -153,7 +142,7 @@ const updateUser = async () => {
   if (res.code === 200) {
     ElMessage.success(res.msg);
     loadUser();
-    activeTab.value = "list";
+    dialogVisible.value = false;
   } else {
     ElMessage.error(res.msg);
   }
@@ -171,4 +160,13 @@ const deleteUser = async (id) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.main-container {
+  padding: 10px;
+  .el-form {
+    .el-input {
+      width: 200px;
+    }
+  }
+}
+</style>

@@ -37,8 +37,6 @@ export const deleteCombine = (params) => request.delete(`/combine/delete?id=${pa
 export const detailCombine = (params) => request.get(`/api/combine/detail?id=${params}`)
 export const searchCombine = (params) => request.get(`/api/combine/search?${qs.stringify(params)}`)
 
-// dashboard
-
 // blog
 export const searchBlog = (params) => request.get(`/api/blog/search?${qs.stringify(params)}`)
 export const deleteBlog = (params) => request.delete(`/blog/delete?id=${params}`)
@@ -47,10 +45,10 @@ export const blogUpdate = (params) => request.put("/blog/update", params)
 export const blogAdd = (params) => request.post("/blog/add", params)
 
 // tag
-export const tagAdd = () => request.post("/tag/add", params)
-export const tagDelete = () => request.delete(`/tag/delete?id=${params}`)
-export const tagUpdate = () => request.put("/tag/update", params)
-export const tagList = () => request.get("/api/tag/list")
+export const tagAdd = (params) => request.post("/tag/add", params)
+export const tagDelete = (params) => request.delete(`/tag/delete?id=${params}`)
+export const tagUpdate = (params) => request.put("/tag/update", params)
+export const tagList = (params) => request.get("/api/tag/list")
 
 // favorite
 export const favoriteAdd = (params) => request.post("/favorite/add", params)

@@ -43,10 +43,6 @@ moment.locale("zh-cn", momentCN);
 const router = useRouter();
 const route = useRoute();
 
-// 使用Naive的独立API 提示信息组件
-const message = inject("message");
-const dialog = inject("dialog");
-
 const axios = inject("axios");
 
 onMounted(() => {});

@@ -251,8 +251,9 @@ const register = async () => {
   height: 100vh;
   left: 0;
   top: -60px;
-  background-image: url(@/assets/picture/03.jpg);
-  background-size: cover;
+  background-color: #f2f3f5;
+  // background-image: url(@/assets/picture/03.jpg);
+  // background-size: cover;
   z-index: -1;
 }
 </style>

@@ -1,82 +1,79 @@
 <template>
   <div class="main-container">
-    <n-tabs v-model:value="activeTab" type="line" animated>
-      <n-tab-pane tab="我的文章" name="blogList">
-        <div class="blog-list">
-          <div v-for="(blog, index) in blogInfo">
-            <el-card shadow="hover">
-              <div class="header">
-                <span>{{ blog.title }}</span>
-                <el-button @click="toUpdate(blog)">修改</el-button>
-                <el-popconfirm
-                  title="确认删除?"
-                  confirm-button-text="确认"
-                  cancel-button-text="取消"
-                  @confirm="deleteBlog(blog)"
-                >
-                  <template #reference>
-                    <el-button>删除</el-button>
-                  </template>
-                </el-popconfirm>
-              </div>
-              <div>{{ blog.content }}</div>
-              <div>{{ blog.create_time }}</div>
-            </el-card>
+    <el-button @click="toAdd">添加文章</el-button>
+    <div class="blog-list">
+      <div v-for="(blog, index) in blogInfo">
+        <el-card shadow="hover">
+          <div class="header">
+            <span>{{ blog.title }}</span>
+            <el-button @click="toUpdate(blog)">修改</el-button>
+            <el-popconfirm
+              title="确认删除?"
+              confirm-button-text="确认"
+              cancel-button-text="取消"
+              @confirm="deleteBlog(blog)"
+            >
+              <template #reference>
+                <el-button>删除</el-button>
+              </template>
+            </el-popconfirm>
           </div>
-        </div>
-      </n-tab-pane>
-      <n-tab-pane tab="编写文章" name="blogEdit">
-        <el-form>
-          <el-form-item label="标题">
-            <el-input v-model="addBlogTemp.title" placeholder="请输入标题" />
-          </el-form-item>
-          <el-form-item label="选择文章标签">
-            <el-select v-model="addBlogTemp.tagId" placeholder="请选择">
-              <el-option
-                v-for="item in tagOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="文章内容">
-            <RichTextEditor v-model="addBlogTemp.content"></RichTextEditor>
-          </el-form-item>
-          <el-form-item label="">
-            <el-button @click="addBlog">提交</el-button>
-          </el-form-item>
-        </el-form>
-      </n-tab-pane>
-      <n-tab-pane tab="修改文章" name="blogUpdate">
-        <el-form>
-          <el-form-item label="标题">
-            <el-input v-model="updateBlogTemp.title" placeholder="请输入标题" />
-          </el-form-item>
-          <el-form-item label="选择文章标签">
-            <el-select v-model="updateBlogTemp.tagId" placeholder="请选择">
-              <el-option
-                v-for="item in tagOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="文章内容">
-            <RichTextEditor v-model="updateBlogTemp.content"></RichTextEditor>
-          </el-form-item>
-          <el-form-item label="">
-            <el-button @click="updateBlog">提交修改</el-button>
-          </el-form-item>
-        </el-form>
-      </n-tab-pane>
-    </n-tabs>
+          <div>{{ blog.content }}</div>
+          <div>{{ blog.create_time }}</div>
+        </el-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- 编辑文章 -->
+  <div class="edit-blog">
+    <el-dialog
+      v-model="dialogEditVisible"
+      :title="dialogTitle"
+      destroy-on-close
+    >
+      <el-form :model="blogTemp">
+        <el-form-item label="标题">
+          <el-input v-model="blogTemp.title" placeholder="请输入标题" />
+        </el-form-item>
+        <el-form-item label="选择文章标签">
+          <el-select v-model="blogTemp.tagId">
+            <el-option
+              v-for="item in tagOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <RichTextEditor v-model="blogTemp.content"></RichTextEditor>
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogEditVisible = false">取消</el-button>
+          <el-button
+            v-if="dialogType == 'edit'"
+            type="primary"
+            @click="updateBlog"
+            >修改</el-button
+          >
+          <el-button
+            v-else-if="dialogType == 'add'"
+            type="primary"
+            @click="addBlog"
+            >提交</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, inject, onMounted, computed } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import RichTextEditor from "../../components/RichTextEditor.vue";
 import * as api from "../../api/index.js";
@@ -93,15 +90,12 @@ moment.locale("zh-cn", momentCN);
 const router = useRouter();
 const route = useRoute();
 
-// 添加文章 临时数据
-const addBlogTemp = reactive({
-  tagId: "",
-  title: "",
-  content: "",
-});
+const dialogTitle = ref("");
+const dialogType = ref("");
+const dialogEditVisible = ref(false);
 
-// 修改文章 临时数据
-const updateBlogTemp = reactive({
+// 文章临时数据
+const blogTemp = reactive({
   id: 0,
   tagId: "",
   title: "",
@@ -111,7 +105,6 @@ const updateBlogTemp = reactive({
 // 标签页
 const tagOptions = ref([]);
 const blogInfo = ref({});
-const activeTab = ref("blogList");
 
 // 分页参数
 const blogPageInfo = reactive({
@@ -141,7 +134,6 @@ const loadBlogs = async () => {
 // 加载标签选项
 const loadTagOptions = async () => {
   let res = await api.tagList();
-  let rows = res.results;
   // 准换标签数据格式
   tagOptions.value = res.results.map((item) => {
     return {
@@ -151,41 +143,51 @@ const loadTagOptions = async () => {
   });
 };
 
+// 打开添加弹窗
+const toAdd = () => {
+  blogTemp.tagId = "";
+  blogTemp.title = "";
+  blogTemp.content = "";
+  dialogTitle.value = "添加文章";
+  dialogType.value = "add";
+  dialogEditVisible.value = true;
+};
+
 // 添加文章
 const addBlog = async () => {
   let res = await api.blogAdd(addBlogTemp);
   if (res.code === 200) {
-    ElMessage({ message: "添加成功", type: "success" });
+    ElMessage.success("添加成功");
     // 清空输入框
     addBlogTemp.tagId = "";
     addBlogTemp.title = "";
     addBlogTemp.content = "";
     loadBlogs();
-    activeTab.value = "blogList";
+    dialogEditVisible.value = false;
   } else {
-    ElMessage({ message: res.msg, type: "warning" });
+    ElMessage.warning(res.msg);
   }
 };
 
 // 传入并修改文章
 const toUpdate = async (blog) => {
   let res = await api.blogDetail(blog.id);
-  updateBlogTemp.id = blog.id;
-  updateBlogTemp.title = res.results.title;
-  updateBlogTemp.tagId = res.results.tag_id;
-  updateBlogTemp.content = res.results.content;
-  activeTab.value = "blogUpdate";
+  blogTemp.id = blog.id;
+  blogTemp.title = res.results.title;
+  blogTemp.tagId = res.results.tag_id;
+  blogTemp.content = res.results.content;
+  dialogEditVisible.value = true;
 };
 
 // 修改文章
 const updateBlog = async () => {
-  let res = await api.blogUpdate(updateBlogTemp);
+  let res = await api.blogUpdate(blogTemp);
   if (res.code === 200) {
-    ElMessage({ message: "修改成功", type: "success" });
+    ElMessage.success("修改成功");
     loadBlogs();
-    activeTab.value = "blogList";
+    dialogEditVisible.value = false;
   } else {
-    ElMessage({ message: res.msg, type: "warning" });
+    ElMessage.warning(res.msg);
   }
 };
 
@@ -194,6 +196,8 @@ const deleteBlog = async (blog) => {
   let res = await api.deleteBlog(blog.id);
   if (res.code === 200) {
     loadBlogs();
+  } else {
+    ElMessage.warning(res.msg);
   }
 };
 </script>

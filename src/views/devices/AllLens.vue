@@ -2,7 +2,7 @@
   <div class="main-container">
     <!-- 选择镜头 -->
     <div class="lens-filter">
-      <el-form :model="lensFilter" :rules="lensFilterRules">
+      <el-form :model="lensFilter" :rules="lensFilterRules" inline>
         <el-form-item label="按型号搜索">
           <el-input v-model="lensFilter.keyword" placeholder="通过型号查找" />
         </el-form-item>
@@ -35,29 +35,43 @@
             :step="0.1"
           />
         </el-form-item>
-        <el-form-item label="min焦距" prop="minFocal">
-          <el-input-number
-            v-model="lensFilter.minFocal"
-            controls-position="right"
-          />
+        <el-form-item label="焦距区间(mm)">
+          <el-col :span="11">
+            <el-form-item prop="minFocal">
+              <el-input-number
+                v-model="lensFilter.minFocal"
+                controls-position="right"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="2"><span>-</span></el-col>
+          <el-col :span="11">
+            <el-form-item prop="maxFocal">
+              <el-input-number
+                v-model="lensFilter.maxFocal"
+                controls-position="right"
+              />
+            </el-form-item>
+          </el-col>
         </el-form-item>
-        <el-form-item label="max焦距" prop="maxFocal">
-          <el-input-number
-            v-model="lensFilter.maxFocal"
-            controls-position="right"
-          />
-        </el-form-item>
-        <el-form-item label="min价格" prop="minPrice">
-          <el-input-number
-            v-model="lensFilter.minPrice"
-            controls-position="right"
-          />
-        </el-form-item>
-        <el-form-item label="max价格" prop="maxPrice">
-          <el-input-number
-            v-model="lensFilter.maxPrice"
-            controls-position="right"
-          />
+        <el-form-item label="价格区间(元)">
+          <el-col :span="11">
+            <el-form-item prop="minPrice">
+              <el-input-number
+                v-model="lensFilter.minPrice"
+                controls-position="right"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="2"><span>-</span></el-col>
+          <el-col :span="11">
+            <el-form-item prop="maxPrice">
+              <el-input-number
+                v-model="lensFilter.maxPrice"
+                controls-position="right"
+              />
+            </el-form-item>
+          </el-col>
         </el-form-item>
       </el-form>
       <el-button @click="loadLens">筛选</el-button>
@@ -106,10 +120,6 @@ moment.locale("zh-cn", momentCN);
 
 const router = useRouter();
 const route = useRoute();
-
-// 使用Naive的独立API 提示信息组件
-const message = inject("message");
-const dialog = inject("dialog");
 
 const axios = inject("axios");
 const mountOptions = [

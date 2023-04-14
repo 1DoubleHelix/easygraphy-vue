@@ -34,9 +34,6 @@ import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
 const route = useRoute();
-const axios = inject("axios");
-// 提示信息 使用Naive的独立API
-const message = inject("message");
 
 const activeIndex = ref("");
 

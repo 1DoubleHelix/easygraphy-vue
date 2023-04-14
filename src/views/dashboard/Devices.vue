@@ -1,7 +1,7 @@
 <template>
   <div>
-    <n-tabs v-model:value="activeTab" type="line">
-      <n-tab-pane name="camera" tab="相机">
+    <el-tabs v-model="activeTab" type="card">
+      <el-tab-pane name="camera" label="相机">
         <div class="camera-filter">
           <!-- 筛选 -->
           <el-form :model="cameraFilter">
@@ -84,8 +84,8 @@
           :form-info="cameraDialogInfo"
           :is-add="isAdd"
         />
-      </n-tab-pane>
-      <n-tab-pane name="lens" tab="镜头">
+      </el-tab-pane>
+      <el-tab-pane name="lens" label="镜头">
         <div class="lens-filter">
           <el-form :model="lensFilter">
             <el-form-item label="卡口">
@@ -166,8 +166,8 @@
           :form-info="lensDialogInfo"
           :is-add="isAdd"
         />
-      </n-tab-pane>
-    </n-tabs>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 

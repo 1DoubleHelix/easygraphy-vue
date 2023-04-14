@@ -2,7 +2,7 @@
   <div class="main-container">
     <!-- 选择相机 -->
     <div class="camera-filter">
-      <el-form :model="cameraFilter" :rules="cameraFilterRules">
+      <el-form :model="cameraFilter" :rules="cameraFilterRules" inline>
         <el-form-item label="按型号搜索">
           <el-input v-model="cameraFilter.keyword" placeholder="通过型号查找" />
         </el-form-item>
@@ -29,29 +29,43 @@
             <el-option label="半画幅" value="DX" />
           </el-select>
         </el-form-item>
-        <el-form-item label="min像素(万)" prop="minPixel">
-          <el-input-number
-            v-model="cameraFilter.minPixel"
-            controls-position="right"
-          />
+        <el-form-item label="像素区间(万)">
+          <el-col :span="11">
+            <el-form-item prop="minPixel">
+              <el-input-number
+                v-model="cameraFilter.minPixel"
+                controls-position="right"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="2"><span>-</span></el-col>
+          <el-col :span="11">
+            <el-form-item prop="maxPixel">
+              <el-input-number
+                v-model="cameraFilter.maxPixel"
+                controls-position="right"
+              />
+            </el-form-item>
+          </el-col>
         </el-form-item>
-        <el-form-item label="max像素(万)" prop="maxPixel">
-          <el-input-number
-            v-model="cameraFilter.maxPixel"
-            controls-position="right"
-          />
-        </el-form-item>
-        <el-form-item label="min价格" prop="minPrice">
-          <el-input-number
-            v-model="cameraFilter.minPrice"
-            controls-position="right"
-          />
-        </el-form-item>
-        <el-form-item label="max价格" prop="maxPrice">
-          <el-input-number
-            v-model="cameraFilter.maxPrice"
-            controls-position="right"
-          />
+        <el-form-item label="价格区间(元)">
+          <el-col :span="11">
+            <el-form-item prop="minPrice">
+              <el-input-number
+                v-model="cameraFilter.minPrice"
+                controls-position="right"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="2"><span>-</span></el-col>
+          <el-col :span="11">
+            <el-form-item prop="maxPrice">
+              <el-input-number
+                v-model="cameraFilter.maxPrice"
+                controls-position="right"
+              />
+            </el-form-item>
+          </el-col>
         </el-form-item>
       </el-form>
       <el-button @click="loadCamera">筛选</el-button>
@@ -101,8 +115,6 @@ moment.locale("zh-cn", momentCN);
 
 const router = useRouter();
 const route = useRoute();
-
-const axios = inject("axios");
 
 const mountOptions = [
   { value: "E", label: "E 索尼" },

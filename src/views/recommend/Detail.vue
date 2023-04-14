@@ -7,7 +7,7 @@
         <el-col :span="8">
           <div class="device-logo">
             <img
-              :src="`/src/assets/logo/${combineInfo.camera.brand}.svg`"
+              :src="`/src/assets/logo/${combineInfo.combine.brand}.png`"
               alt="Logo"
             />
           </div>
