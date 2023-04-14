@@ -1,50 +1,77 @@
 <template>
   <div class="main-container">
-    <!-- 组合临时展示区 -->
+    <!-- 组合编辑区 -->
     <div class="combine-devices">
       <el-row>
         <el-col :span="8" class="camera">
-          <el-card v-if="combineInfo.camera_id != ''"
-            >{{ combineTemp.camera.name }}
-            <el-button @click="deleteCamera">移除</el-button>
+          <el-card shadow="hover">
+            <template #header>
+              <div class="card-header">
+                <span>相机</span>
+              </div>
+            </template>
+            <div v-if="combineInfo.camera_id != ''">
+              <el-image
+                class="logo"
+                :src="`/src/assets/logo/${combineTemp.camera.brand}.png`"
+                fit="cover"
+              />
+              <div class="name">
+                {{ combineTemp.camera.brand + " " + combineTemp.camera.name }}
+              </div>
+              <el-button @click="deleteCamera">移除</el-button>
+            </div>
           </el-card>
-          <el-card v-else>没相机</el-card>
         </el-col>
         <el-col :span="16" class="lens">
-          <el-card v-if="combineInfo.lensGroup.length">
-            <div v-for="(lens, index) in combineTemp.lensGroup" :key="index">
-              {{ lens.name }}
+          <el-card shadow="hover">
+            <template #header>
+              <div class="card-header">
+                <span>镜头</span>
+              </div>
+            </template>
+            <div
+              v-for="(lens, index) in combineTemp.lensGroup"
+              :key="index"
+              class="item"
+            >
+              <span>
+                <el-image
+                  class="logo"
+                  :src="`/src/assets/logo/${lens.brand}.png`"
+                  fit="cover"
+                />
+              </span>
+              <span class="name">
+                {{ lens.brand + " " + lens.name }}
+              </span>
               <el-button @click="deleteLens(lens.id)">移除</el-button>
             </div>
           </el-card>
-          <el-card v-else>没镜头</el-card>
         </el-col>
       </el-row>
+      <el-card class="remark" shadow="hover">
+        <el-input
+          v-model="combineInfo.title"
+          maxlength="20"
+          show-word-limit
+          placeholder="输入标题"
+        />
+        <el-input
+          v-model="combineInfo.content"
+          maxlength="200"
+          :rows="2"
+          type="textarea"
+          placeholder="请输入备注"
+          show-word-limit
+        />
+        <el-button @click="addCombine">提交</el-button>
+      </el-card>
     </div>
-    <!-- 备注 -->
-    <div class="remarks">
-      <el-input
-        v-model="combineInfo.title"
-        maxlength="20"
-        show-word-limit
-        placeholder="输入标题"
-      />
-      <el-input
-        v-model="combineInfo.content"
-        maxlength="200"
-        :rows="2"
-        type="textarea"
-        placeholder="请输入备注"
-        show-word-limit
-      />
-    </div>
-    <div class="submit">
-      <el-button @click="addCombine">提交</el-button>
-    </div>
+
     <!-- 输入条件 -->
-    <div class="tips"><span>这里需要给出挑选相机的技巧</span></div>
-    <div class="select">
-      <el-form :model="selectFilter" :rules="filterRules">
+    <el-card shadow="hover" class="select">
+      <el-form :model="selectFilter" :rules="filterRules" inline>
         <el-form-item label="卡口">
           <el-select v-model="selectFilter.mount" placeholder="请选择">
             <el-option-group
@@ -83,140 +110,150 @@
         </el-form-item>
       </el-form>
       <el-button @click="loadInfo">筛选</el-button>
+    </el-card>
 
-      <div class="tips">
-        某些尼康入门相机没有对焦马达, 如果选择了(F卡口 半画幅)需要提示
-      </div>
+    <el-tabs v-model="activeTab" type="border-card">
+      <el-tab-pane label="选择相机" name="camera">
+        <span class="tips">
+          某些尼康入门相机没有对焦马达, 如果选择了(F卡口 半画幅)需要提示
+        </span>
+        <div v-if="cameraInfo.length" class="camera">
+          <el-table :data="cameraInfo" stripe border style="width: 100%">
+            <el-table-column prop="brand" label="品牌" />
+            <el-table-column prop="name" label="型号" />
 
-      <!-- 相机表格 -->
-      <div>相机</div>
-      <el-table :data="cameraInfo" stripe border style="width: 100%">
-        <el-table-column prop="brand" label="品牌" />
-        <el-table-column prop="name" label="型号" />
-
-        <el-table-column prop="frame" label="传感器尺寸" />
-        <el-table-column prop="w_pixel" label="像素(万)" />
-        <el-table-column prop="score" label="评分" />
-        <el-table-column prop="price" label="参考价格(元)" />
-        <el-table-column label="操作">
-          <!-- 自定义列模板 -->
-          <template #default="scope">
-            <el-button size="small" @click="addCamera(scope.row.id)"
-              >添加</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-      <!-- 镜头表格 -->
-      <!-- 使用v-if判断5个种类的镜头表格是否显示 -->
-      <div v-if="lensInfo.prime.length" class="lens">
-        <div class="tips">
-          合理地使用定焦镜头可以虚化背景, 突出主体, 营造氛围
+            <el-table-column prop="frame" label="传感器尺寸" />
+            <el-table-column prop="w_pixel" label="像素(万)" />
+            <el-table-column prop="score" label="评分" />
+            <el-table-column prop="price" label="参考价格(元)" />
+            <el-table-column label="操作">
+              <!-- 自定义列模板 -->
+              <template #default="scope">
+                <el-button size="small" @click="addCamera(scope.row.id)"
+                  >添加</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-        <el-table :data="lensInfo.prime" stripe border style="width: 100%">
-          <el-table-column prop="brand" label="品牌" />
-          <el-table-column prop="name" label="型号" />
-          <el-table-column prop="frame" label="画幅" />
-          <el-table-column prop="min_focal" label="焦段" />
-          <el-table-column prop="max_aperture" label="最大光圈" />
-          <el-table-column prop="price" label="参考价格(元)" />
-          <el-table-column label="操作">
-            <!-- 自定义列模板 -->
-            <template #default="scope">
-              <el-button size="small" @click="addLens(scope.row.id)"
-                >添加</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <div v-if="lensInfo.zoom.length" class="lens">
-        <div class="tips">
-          标准变焦镜头, 适应大多数日常拍摄状况, 如果预算充足,
-          可以选择最大光圈恒定为F2.8的镜头
+      </el-tab-pane>
+      <el-tab-pane label="选择镜头" name="lens">
+        <!-- 使用v-if判断5个种类的镜头表格是否显示 -->
+        <div v-if="lensInfo.prime.length" class="lens">
+          <div class="tips">
+            合理地使用定焦镜头可以虚化背景, 突出主体, 营造氛围
+          </div>
+          <el-table :data="lensInfo.prime" stripe border style="width: 100%">
+            <el-table-column prop="brand" label="品牌" />
+            <el-table-column prop="name" label="型号" />
+            <el-table-column prop="frame" label="画幅" />
+            <el-table-column prop="min_focal" label="焦段" />
+            <el-table-column prop="max_aperture" label="最大光圈" />
+            <el-table-column prop="price" label="参考价格(元)" />
+            <el-table-column label="操作">
+              <!-- 自定义列模板 -->
+              <template #default="scope">
+                <el-button size="small" @click="addLens(scope.row.id)"
+                  >添加</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-        <el-table :data="lensInfo.zoom" stripe border style="width: 100%">
-          <el-table-column prop="brand" label="品牌" />
-          <el-table-column prop="name" label="型号" />
-          <el-table-column prop="frame" label="画幅" />
-          <el-table-column prop="min_focal" label="焦段" />
-          <el-table-column prop="max_aperture" label="最大光圈" />
-          <el-table-column prop="price" label="参考价格(元)" />
-          <el-table-column label="操作">
-            <!-- 自定义列模板 -->
-            <template #default="scope">
-              <el-button size="small" @click="addLens(scope.row.id)"
-                >添加</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <div v-if="lensInfo.teleZoom.length" class="lens">
-        <div class="tips">
-          远摄变焦镜头, 常用于风光拍摄, 在人像摄影中也可以用于虚化背景,
-          突出被摄主体, 但是请注意, 焦段相同的镜头, 较大的光圈可以带来更浅的景深
+        <div v-if="lensInfo.zoom.length" class="lens">
+          <div class="tips">
+            标准变焦镜头, 适应大多数日常拍摄状况, 如果预算充足,
+            可以选择最大光圈恒定为F2.8的镜头
+          </div>
+          <el-table :data="lensInfo.zoom" stripe border style="width: 100%">
+            <el-table-column prop="brand" label="品牌" />
+            <el-table-column prop="name" label="型号" />
+            <el-table-column prop="frame" label="画幅" />
+            <el-table-column prop="min_focal" label="焦段" />
+            <el-table-column prop="max_aperture" label="最大光圈" />
+            <el-table-column prop="price" label="参考价格(元)" />
+            <el-table-column label="操作">
+              <!-- 自定义列模板 -->
+              <template #default="scope">
+                <el-button size="small" @click="addLens(scope.row.id)"
+                  >添加</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-        <el-table :data="lensInfo.teleZoom" stripe border style="width: 100%">
-          <el-table-column prop="brand" label="品牌" />
-          <el-table-column prop="name" label="型号" />
-          <el-table-column prop="frame" label="画幅" />
-          <el-table-column prop="min_focal" label="焦段" />
-          <el-table-column prop="max_aperture" label="最大光圈" />
-          <el-table-column prop="price" label="参考价格(元)" />
-          <el-table-column label="操作">
-            <!-- 自定义列模板 -->
-            <template #default="scope">
-              <el-button size="small" @click="addLens(scope.row.id)"
-                >添加</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <div v-if="lensInfo.widePrime.length" class="lens">
-        <div class="tips">
-          广角定焦镜头，常用于风光拍摄，或者在狭小的摄影棚中进行人像摄影
+        <div v-if="lensInfo.teleZoom.length" class="lens">
+          <div class="tips">
+            远摄变焦镜头, 常用于风光拍摄, 在人像摄影中也可以用于虚化背景,
+            突出被摄主体, 但是请注意, 焦段相同的镜头,
+            较大的光圈可以带来更浅的景深
+          </div>
+          <el-table :data="lensInfo.teleZoom" stripe border style="width: 100%">
+            <el-table-column prop="brand" label="品牌" />
+            <el-table-column prop="name" label="型号" />
+            <el-table-column prop="frame" label="画幅" />
+            <el-table-column prop="min_focal" label="焦段" />
+            <el-table-column prop="max_aperture" label="最大光圈" />
+            <el-table-column prop="price" label="参考价格(元)" />
+            <el-table-column label="操作">
+              <!-- 自定义列模板 -->
+              <template #default="scope">
+                <el-button size="small" @click="addLens(scope.row.id)"
+                  >添加</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-        <el-table :data="lensInfo.widePrime" stripe border style="width: 100%">
-          <el-table-column prop="brand" label="品牌" />
-          <el-table-column prop="name" label="型号" />
-          <el-table-column prop="frame" label="画幅" />
-          <el-table-column prop="min_focal" label="焦段" />
-          <el-table-column prop="max_aperture" label="最大光圈" />
-          <el-table-column prop="price" label="参考价格(元)" />
-          <el-table-column label="操作">
-            <!-- 自定义列模板 -->
-            <template #default="scope">
-              <el-button size="small" @click="addLens(scope.row.id)"
-                >添加</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <div v-if="lensInfo.wideZoom.length" class="lens">
-        <div class="tips">
-          广角变焦镜头，常用于风光拍摄，或者在狭小的摄影棚中进行人像摄影
+        <div v-if="lensInfo.widePrime.length" class="lens">
+          <div class="tips">
+            广角定焦镜头，常用于风光拍摄，或者在狭小的摄影棚中进行人像摄影
+          </div>
+          <el-table
+            :data="lensInfo.widePrime"
+            stripe
+            border
+            style="width: 100%"
+          >
+            <el-table-column prop="brand" label="品牌" />
+            <el-table-column prop="name" label="型号" />
+            <el-table-column prop="frame" label="画幅" />
+            <el-table-column prop="min_focal" label="焦段" />
+            <el-table-column prop="max_aperture" label="最大光圈" />
+            <el-table-column prop="price" label="参考价格(元)" />
+            <el-table-column label="操作">
+              <!-- 自定义列模板 -->
+              <template #default="scope">
+                <el-button size="small" @click="addLens(scope.row.id)"
+                  >添加</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-        <el-table :data="lensInfo.wideZoom" stripe border style="width: 100%">
-          <el-table-column prop="brand" label="品牌" />
-          <el-table-column prop="name" label="型号" />
-          <el-table-column prop="frame" label="画幅" />
-          <el-table-column prop="min_focal" label="焦段" />
-          <el-table-column prop="max_aperture" label="最大光圈" />
-          <el-table-column prop="price" label="参考价格(元)" />
-          <el-table-column label="操作">
-            <!-- 自定义列模板 -->
-            <template #default="scope">
-              <el-button size="small" @click="addLens(scope.row.id)"
-                >添加</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </div>
+        <div v-if="lensInfo.wideZoom.length" class="lens">
+          <div class="tips">
+            广角变焦镜头，常用于风光拍摄，或者在狭小的摄影棚中进行人像摄影
+          </div>
+          <el-table :data="lensInfo.wideZoom" stripe border style="width: 100%">
+            <el-table-column prop="brand" label="品牌" />
+            <el-table-column prop="name" label="型号" />
+            <el-table-column prop="frame" label="画幅" />
+            <el-table-column prop="min_focal" label="焦段" />
+            <el-table-column prop="max_aperture" label="最大光圈" />
+            <el-table-column prop="price" label="参考价格(元)" />
+            <el-table-column label="操作">
+              <!-- 自定义列模板 -->
+              <template #default="scope">
+                <el-button size="small" @click="addLens(scope.row.id)"
+                  >添加</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
   <div class="bg"></div>
 </template>
@@ -234,6 +271,8 @@ import { ElMessage } from "element-plus";
 moment.locale("zh-cn", momentCN);
 const router = useRouter();
 const route = useRoute();
+
+const activeTab = ref("camera");
 
 const mountOptions = [
   {
@@ -384,7 +423,67 @@ const addCombine = async () => {
 .main-container {
   width: 1200px;
   margin: auto;
-  background-color: #cfa;
+  .combine-devices {
+    .camera {
+      .el-card {
+        margin: 10px;
+        height: 380px;
+        .logo {
+          display: block;
+          height: 200px;
+          width: 200px;
+          margin: auto;
+        }
+        .name {
+          margin-top: 10px;
+          font-size: 25px;
+          color: #666;
+          text-align: center;
+        }
+        .el-button {
+          width: 300px;
+          margin: 10px auto;
+          display: block;
+        }
+      }
+    }
+    .lens {
+      .el-card {
+        margin: 10px;
+        height: 380px;
+        .item {
+          display: flex;
+          margin-top: 5px;
+          align-items: center;
+          .logo {
+            padding: 2px;
+            border-radius: 3px;
+            border: #dcdfe6 solid 1px;
+            height: 40px;
+            // vertical-align: middle;
+          }
+          .name {
+            margin-left: 10px;
+            font-size: 20px;
+            color: #333;
+          }
+          .el-button {
+            width: 80px;
+            margin-left: auto;
+          }
+        }
+      }
+    }
+    .remark {
+      margin: 10px;
+    }
+  }
+  .select {
+    margin: 10px;
+  }
+  .el-tabs {
+    margin: 10px;
+  }
 }
 
 .bg {

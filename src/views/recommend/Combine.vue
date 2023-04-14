@@ -4,211 +4,289 @@
     <div class="combine-devices">
       <el-row>
         <el-col :span="8" class="camera">
-          <el-card v-if="combineInfo.camera_id != ''"
-            >{{ combineTemp.camera.name }}
-            <el-button @click="deleteCamera">移除</el-button>
+          <el-card shadow="hover">
+            <template #header>
+              <div class="card-header">
+                <span>相机</span>
+              </div>
+            </template>
+            <div v-if="combineInfo.camera_id != ''">
+              <el-image
+                class="logo"
+                :src="`/src/assets/logo/${combineTemp.camera.brand}.png`"
+                fit="cover"
+              />
+              <div class="name">
+                {{ combineTemp.camera.brand + " " + combineTemp.camera.name }}
+              </div>
+              <el-button @click="deleteCamera">移除</el-button>
+            </div>
           </el-card>
-          <el-card v-else>没相机</el-card>
         </el-col>
         <el-col :span="16" class="lens">
-          <el-card v-if="combineInfo.lensGroup.length">
-            <div v-for="(lens, index) in combineTemp.lensGroup" :key="index">
-              {{ lens.name }}
+          <el-card shadow="hover">
+            <template #header>
+              <div class="card-header">
+                <span>镜头</span>
+              </div>
+            </template>
+            <div
+              v-for="(lens, index) in combineTemp.lensGroup"
+              :key="index"
+              class="item"
+            >
+              <span>
+                <el-image
+                  class="logo"
+                  :src="`/src/assets/logo/${lens.brand}.png`"
+                  fit="cover"
+                />
+              </span>
+              <span class="name">
+                {{ lens.brand + " " + lens.name }}
+              </span>
               <el-button @click="deleteLens(lens.id)">移除</el-button>
             </div>
           </el-card>
-          <el-card v-else>没镜头</el-card>
         </el-col>
       </el-row>
+      <el-card class="remark" shadow="hover">
+        <el-input
+          v-model="combineInfo.title"
+          maxlength="20"
+          show-word-limit
+          placeholder="输入标题"
+        />
+        <el-input
+          v-model="combineInfo.content"
+          maxlength="200"
+          :rows="2"
+          type="textarea"
+          placeholder="请输入备注"
+          show-word-limit
+        />
+        <el-button @click="addCombine">提交</el-button>
+      </el-card>
     </div>
-    <!-- 备注 -->
-    <div class="remarks">
-      <el-input
-        v-model="combineInfo.title"
-        maxlength="20"
-        show-word-limit
-        placeholder="输入标题"
-      />
-      <el-input
-        v-model="combineInfo.content"
-        maxlength="200"
-        :rows="2"
-        type="textarea"
-        placeholder="请输入备注"
-        show-word-limit
-      />
-    </div>
-    <div class="submit">
-      <el-button @click="addCombine">提交</el-button>
-    </div>
-    <!-- 选择相机 -->
-    <div class="camera-filter">
-      <el-form :model="cameraFilter" :rules="cameraFilterRules">
-        <el-form-item label="按型号搜索">
-          <el-input v-model="cameraFilter.keyword" placeholder="通过型号查找" />
-        </el-form-item>
-        <el-form-item label="卡口">
-          <el-select
-            v-model="cameraFilter.mount"
-            clearable
-            placeholder="请选择"
-          >
-            <el-option
-              v-for="item in mountOptions"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="传感器尺寸">
-          <el-select
-            v-model="cameraFilter.frame"
-            clearable
-            placeholder="请选择"
-          >
-            <el-option label="全画幅" value="FX" />
-            <el-option label="半画幅" value="DX" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="min像素(万)" prop="minPixel">
-          <el-input-number
-            v-model="cameraFilter.minPixel"
-            controls-position="right"
+
+    <el-tabs v-model="activeTab" type="border-card">
+      <el-tab-pane label="选择相机" name="camera">
+        <div class="camera-filter">
+          <el-form :model="cameraFilter" :rules="cameraFilterRules" inline>
+            <el-form-item label="按型号搜索">
+              <el-input
+                v-model="cameraFilter.keyword"
+                placeholder="通过型号查找"
+              />
+            </el-form-item>
+            <el-form-item label="卡口">
+              <el-select
+                v-model="cameraFilter.mount"
+                clearable
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in mountOptions"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="传感器尺寸">
+              <el-select
+                v-model="cameraFilter.frame"
+                clearable
+                placeholder="请选择"
+              >
+                <el-option label="全画幅" value="FX" />
+                <el-option label="半画幅" value="DX" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="像素区间(万)">
+              <el-col :span="11">
+                <el-form-item prop="minPixel">
+                  <el-input-number
+                    v-model="cameraFilter.minPixel"
+                    controls-position="right"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="2"><span>-</span></el-col>
+              <el-col :span="11">
+                <el-form-item prop="maxPixel">
+                  <el-input-number
+                    v-model="cameraFilter.maxPixel"
+                    controls-position="right"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="价格区间(元)">
+              <el-col :span="11">
+                <el-form-item prop="minPrice">
+                  <el-input-number
+                    v-model="cameraFilter.minPrice"
+                    controls-position="right"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="2"><span>-</span></el-col>
+              <el-col :span="11">
+                <el-form-item prop="maxPrice">
+                  <el-input-number
+                    v-model="cameraFilter.maxPrice"
+                    controls-position="right"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-form-item>
+          </el-form>
+          <el-button @click="loadCamera">筛选</el-button>
+          <el-table :data="cameraInfo" stripe border style="width: 100%">
+            <el-table-column prop="brand" label="品牌" />
+            <el-table-column prop="name" label="型号" />
+            <el-table-column prop="mount" label="卡口" />
+            <el-table-column prop="frame" label="传感器尺寸" />
+            <el-table-column prop="w_pixel" label="像素(万)" />
+            <el-table-column prop="score" label="评分" />
+            <el-table-column prop="price" label="参考价格(元)" />
+            <el-table-column label="操作">
+              <!-- 自定义列模板 -->
+              <template #default="scope">
+                <el-button size="small" @click="addCamera(scope.row.id)">
+                  添加
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="cameraPageInfo.count"
+            :page-size="cameraPageInfo.pageSize"
+            v-model:current-page="cameraPageInfo.page"
+            @update:current-page="loadCamera()"
           />
-        </el-form-item>
-        <el-form-item label="max像素(万)" prop="maxPixel">
-          <el-input-number
-            v-model="cameraFilter.maxPixel"
-            controls-position="right"
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="选择镜头" name="lens">
+        <div class="lens-filter">
+          <el-form :model="lensFilter" :rules="lensFilterRules" inline>
+            <el-form-item label="按型号搜索">
+              <el-input
+                v-model="lensFilter.keyword"
+                placeholder="通过型号查找"
+              />
+            </el-form-item>
+            <el-form-item label="卡口">
+              <el-select
+                v-model="lensFilter.mount"
+                clearable
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in mountOptions"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="画幅">
+              <el-select
+                v-model="lensFilter.frame"
+                clearable
+                placeholder="请选择"
+              >
+                <el-option label="全画幅" value="FX" />
+                <el-option label="半画幅" value="DX" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="定焦/变焦">
+              <el-select
+                v-model="lensFilter.zoom"
+                clearable
+                placeholder="请选择"
+              >
+                <el-option label="变焦" value="1" />
+                <el-option label="定焦" value="0" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="光圈不小于" prop="maxAperture">
+              <el-input-number
+                v-model="lensFilter.maxAperture"
+                controls-position="right"
+                :precision="1"
+                :step="0.1"
+              />
+            </el-form-item>
+            <el-form-item label="焦距区间(mm)">
+              <el-col :span="11">
+                <el-form-item prop="minFocal">
+                  <el-input-number
+                    v-model="lensFilter.minFocal"
+                    controls-position="right"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="2"><span>-</span></el-col>
+              <el-col :span="11">
+                <el-form-item prop="maxFocal">
+                  <el-input-number
+                    v-model="lensFilter.maxFocal"
+                    controls-position="right"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="价格区间(元)">
+              <el-col :span="11">
+                <el-form-item prop="minPrice">
+                  <el-input-number
+                    v-model="lensFilter.minPrice"
+                    controls-position="right"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="2"><span>-</span></el-col>
+              <el-col :span="11">
+                <el-form-item prop="maxPrice">
+                  <el-input-number
+                    v-model="lensFilter.maxPrice"
+                    controls-position="right"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-form-item>
+          </el-form>
+          <el-button @click="loadLens">筛选</el-button>
+          <el-table :data="lensInfo" stripe border style="width: 100%">
+            <el-table-column prop="brand" label="品牌" />
+            <el-table-column prop="name" label="型号" />
+            <el-table-column prop="mount" label="卡口" />
+            <el-table-column prop="frame" label="画幅" />
+            <el-table-column prop="min_focal" label="焦段" />
+            <el-table-column prop="max_aperture" label="最大光圈" />
+            <el-table-column prop="price" label="参考价格(元)" />
+            <el-table-column label="操作">
+              <!-- 自定义列模板 -->
+              <template #default="scope">
+                <el-button size="small" @click="addLens(scope.row.id)"
+                  >添加</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="lensPageInfo.count"
+            :page-size="lensPageInfo.pageSize"
+            v-model:current-page="lensPageInfo.page"
+            @update:current-page="loadLens()"
           />
-        </el-form-item>
-        <el-form-item label="min价格" prop="minPrice">
-          <el-input-number
-            v-model="cameraFilter.minPrice"
-            controls-position="right"
-          />
-        </el-form-item>
-        <el-form-item label="max价格" prop="maxPrice">
-          <el-input-number
-            v-model="cameraFilter.maxPrice"
-            controls-position="right"
-          />
-        </el-form-item>
-      </el-form>
-      <el-button @click="loadCamera">筛选</el-button>
-      <el-table :data="cameraInfo" stripe border style="width: 100%">
-        <el-table-column prop="brand" label="品牌" />
-        <el-table-column prop="name" label="型号" />
-        <el-table-column prop="mount" label="卡口" />
-        <el-table-column prop="frame" label="传感器尺寸" />
-        <el-table-column prop="w_pixel" label="像素(万)" />
-        <el-table-column prop="score" label="评分" />
-        <el-table-column prop="price" label="参考价格(元)" />
-        <el-table-column label="操作">
-          <!-- 自定义列模板 -->
-          <template #default="scope">
-            <el-button size="small" @click="addCamera(scope.row.id)"
-              >添加</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="cameraPageInfo.count"
-        :page-size="cameraPageInfo.pageSize"
-        v-model:current-page="cameraPageInfo.page"
-        @update:current-page="loadCamera()"
-      />
-    </div>
-    <!-- 选择镜头 -->
-    <div class="lens-filter">
-      <el-form :model="lensFilter" :rules="lensFilterRules">
-        <el-form-item label="按型号搜索">
-          <el-input v-model="lensFilter.keyword" placeholder="通过型号查找" />
-        </el-form-item>
-        <el-form-item label="卡口">
-          <el-select v-model="lensFilter.mount" clearable placeholder="请选择">
-            <el-option
-              v-for="item in mountOptions"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="画幅">
-          <el-select v-model="lensFilter.frame" clearable placeholder="请选择">
-            <el-option label="全画幅" value="FX" />
-            <el-option label="半画幅" value="DX" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="定焦/变焦">
-          <el-select v-model="lensFilter.zoom" clearable placeholder="请选择">
-            <el-option label="变焦" value="1" />
-            <el-option label="定焦" value="0" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="光圈不小于" prop="maxAperture">
-          <el-input-number
-            v-model="lensFilter.maxAperture"
-            controls-position="right"
-            :precision="1"
-            :step="0.1"
-          />
-        </el-form-item>
-        <el-form-item label="min焦距" prop="minFocal">
-          <el-input-number
-            v-model="lensFilter.minFocal"
-            controls-position="right"
-          />
-        </el-form-item>
-        <el-form-item label="max焦距" prop="maxFocal">
-          <el-input-number
-            v-model="lensFilter.maxFocal"
-            controls-position="right"
-          />
-        </el-form-item>
-        <el-form-item label="min价格" prop="minPrice">
-          <el-input-number
-            v-model="lensFilter.minPrice"
-            controls-position="right"
-          />
-        </el-form-item>
-        <el-form-item label="max价格" prop="maxPrice">
-          <el-input-number
-            v-model="lensFilter.maxPrice"
-            controls-position="right"
-          />
-        </el-form-item>
-      </el-form>
-      <el-button @click="loadLens">筛选</el-button>
-      <el-table :data="lensInfo" stripe border style="width: 100%">
-        <el-table-column prop="brand" label="品牌" />
-        <el-table-column prop="name" label="型号" />
-        <el-table-column prop="mount" label="卡口" />
-        <el-table-column prop="frame" label="画幅" />
-        <el-table-column prop="min_focal" label="焦段" />
-        <el-table-column prop="max_aperture" label="最大光圈" />
-        <el-table-column prop="price" label="参考价格(元)" />
-        <el-table-column label="操作">
-          <!-- 自定义列模板 -->
-          <template #default="scope">
-            <el-button size="small" @click="addLens(scope.row.id)"
-              >添加</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="lensPageInfo.count"
-        :page-size="lensPageInfo.pageSize"
-        v-model:current-page="lensPageInfo.page"
-        @update:current-page="loadLens()"
-      />
-    </div>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
   <div class="bg"></div>
 </template>
@@ -224,6 +302,8 @@ import momentCN from "../../utils/monentCN";
 import tableToChinese from "../../utils/tableToChinese";
 import { ElMessage } from "element-plus";
 moment.locale("zh-cn", momentCN);
+
+const activeTab = ref("camera");
 
 const mountOptions = [
   { value: "E", label: "E 索尼" },
@@ -490,7 +570,64 @@ const addCombine = async () => {
 .main-container {
   width: 1200px;
   margin: auto;
-  background-color: #bfa;
+  .combine-devices {
+    .camera {
+      .el-card {
+        margin: 10px;
+        height: 380px;
+        .logo {
+          display: block;
+          height: 200px;
+          width: 200px;
+          margin: auto;
+        }
+        .name {
+          margin-top: 10px;
+          font-size: 25px;
+          color: #666;
+          text-align: center;
+        }
+        .el-button {
+          width: 300px;
+          margin: 10px auto;
+          display: block;
+        }
+      }
+    }
+    .lens {
+      .el-card {
+        margin: 10px;
+        height: 380px;
+        .item {
+          display: flex;
+          margin-top: 5px;
+          align-items: center;
+          .logo {
+            padding: 2px;
+            border-radius: 3px;
+            border: #dcdfe6 solid 1px;
+            height: 40px;
+            // vertical-align: middle;
+          }
+          .name {
+            margin-left: 10px;
+            font-size: 20px;
+            color: #333;
+          }
+          .el-button {
+            width: 80px;
+            margin-left: auto;
+          }
+        }
+      }
+    }
+    .remark {
+      margin: 10px;
+    }
+  }
+  .el-tabs {
+    margin: 10px;
+  }
 }
 
 .bg {

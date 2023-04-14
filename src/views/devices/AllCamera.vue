@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <!-- 选择相机 -->
-    <div class="camera-filter">
+    <el-card class="camera-filter" shadow="hover">
       <el-form :model="cameraFilter" :rules="cameraFilterRules" inline>
         <el-form-item label="按型号搜索">
           <el-input v-model="cameraFilter.keyword" placeholder="通过型号查找" />
@@ -68,10 +68,10 @@
           </el-col>
         </el-form-item>
       </el-form>
-      <el-button @click="loadCamera">筛选</el-button>
-    </div>
+      <el-button @click="loadCamera">查找</el-button>
+    </el-card>
     <!-- 相机表格 -->
-    <div class="camera-table">
+    <el-card class="camera-table" shadow="hover">
       <el-table :data="cameraInfo" stripe border style="width: 100%">
         <el-table-column prop="brand" label="品牌" />
         <el-table-column label="型号">
@@ -96,7 +96,7 @@
         v-model:current-page="pageInfo.page"
         @update:current-page="loadCamera()"
       />
-    </div>
+    </el-card>
   </div>
   <div class="bg"></div>
 </template>
@@ -223,9 +223,11 @@ const loadCamera = async () => {
 .main-container {
   width: 1200px;
   margin: auto;
+  .camera-filter {
+    margin: 10px;
+  }
   .camera-table {
-    margin: auto;
-    width: 1200px;
+    margin: 10px;
   }
 }
 

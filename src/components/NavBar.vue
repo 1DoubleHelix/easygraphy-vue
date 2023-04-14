@@ -37,7 +37,7 @@
         </el-col>
         <el-col :span="4" class="login-menu">
           <div class="user-avatar" v-if="token">
-            <el-popover :visible="visible" placement="bottom" :width="150">
+            <el-popover placement="bottom" :width="150">
               <div style="text-align: center; margin: 0">
                 <p
                   style="margin-bottom: 10px; cursor: pointer"
@@ -48,9 +48,7 @@
                 <p style="cursor: pointer" @click="logout">退出</p>
               </div>
               <template #reference>
-                <el-button @click="visible = true">{{
-                  store.username
-                }}</el-button>
+                <el-button>{{ store.username }}</el-button>
               </template>
             </el-popover>
           </div>

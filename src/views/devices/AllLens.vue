@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <!-- 选择镜头 -->
-    <div class="lens-filter">
+    <el-card class="lens-filter" shadow="hover">
       <el-form :model="lensFilter" :rules="lensFilterRules" inline>
         <el-form-item label="按型号搜索">
           <el-input v-model="lensFilter.keyword" placeholder="通过型号查找" />
@@ -75,8 +75,9 @@
         </el-form-item>
       </el-form>
       <el-button @click="loadLens">筛选</el-button>
-    </div>
-    <div class="lens-table">
+    </el-card>
+
+    <el-card class="lens-table" shadow="hover">
       <el-table :data="lensInfo" stripe border style="width: 100%">
         <el-table-column prop="brand" label="品牌" />
         <!--自定义列模板 实现跳转-->
@@ -102,7 +103,7 @@
         v-model:current-page="pageInfo.page"
         @update:current-page="loadLens()"
       />
-    </div>
+    </el-card>
   </div>
   <div class="bg"></div>
 </template>
@@ -232,9 +233,11 @@ const loadLens = async () => {
 .main-container {
   width: 1200px;
   margin: auto;
+  .lens-filter {
+    margin: 10px;
+  }
   .lens-table {
-    margin: auto;
-    width: 1200px;
+    margin: 10px;
   }
 }
 .bg {
