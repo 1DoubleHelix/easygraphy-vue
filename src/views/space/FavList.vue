@@ -1,12 +1,7 @@
 <template>
   <div class="main-container">
-    <n-tabs
-      v-model:value="activeTab"
-      @update:value="handleTabChange"
-      type="line"
-      animated
-    >
-      <n-tab-pane tab="文章" name="blog">
+    <el-tabs v-model="activeTab" @tab-change="handleTabChange" type="card">
+      <el-tab-pane label="文章" name="blog">
         <div class="blog-list">
           <div v-for="(blog, index) in listInfo">
             <el-card>
@@ -26,54 +21,60 @@
             </el-card>
           </div>
         </div>
-      </n-tab-pane>
-      <n-tab-pane tab="相机" name="camera">
-        <div class="camera-list">
-          <div v-for="(camera, index) in listInfo">
-            <el-card>
-              <div class="header">
-                <span @click="toDetail('camera', camera.camera_id)">{{
-                  camera.brand + " " + camera.name
-                }}</span>
-                <el-popconfirm
-                  title="确认取消?"
-                  confirm-button-text="确认"
-                  cancel-button-text="取消"
-                  @confirm="deleteFavorite(camera.id)"
-                >
-                  <template #reference>
-                    <el-button>取消收藏</el-button>
-                  </template>
-                </el-popconfirm>
-              </div>
-            </el-card>
+      </el-tab-pane>
+      <el-tab-pane label="相机" name="camera">
+        <div class="device-list">
+          <div v-for="(camera, index) in listInfo" class="device">
+            <span>
+              <el-image
+                class="logo"
+                :src="`/src/assets/logo/${camera.brand}.png`"
+                fit="cover"
+              />
+            </span>
+            <span @click="toDetail('camera', camera.camera_id)" class="name">
+              {{ camera.brand + " " + camera.name }}
+            </span>
+            <el-popconfirm
+              title="确认取消?"
+              confirm-button-text="确认"
+              cancel-button-text="取消"
+              @confirm="deleteFavorite(camera.id)"
+            >
+              <template #reference>
+                <el-button>取消收藏</el-button>
+              </template>
+            </el-popconfirm>
           </div>
         </div>
-      </n-tab-pane>
-      <n-tab-pane tab="镜头" name="lens">
-        <div class="lens-list">
-          <div v-for="(lens, index) in listInfo">
-            <el-card>
-              <div class="header">
-                <span @click="toDetail('lens', lens.lens_id)">{{
-                  lens.brand + " " + lens.name
-                }}</span>
-                <el-popconfirm
-                  title="确认取消?"
-                  confirm-button-text="确认"
-                  cancel-button-text="取消"
-                  @confirm="deleteFavorite(lens.id)"
-                >
-                  <template #reference>
-                    <el-button>取消收藏</el-button>
-                  </template>
-                </el-popconfirm>
-              </div>
-            </el-card>
+      </el-tab-pane>
+      <el-tab-pane label="镜头" name="lens">
+        <div class="device-list">
+          <div v-for="(lens, index) in listInfo" class="device">
+            <span>
+              <el-image
+                class="logo"
+                :src="`/src/assets/logo/${lens.brand}.png`"
+                fit="cover"
+              />
+            </span>
+            <span @click="toDetail('lens', lens.lens_id)" class="name">
+              {{ lens.brand + " " + lens.name }}
+            </span>
+            <el-popconfirm
+              title="确认取消?"
+              confirm-button-text="确认"
+              cancel-button-text="取消"
+              @confirm="deleteFavorite(lens.id)"
+            >
+              <template #reference>
+                <el-button>取消收藏</el-button>
+              </template>
+            </el-popconfirm>
           </div>
         </div>
-      </n-tab-pane>
-      <n-tab-pane tab="组合" name="combine">
+      </el-tab-pane>
+      <el-tab-pane label="组合" name="combine">
         <div class="combine-list">
           <div v-for="(combine, index) in listInfo">
             <el-card>
@@ -95,8 +96,8 @@
             </el-card>
           </div>
         </div>
-      </n-tab-pane>
-    </n-tabs>
+      </el-tab-pane>
+    </el-tabs>
     <el-pagination
       background
       layout="prev, pager, next"
@@ -134,11 +135,6 @@ onMounted(() => {
 const activeTab = ref("blog");
 const listInfo = ref({});
 
-const blogInfo = ref({});
-const cameraInfo = ref({});
-const lensInfo = ref({});
-const combineInfo = ref({});
-
 // 分页参数
 const pageInfo = reactive({
   page: 1,
@@ -159,8 +155,6 @@ const loadInfo = async () => {
     pageSize: pageInfo.pageSize,
     kind: activeTab.value,
   });
-  console.log(activeTab.value);
-  console.log(res);
   let rows = res.data.rows;
   for (let row of rows) {
     row.createTime = moment(row.createTime).format("YYYY-MM-DD HH:mm:ss");
@@ -202,7 +196,33 @@ const toDetail = (kind, id) => {
 <style lang="scss" scoped>
 .main-container {
   width: 100%;
-  height: 100%;
   background-color: #fff;
+  .device-list {
+    .device {
+      margin-top: 10px;
+      height: 50px;
+      border: #e4e7ed 1px solid;
+      border-radius: 5px;
+
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      .logo {
+        height: 40px;
+        margin-left: 10px;
+        margin-top: 6px;
+      }
+      .name {
+        margin-left: 10px;
+        font-size: 16px;
+        color: #333;
+      }
+      .el-button {
+        width: 80px;
+        margin-left: auto;
+        margin-right: 20px;
+      }
+    }
+  }
 }
 </style>

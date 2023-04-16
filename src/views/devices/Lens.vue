@@ -2,29 +2,26 @@
   <!-- 展示区 -->
   <div class="lens-info">
     <el-row>
-      <el-col :span="8">
+      <el-col :span="7">
         <div class="device-logo">
-          <img :src="`/src/assets/logo/${lensInfo.brand}.png`" alt="Logo" />
+          <el-image
+            fit="cover"
+            :src="`/src/assets/logo/${lensInfo.brand}.png`"
+          />
         </div>
       </el-col>
-      <el-col :span="16">
+      <el-col :span="17">
         <div class="device-main">
           <div class="name">{{ lensInfo.name }}</div>
-          发布年份:{{ lensInfo.release_year }}
-          <br />
-          分数:{{ lensInfo.score }}
-        </div>
-        <div class="favorite" @click="favorite">
-          <el-icon v-if="favoriteId === ''" :size="20">
-            <Star />
-          </el-icon>
-          <el-icon v-else :size="20">
-            <StarFilled />
-          </el-icon>
+          <span class="year"> 发布年份:{{ lensInfo.release_year }} </span>
+          <div v-if="token" class="favorite" @click="favorite">
+            <el-button v-if="favoriteId === ''" :size="20"> 收藏 </el-button>
+            <el-button v-else :size="20"> 取消收藏 </el-button>
+          </div>
         </div>
       </el-col>
     </el-row>
-    <div class="device-info">
+    <el-card shadow="none" class="device-info">
       <el-descriptions title="详细参数" border size="small">
         <el-descriptions-item label="支持卡口">{{ lensInfo.mount }}</el-descriptions-item>
         <el-descriptions-item label="传感器尺寸">{{ lensInfo.frame }}</el-descriptions-item>
@@ -38,12 +35,13 @@
         <el-descriptions-item label="放大倍率">{{ lensInfo.magnification }}</el-descriptions-item>
         <el-descriptions-item label="备注">{{ lensInfo.other }}</el-descriptions-item>
       </el-descriptions>
-    </div>
+    </el-card>
   </div>
   <!-- 评论区 -->
   <div class="comment-area">
     <Comment type="lens" :id="route.query.id" />
   </div>
+  <div class="bg"></div>
 </template>
 
 <script setup>
@@ -52,6 +50,8 @@ import { useRouter, useRoute } from "vue-router";
 import * as api from "../../api/index.js";
 import { Star, StarFilled } from "@element-plus/icons-vue";
 import Comment from "../../components/Comment.vue";
+import { userStore } from "../../stores/userStore.js";
+import { storeToRefs } from "pinia";
 
 // 使用 moment 时间戳格式化
 import moment from "moment";
@@ -61,6 +61,9 @@ moment.locale("zh-cn", momentCN);
 
 const router = useRouter();
 const route = useRoute();
+
+const store = userStore();
+let { token } = storeToRefs(store);
 
 let lensInfo = ref({});
 let commentsInfo = ref([]);
@@ -128,57 +131,50 @@ const favorite = async () => {
   .device-logo {
     width: 300px;
     height: 300px;
-
-    img {
+    background-color: #fff;
+    .el-image {
       width: 270px;
       height: 270px;
-      display: block;
-      padding: 15px;
-      margin: 0 auto;
+      margin: 15px;
     }
   }
-
   .device-main {
-    margin: auto;
+    display: flex;
     text-align: center;
-
+    flex-direction: column;
+    margin: auto;
     .name {
+      margin-top: 30px;
       font-family: arial, sans-serif;
       font-size: 30px;
+      color: #333;
       font-weight: bold;
     }
+    .year {
+      margin-top: 10px;
+      font-size: 20px;
+      color: #333;
+      font-weight: bold;
+    }
+    .favorite {
+      margin-top: 50px;
+      .el-button {
+        width: 100px;
+      }
+    }
   }
-
   .device-info {
     margin-top: 20px;
-    padding: 0 5px;
-    .el-row {
-      margin-bottom: 10px;
-    }
-    .info-card {
-      height: 40px;
-      border-radius: 6px;
-      background: #f6f6f6;
-
-      font-size: 18px;
-      text-align: center;
-    }
   }
 }
-.comment-area {
-  width: 1200px;
-  margin: auto;
-  margin-top: 20px;
-  background-color: #bfa;
-  height: 300px;
-  .add-comment {
-    background-color: blanchedalmond;
-  }
-
-  .comments {
-    .el-card {
-      margin-top: 20px;
-    }
-  }
+.bg {
+  position: fixed;
+  top: 0;
+  z-index: -1;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f2f3f5;
+  // background-image: url("@/assets/picture/12.jpg");
+  // background-size: cover;
 }
 </style>

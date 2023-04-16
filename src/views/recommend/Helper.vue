@@ -460,7 +460,6 @@ const addCombine = async () => {
             border-radius: 3px;
             border: #dcdfe6 solid 1px;
             height: 40px;
-            // vertical-align: middle;
           }
           .name {
             margin-left: 10px;

@@ -3,10 +3,9 @@
     <el-container>
       <el-aside width="200px">
         <div class="avatar">
-          <!-- <img src="../../assets/avatar/default.jpeg" alt="avatar" /> -->
           <img :src="avatarUrl" alt="头像" />
         </div>
-        <p class="nickname">{{ store.nickname }}</p>
+        <div class="nickname">{{ store.nickname }}</div>
         <el-menu
           :default-active="activeIndex"
           background-color="#fff"
@@ -14,10 +13,10 @@
           active-text-color="#000"
           router
         >
+          <el-menu-item index="/space/info">个人信息</el-menu-item>
           <el-menu-item index="/space/blog">文章</el-menu-item>
           <el-menu-item index="/space/combine">我的组合</el-menu-item>
           <el-menu-item index="/space/favlist">全部收藏</el-menu-item>
-          <el-menu-item index="/space/info">个人信息</el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -58,21 +57,28 @@ onMounted(() => {
   // background-color: #bfa;
   .el-container {
     .el-aside {
-      background-color: rgb(151, 132, 219);
+      border-right: #dcdfe6 1px solid;
+      .el-menu {
+        border-right: none;
+      }
       .avatar {
         margin-top: 20px;
         background-color: #fff;
         display: flex;
         justify-content: center;
         img {
-          width: 150px;
-          height: 150px;
-          border-radius: 20px;
+          width: 130px;
+          height: 130px;
+          border-radius: 50%;
           object-fit: cover;
         }
       }
       .nickname {
+        margin-top: 10px;
+        height: 20px;
+        font-size: 20px;
         text-align: center;
+        color: #666;
       }
     }
   }

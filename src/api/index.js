@@ -5,12 +5,13 @@ export const test = (params) => request.get("/api/test/test", params)
 
 // admin
 export const adminLogin = (params) => request.post("/api/admin/login", params)
+export const adminUserUpdate = (params) => request.put("/api/admin/update", params)
 
 // user
 export const login = (params) => request.post("/api/user/login", params)
 export const register = (params) => request.post("/api/user/register", params)
 export const userList = (params) => request.get(`/api/user/list?${qs.stringify(params)}`)
-export const userUpdate = (params) => request.put("/api/user/update", params)
+export const userUpdate = (params) => request.put("/user/update", params)
 export const userDelete = (params) => request.delete(`/api/user/delete?id=${params}`)
 
 // camera
@@ -48,7 +49,7 @@ export const blogAdd = (params) => request.post("/blog/add", params)
 export const tagAdd = (params) => request.post("/tag/add", params)
 export const tagDelete = (params) => request.delete(`/tag/delete?id=${params}`)
 export const tagUpdate = (params) => request.put("/tag/update", params)
-export const tagList = (params) => request.get("/api/tag/list")
+export const tagList = () => request.get("/api/tag/list")
 
 // favorite
 export const favoriteAdd = (params) => request.post("/favorite/add", params)

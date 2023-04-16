@@ -138,7 +138,7 @@ const toUpdate = (row) => {
 };
 // 修改用户信息
 const updateUser = async () => {
-  const res = await api.userUpdate(updateUserInfo);
+  const res = await api.adminUserUpdate(updateUserInfo);
   if (res.code === 200) {
     ElMessage.success(res.msg);
     loadUser();
