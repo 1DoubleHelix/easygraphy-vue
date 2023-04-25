@@ -1,7 +1,7 @@
 <!-- 导航栏 -->
 <template>
   <div>
-    <el-header class="nav-container">
+    <div class="nav-container">
       <!-- 导航栏 -->
       <el-row>
         <el-col :span="4" class="logo">
@@ -57,13 +57,13 @@
           </div>
         </el-col>
       </el-row>
-    </el-header>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { ref, reactive, inject, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { userStore } from "../stores/userStore.js";
 

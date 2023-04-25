@@ -328,7 +328,7 @@ const cameraFilter = reactive({
 const cameraInfo = ref([]);
 const cameraPageInfo = reactive({
   page: 1,
-  pageSize: 8,
+  pageSize: 17,
   count: 0,
 });
 
@@ -346,7 +346,7 @@ const lensFilter = reactive({
 const lensInfo = ref([]);
 const lensPageInfo = reactive({
   page: 1,
-  pageSize: 10,
+  pageSize: 17,
   count: 0,
 });
 
@@ -561,7 +561,11 @@ const deleteLens = (id) => {
 
 const addCombine = async () => {
   let res = await api.addCombine(combineInfo);
-  console.log(combineInfo.lensGroup);
+  if (res.code === 200) {
+    ElMessage.success("添加组合成功");
+  } else {
+    ElMessage.error("添加组合失败");
+  }
   console.log(res);
 };
 </script>

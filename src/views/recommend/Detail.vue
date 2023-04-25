@@ -48,6 +48,10 @@
           </el-card>
         </el-col>
       </el-row>
+      <div v-if="token" class="favorite" @click="favorite">
+        <el-button v-if="favoriteId === ''"> 收藏 </el-button>
+        <el-button v-else> 取消收藏 </el-button>
+      </div>
       <div class="title">{{ combineInfo.combine.title }}</div>
       <div class="content">{{ combineInfo.combine.content }}</div>
     </div>
@@ -59,9 +63,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import * as api from "../../api/index.js";
+import { userStore } from "../../stores/userStore.js";
+import { storeToRefs } from "pinia";
 
 // 使用 moment 时间戳格式化
 import moment from "moment";
@@ -73,6 +79,9 @@ moment.locale("zh-cn", momentCN);
 const router = useRouter();
 const route = useRoute();
 
+const store = userStore();
+let { token } = storeToRefs(store);
+
 let combineInfo = ref({
   combine: {},
   camera: {},
@@ -80,10 +89,11 @@ let combineInfo = ref({
 });
 let commentsInfo = ref([]);
 const textarea = ref("");
+const favoriteId = ref("");
 
 onMounted(() => {
   loadCombine();
-  laodComments();
+  loadFavorite();
 });
 
 // 加载组合数据
@@ -93,29 +103,41 @@ const loadCombine = async () => {
   console.log(combineInfo.value);
 };
 
-// 加载评论区
-const laodComments = async () => {
-  let res = await api.searchComment({
+// 加载收藏状态
+const loadFavorite = async () => {
+  let res = await api.favoriteList({
     kind: "combine",
     id: route.query.id,
   });
+  // 寻找收藏条目
+  let index = res.data.rows.findIndex(
+    (item) => item.combine_id == route.query.id
+  );
 
-  // 时间戳格式化
-  let comments = res.data.rows;
-  for (let comment of comments) {
-    comment.create_time = moment(comment.create_time).format("lll");
+  if (index != -1) {
+    favoriteId.value = res.data.rows[index].id;
   }
-  commentsInfo.value = comments;
+  console.log(favoriteId.value);
 };
-// 添加评论
-const addComment = async () => {
-  let res = await api.addComment({
-    kind: "combine",
-    objectId: route.query.id,
-    content: textarea.value,
-  });
-  textarea.value = "";
-  laodComments();
+
+// 修改收藏状态
+const favorite = async () => {
+  if (favoriteId.value == "") {
+    // 添加
+    let res = await api.favoriteAdd({
+      kind: "combine",
+      objectId: route.query.id,
+    });
+    console.log(res);
+    favoriteId.value = res.id;
+    console.log(favoriteId.value);
+  } else {
+    // 取消
+    let res = await api.favoriteDelete(favoriteId.value);
+    favoriteId.value = "";
+    console.log(res);
+    console.log(favoriteId.value);
+  }
 };
 </script>
 

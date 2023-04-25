@@ -14,7 +14,7 @@
           router
         >
           <el-menu-item index="/space/info">个人信息</el-menu-item>
-          <el-menu-item index="/space/blog">文章</el-menu-item>
+          <el-menu-item index="/space/blog">我的文章</el-menu-item>
           <el-menu-item index="/space/combine">我的组合</el-menu-item>
           <el-menu-item index="/space/favlist">全部收藏</el-menu-item>
         </el-menu>
@@ -56,6 +56,7 @@ onMounted(() => {
   margin: auto;
   // background-color: #bfa;
   .el-container {
+    min-height: 800px;
     .el-aside {
       border-right: #dcdfe6 1px solid;
       .el-menu {

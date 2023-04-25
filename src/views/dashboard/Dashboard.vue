@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject } from "vue";
+import { ref, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
@@ -48,5 +48,6 @@ const logout = () => {
 <style lang="scss" scoped>
 .el-container {
   margin-top: -60px;
+  min-height: 700px;
 }
 </style>

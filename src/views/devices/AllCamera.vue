@@ -102,7 +102,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import * as api from "../../api/index.js";
 
@@ -140,7 +140,7 @@ const cameraInfo = ref([]);
 const keyword = ref("");
 const pageInfo = reactive({
   page: 1,
-  pageSize: 13,
+  pageSize: 17,
   count: 0,
 });
 

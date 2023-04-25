@@ -27,7 +27,7 @@
                 <div>{{ blog.create_time }}</div>
               </div>
               <div class="main">
-                <img :src="blog.img || imgsrc" alt="" />
+                <img :src="avatarUrl + blog.user_id + '.jpg'" alt="" />
                 <div>{{ blog.nickname }}</div>
               </div>
             </div>
@@ -75,9 +75,7 @@ const pageInfo = reactive({
 // tag列表
 const tagList = ref([]);
 const blogListInfo = ref([]);
-const imgsrc = ref(
-  "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
-);
+const avatarUrl = ref("http://localhost:8088/images/avatar/");
 
 onMounted(() => {
   loadTags();
@@ -109,6 +107,9 @@ const loadTags = async () => {
 // 读取文章列表
 const loadBlogs = async () => {
   let res = await api.searchBlog(pageInfo);
+
+  console.log(res);
+
   let rows = res.data.rows;
   for (let row of rows) {
     // 内容已裁剪至50个字符 这里追加省略号

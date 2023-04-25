@@ -60,12 +60,11 @@ onMounted(() => {});
     background-size: cover;
   }
   .el-row {
-    height: 700px;
     width: 100%;
     .title-pic {
       display: flex;
       width: 100%;
-      height: 100%;
+      height: 700px;
       .title {
         flex: 1;
         padding: 80px 150px;

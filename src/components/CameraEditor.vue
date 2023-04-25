@@ -102,7 +102,7 @@
             @click="handleUpdate(formInfo.id)"
             >修改
           </el-button>
-          <el-button v-else type="primary" @click="handleAdd">修改 </el-button>
+          <el-button v-else type="primary" @click="handleAdd">添加</el-button>
           <el-button @click="handleClose">取消</el-button>
         </el-form-item>
       </el-form>
@@ -140,6 +140,7 @@ const mountOptions = [
 // 添加
 const handleAdd = async () => {
   let res = await api.cameraAdd(props.formInfo);
+  console.log(res);
   if (res.code === 200) {
     ElMessage.success(res.msg);
     dialogVisible.value = false;

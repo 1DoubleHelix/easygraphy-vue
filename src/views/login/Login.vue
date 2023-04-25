@@ -228,13 +228,11 @@ const register = async () => {
         width: 100%;
         margin-top: 20px;
       }
-
       .login {
         .input {
           margin-bottom: 20px;
         }
       }
-
       .register {
         .input {
           margin-bottom: 20px;

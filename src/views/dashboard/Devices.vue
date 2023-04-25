@@ -172,7 +172,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject, onMounted, nextTick } from "vue";
+import { ref, reactive, onMounted, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import * as api from "../../api/index.js";
 import tableToChinese from "../../utils/tableToChinese";
@@ -263,8 +263,9 @@ const updateCamera = (row) => {
   cameraEditor.value.dialogVisible = true;
 };
 // 删除相机
-const deleteCamera = (id) => {
-  let res = api.cameraDelete(id);
+const deleteCamera = async (id) => {
+  let res = await api.cameraDelete(id);
+  console.log(res);
   if (res.code === 200) {
     ElMessage.success("删除成功");
     loadCamera();
@@ -305,8 +306,8 @@ const updateLens = (row) => {
   lensEditor.value.dialogVisible = true;
 };
 // 删除镜头
-const deleteLens = (id) => {
-  let res = api.lensDelete(id);
+const deleteLens = async (id) => {
+  let res = await api.lensDelete(id);
   if (res.code === 200) {
     ElMessage.success("删除成功");
     loadLens();

@@ -80,7 +80,7 @@
             @click="handleUpdate(formInfo.id)"
             >修改
           </el-button>
-          <el-button v-else type="primary" @click="handleAdd">添加 </el-button>
+          <el-button v-else type="primary" @click="handleAdd">添加</el-button>
           <el-button @click="handleClose">取消</el-button>
         </el-form-item>
       </el-form>
@@ -117,7 +117,7 @@ const mountOptions = [
 const handleAdd = async () => {
   let res = await api.lensAdd(props.formInfo);
   if (res.code === 200) {
-    ElMessage.success(res.msg);
+    ElMessage.success("添加成功");
     dialogVisible.value = false;
   } else {
     ElMessage.warning(res.msg);

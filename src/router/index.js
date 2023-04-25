@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
 let routes = [
-    { path: "/detail", component: () => import("../views/knowledge/Detail.vue") },
     {
         // 主页
         path: '/home',
@@ -114,7 +113,7 @@ let routes = [
         path: '/login',
         name: 'login',
         component: () => import('../views/login/Login.vue'),
-        meta: { showNavBar: false }
+        meta: { showNavBar: false, showFooter: false }
     },
     {
         // 个人中心

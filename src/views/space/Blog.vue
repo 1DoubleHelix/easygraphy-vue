@@ -145,32 +145,34 @@ const loadTagOptions = async () => {
 
 // 打开添加弹窗
 const toAdd = () => {
+  dialogType.value = "add";
   blogTemp.tagId = "";
   blogTemp.title = "";
   blogTemp.content = "";
   dialogTitle.value = "添加文章";
-  dialogType.value = "add";
   dialogEditVisible.value = true;
 };
 
 // 添加文章
 const addBlog = async () => {
-  let res = await api.blogAdd(addBlogTemp);
+  let res = await api.blogAdd(blogTemp);
   if (res.code === 200) {
     ElMessage.success("添加成功");
     // 清空输入框
-    addBlogTemp.tagId = "";
-    addBlogTemp.title = "";
-    addBlogTemp.content = "";
+    blogTemp.tagId = "";
+    blogTemp.title = "";
+    blogTemp.content = "";
     loadBlogs();
     dialogEditVisible.value = false;
   } else {
+    console.log(res);
     ElMessage.warning(res.msg);
   }
 };
 
 // 传入并修改文章
 const toUpdate = async (blog) => {
+  dialogType.value = "edit";
   let res = await api.blogDetail(blog.id);
   blogTemp.id = blog.id;
   blogTemp.title = res.results.title;
@@ -187,7 +189,7 @@ const updateBlog = async () => {
     loadBlogs();
     dialogEditVisible.value = false;
   } else {
-    ElMessage.warning(res.msg);
+    ElMessage.warning("修改失败");
   }
 };
 
@@ -195,6 +197,7 @@ const updateBlog = async () => {
 const deleteBlog = async (blog) => {
   let res = await api.deleteBlog(blog.id);
   if (res.code === 200) {
+    ElMessage.success("删除成功");
     loadBlogs();
   } else {
     ElMessage.warning(res.msg);

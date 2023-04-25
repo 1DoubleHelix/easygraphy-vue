@@ -109,7 +109,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import * as api from "../../api/index.js";
 
@@ -122,7 +122,6 @@ moment.locale("zh-cn", momentCN);
 const router = useRouter();
 const route = useRoute();
 
-const axios = inject("axios");
 const mountOptions = [
   { value: "E", label: "E 索尼" },
   { value: "Z", label: "Z 尼康" },
@@ -148,7 +147,7 @@ const lensInfo = ref([]);
 let keyword = ref("");
 const pageInfo = reactive({
   page: 1,
-  pageSize: 13,
+  pageSize: 17,
   count: 0,
 });
 

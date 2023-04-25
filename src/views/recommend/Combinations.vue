@@ -12,7 +12,10 @@
             <div class="title">{{ combine.title }}</div>
             <div class="author">
               <span>{{ combine.nickname }}</span>
-              <el-avatar :src="combine.authorAvatar" :size="28"></el-avatar>
+              <el-avatar
+                :src="avatarUrl + combine.user_id + '.jpg'"
+                :size="28"
+              ></el-avatar>
             </div>
           </div>
         </template>
@@ -41,7 +44,6 @@ import * as api from "../../api/index.js";
 // 使用 moment 时间戳格式化
 import moment from "moment";
 import momentCN from "../../utils/monentCN";
-import tableToChinese from "../../utils/tableToChinese";
 import { ElMessage } from "element-plus";
 
 moment.locale("zh-cn", momentCN);
@@ -59,6 +61,7 @@ const combinePageInfo = reactive({
   pageSize: 10,
   count: 0,
 });
+const avatarUrl = ref("http://localhost:8088/images/avatar/");
 
 onMounted(() => {
   loadCombine();

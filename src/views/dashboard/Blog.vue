@@ -169,11 +169,11 @@ const toAdd = () => {
 const addBlog = async () => {
   let res = await api.blogAdd(blogTemp);
   if (res.code === 200) {
-    ElMessage({ message: "添加成功", type: "success" });
+    ElMessage.success("添加成功");
     loadBlogs();
     dialogEditVisible.value = false;
   } else {
-    ElMessage({ message: res.msg, type: "warning" });
+    ElMessage.warning(res.msg);
   }
 };
 
@@ -193,11 +193,11 @@ const toUpdate = async (blog) => {
 const updateBlog = async () => {
   let res = await api.blogUpdate(blogTemp);
   if (res.code === 200) {
-    ElMessage({ message: "修改成功", type: "success" });
+    ElMessage.success("修改成功");
     loadBlogs();
     dialogEditVisible.value = false;
   } else {
-    ElMessage({ message: res.msg, type: "warning" });
+    ElMessage.warning(res.msg);
   }
 };
 
@@ -205,7 +205,10 @@ const updateBlog = async () => {
 const deleteBlog = async (blog) => {
   let res = await api.deleteBlog(blog.id);
   if (res.code === 200) {
+    ElMessage.success("删除成功");
     loadBlogs();
+  } else {
+    ElMessage.warning(res.msg);
   }
 };
 </script>

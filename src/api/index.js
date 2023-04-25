@@ -5,14 +5,15 @@ export const test = (params) => request.get("/api/test/test", params)
 
 // admin
 export const adminLogin = (params) => request.post("/api/admin/login", params)
-export const adminUserUpdate = (params) => request.put("/api/admin/update", params)
+export const adminUserUpdate = (params) => request.put("/admin/update", params)
 
 // user
 export const login = (params) => request.post("/api/user/login", params)
 export const register = (params) => request.post("/api/user/register", params)
-export const userList = (params) => request.get(`/api/user/list?${qs.stringify(params)}`)
+export const userList = (params) => request.get(`/user/list?${qs.stringify(params)}`)
 export const userUpdate = (params) => request.put("/user/update", params)
 export const userDelete = (params) => request.delete(`/api/user/delete?id=${params}`)
+export const avatarUpload = (params) => request.post("/avatar/upload", params)
 
 // camera
 export const searchCamera = (params) => request.get(`/api/camera/search?${qs.stringify(params)}`)

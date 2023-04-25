@@ -21,6 +21,20 @@
               </div>
               <el-button @click="deleteCamera">移除</el-button>
             </div>
+            <div v-else class="tips">
+              <span>
+                请在筛选结果中挑选相机，组合中只能有一个相机，优先考虑无反相机
+              </span>
+              <p>
+                卡口系统：将影响镜头的选择，E卡口拥有无反系统中较大的镜头群，EF卡口和F卡口拥有单反系统中较大的镜头群
+              </p>
+              <p>
+                摄影风格：如果需要拍摄风光，请尽量选择高像素、全画幅的相机，如果需要拍摄人像，2400万像素左右的相机可以满足大部分需求
+              </p>
+              <p>
+                预算：如果预算较低，可以选择半画幅产品，如果不考虑视频功能，F卡口系统的性价比较高
+              </p>
+            </div>
           </el-card>
         </el-col>
         <el-col :span="16" class="lens">
@@ -31,6 +45,7 @@
               </div>
             </template>
             <div
+              v-if="combineTemp.lensGroup.length"
               v-for="(lens, index) in combineTemp.lensGroup"
               :key="index"
               class="item"
@@ -46,6 +61,18 @@
                 {{ lens.brand + " " + lens.name }}
               </span>
               <el-button @click="deleteLens(lens.id)">移除</el-button>
+            </div>
+            <div v-else class="tips">
+              <span> 请在筛选结果中挑选镜头，组合中可以有多达5个镜头 </span>
+              <p>
+                传感器尺寸：全画幅相机应该搭配全画幅镜头使用，虽然某些卡口支持半画幅卡口安装到全画幅使用，但是不建议这样搭配。如果选择了半画幅相机，可以选择全画幅镜头，但是要关注等效焦段
+              </p>
+              <p>
+                摄影风格：如果要拍摄人像，请尽量选择至少一个焦距或等效焦距在50mm-85mm的定焦镜头，并尽量选择大光圈镜头。其他两种风格应尽量包含至少一个标准变焦镜头。
+              </p>
+              <p>
+                预算：如果预算较低，可以选择半画幅、单反系统。无反系统种E卡口有很多高性价比国产镜头。单反系统的镜头数量庞大，F卡口的性价比较高。
+              </p>
             </div>
           </el-card>
         </el-col>
@@ -101,7 +128,7 @@
             <el-option label="风光" value="landscape" />
           </el-select>
         </el-form-item>
-        <el-form-item label="预算限制">
+        <el-form-item label="预算限制" prop="budget">
           <el-select v-model="selectFilter.budget" placeholder="请选择">
             <el-option label="低" value="1" />
             <el-option label="标准" value="2" />
@@ -114,9 +141,12 @@
 
     <el-tabs v-model="activeTab" type="border-card">
       <el-tab-pane label="选择相机" name="camera">
-        <span class="tips">
-          某些尼康入门相机没有对焦马达, 如果选择了(F卡口 半画幅)需要提示
-        </span>
+        <p
+          class="tips"
+          v-if="selectFilter.mount == 'F' && selectFilter.frame == 'DX'"
+        >
+          您选择了尼康F卡口半画幅系统，某些入门相机（D3XXX）没有对焦马达，某些自动对焦镜头需要依赖机身的对焦马达，请进入镜头详情页查看备注
+        </p>
         <div v-if="cameraInfo.length" class="camera">
           <el-table :data="cameraInfo" stripe border style="width: 100%">
             <el-table-column prop="brand" label="品牌" />
@@ -141,7 +171,7 @@
         <!-- 使用v-if判断5个种类的镜头表格是否显示 -->
         <div v-if="lensInfo.prime.length" class="lens">
           <div class="tips">
-            合理地使用定焦镜头可以虚化背景, 突出主体, 营造氛围
+            定焦镜头：较浅的景深带来背景虚化效果，可以突出被摄主体、营造氛围
           </div>
           <el-table :data="lensInfo.prime" stripe border style="width: 100%">
             <el-table-column prop="brand" label="品牌" />
@@ -162,8 +192,11 @@
         </div>
         <div v-if="lensInfo.zoom.length" class="lens">
           <div class="tips">
-            标准变焦镜头, 适应大多数日常拍摄状况, 如果预算充足,
-            可以选择最大光圈恒定为F2.8的镜头
+            <p>标准变焦镜头：适应大多数拍摄场景，提供了现实、自然的视角</p>
+            <p>如果预算充足，可以选择最大光圈恒定为F2.8的镜头</p>
+            <p>
+              尽量不要选择变焦范围很大，但是光圈较小，价格较低的镜头，通常画质不好
+            </p>
           </div>
           <el-table :data="lensInfo.zoom" stripe border style="width: 100%">
             <el-table-column prop="brand" label="品牌" />
@@ -184,9 +217,10 @@
         </div>
         <div v-if="lensInfo.teleZoom.length" class="lens">
           <div class="tips">
-            远摄变焦镜头, 常用于风光拍摄, 在人像摄影中也可以用于虚化背景,
-            突出被摄主体, 但是请注意, 焦段相同的镜头,
-            较大的光圈可以带来更浅的景深
+            <p>
+              远摄变焦镜头：常用于风光拍摄、人像摄影、体育摄影，可以模糊背景，同时保持被摄主体清晰
+            </p>
+            <p>但是请注意，焦段相同的镜头，较大的光圈可以带来更浅的景深</p>
           </div>
           <el-table :data="lensInfo.teleZoom" stripe border style="width: 100%">
             <el-table-column prop="brand" label="品牌" />
@@ -207,7 +241,9 @@
         </div>
         <div v-if="lensInfo.widePrime.length" class="lens">
           <div class="tips">
-            广角定焦镜头，常用于风光拍摄，或者在狭小的摄影棚中进行人像摄影
+            <p>
+              广角定焦镜头：常用于风光拍摄，或者使狭小的空间看起来更大，例如在摄影棚中拍摄人像
+            </p>
           </div>
           <el-table
             :data="lensInfo.widePrime"
@@ -233,7 +269,10 @@
         </div>
         <div v-if="lensInfo.wideZoom.length" class="lens">
           <div class="tips">
-            广角变焦镜头，常用于风光拍摄，或者在狭小的摄影棚中进行人像摄影
+            <p>
+              广角变焦镜头：常用于风光拍摄，或者使狭小的空间看起来更大，例如在摄影棚中拍摄人像
+            </p>
+            <p>和广角定焦镜头相比，广角变焦镜头的最大光圈可能不如前者</p>
           </div>
           <el-table :data="lensInfo.wideZoom" stripe border style="width: 100%">
             <el-table-column prop="brand" label="品牌" />
@@ -334,25 +373,62 @@ const checkFrame = (rule, value, callback) => {
     callback(new Error("此卡口没有半画幅产品"));
   }
 };
+const checkBudget = (rule, value, callback) => {
+  if (value == "1" && selectFilter.frame == "FX") {
+    callback(new Error("全画幅没有低预算相机"));
+  }
+  if (value == "3" && selectFilter.frame == "DX") {
+    callback(new Error("半画幅没有高预算相机"));
+  }
+};
 const filterRules = ref({
   frame: [{ validator: checkFrame, trigger: "change" }],
+  budget: [{ validator: checkBudget, trigger: "change" }],
 });
 
 // 加载筛选后的数据
 const loadInfo = async () => {
+  // 加载相机
   let cameraRes = await api.cameraHelper(selectFilter);
+  tableToChinese(cameraRes.data);
   cameraInfo.value = cameraRes.data;
+  // 加载镜头
   let lensRes = await api.lensHelper(selectFilter);
-  console.log(lensRes);
-  // lensInfo = lensRes.data;
-  lensInfo.prime = lensRes.data.prime == null ? [] : lensRes.data.prime;
-  lensInfo.zoom = lensRes.data.zoom == null ? [] : lensRes.data.zoom;
-  lensInfo.teleZoom =
-    lensRes.data.teleZoom == null ? [] : lensRes.data.teleZoom;
-  lensInfo.widePrime =
-    lensRes.data.widePrime == null ? [] : lensRes.data.widePrime;
-  lensInfo.wideZoom =
-    lensRes.data.wideZoom == null ? [] : lensRes.data.wideZoom;
+
+  if (lensRes.data.prime == null) {
+    lensInfo.prime = [];
+  } else {
+    tableToChinese(lensRes.data.prime);
+    lensInfo.prime = lensRes.data.prime;
+  }
+
+  if (lensRes.data.zoom == null) {
+    lensInfo.zoom = [];
+  } else {
+    tableToChinese(lensRes.data.zoom);
+    lensInfo.zoom = lensRes.data.zoom;
+  }
+
+  if (lensRes.data.teleZoom == null) {
+    lensInfo.teleZoom = [];
+  } else {
+    tableToChinese(lensRes.data.teleZoom);
+    lensInfo.teleZoom = lensRes.data.teleZoom;
+  }
+
+  if (lensRes.data.widePrime == null) {
+    lensInfo.widePrime = [];
+  } else {
+    tableToChinese(lensRes.data.widePrime);
+    lensInfo.widePrime = lensRes.data.widePrime;
+  }
+
+  if (lensRes.data.wideZoom == null) {
+    lensInfo.wideZoom = [];
+  } else {
+    tableToChinese(lensRes.data.wideZoom);
+    lensInfo.wideZoom = lensRes.data.wideZoom;
+  }
 };
 
 // 添加相机
@@ -414,7 +490,11 @@ const deleteLens = (id) => {
 
 const addCombine = async () => {
   let res = await api.addCombine(combineInfo);
-  console.log(combineInfo.lensGroup);
+  if (res.code === 200) {
+    ElMessage.success("添加组合成功");
+  } else {
+    ElMessage.error("添加组合失败");
+  }
   console.log(res);
 };
 </script>
@@ -472,6 +552,16 @@ const addCombine = async () => {
           }
         }
       }
+    }
+    .tips {
+      span {
+        font-size: 20px;
+        font-weight: normal;
+        color: #000;
+      }
+      font-size: 15px;
+      // font-weight: 300;
+      color: #333;
     }
     .remark {
       margin: 10px;

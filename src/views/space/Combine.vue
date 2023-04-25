@@ -2,7 +2,7 @@
   <div class="main-container">
     <div class="combine-list">
       <div v-for="(combine, index) in combineList" :key="index">
-        <el-card>
+        <el-card shadow="never">
           <div class="header">
             <span>{{ combine.title }}</span>
             <el-popconfirm
@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import RichTextEditor from "../../components/RichTextEditor.vue";
 import * as api from "../../api/index.js";
@@ -76,4 +76,18 @@ const deleteCombine = async (combine) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.main-container {
+  width: 100%;
+  .combine-list {
+    .el-card {
+      margin-bottom: 20px;
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+}
+</style>

@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import * as api from "../../api/index.js";
 import { userStore } from "../../stores/userStore.js";
@@ -63,7 +63,6 @@ import { storeToRefs } from "pinia";
 // 使用 moment 时间戳格式化
 import moment from "moment";
 import momentCN from "../../utils/monentCN";
-import { Star, StarFilled } from "@element-plus/icons-vue";
 import Comment from "../../components/Comment.vue";
 
 moment.locale("zh-cn", momentCN);
@@ -75,7 +74,6 @@ const store = userStore();
 let { token } = storeToRefs(store);
 
 let cameraInfo = ref({});
-let commentsInfo = ref([]);
 const textarea = ref("");
 const favoriteId = ref("");
 

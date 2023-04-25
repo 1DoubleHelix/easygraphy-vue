@@ -1,5 +1,13 @@
 <template>
   <div class="user-info">
+    <el-upload
+      class="upload"
+      action=""
+      :show-file-list="false"
+      :before-upload="beforeAvatarUpload"
+    >
+      <el-button type="primary">上传新头像</el-button>
+    </el-upload>
     <el-form :model="userInfo" label-position="top">
       <el-form-item label="用户ID">{{ store.id }}</el-form-item>
       <el-form-item label="用户名">{{ store.username }}</el-form-item>
@@ -34,6 +42,7 @@ const router = useRouter();
 const route = useRoute();
 const store = userStore();
 
+const imageUrl = ref("");
 const userInfo = reactive({
   nickname: "",
   password: "",
@@ -43,6 +52,24 @@ const userInfo = reactive({
 onMounted(() => {
   loadUserInfo();
 });
+
+const beforeAvatarUpload = async (rawFile) => {
+  if (rawFile.type !== "image/jpeg") {
+    ElMessage.error("只支持JPG格式!");
+  } else if (rawFile.size / 1024 / 1024 > 0.5) {
+    ElMessage.error("头像超过500KB!");
+  } else {
+    const formData = new FormData();
+    formData.append("file", rawFile);
+    let res = await api.avatarUpload(formData);
+    if (res.code === 200) {
+      ElMessage.success(res.msg);
+    } else {
+      ElMessage.error("上传失败!");
+    }
+  }
+  return false;
+};
 
 const loadUserInfo = () => {
   userInfo.nickname = store.nickname;

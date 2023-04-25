@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import * as api from "../../api/index.js";
 import { Star, StarFilled } from "@element-plus/icons-vue";

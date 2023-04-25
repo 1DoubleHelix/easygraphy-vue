@@ -26,7 +26,7 @@
           <!-- 自定义列模板 -->
           <template #default="scope">
             <el-button @click="toUpdate(scope.row)">修改</el-button>
-            <el-popconfirm
+            <!-- <el-popconfirm
               title="确认删除?"
               confirm-button-text="确认"
               cancel-button-text="取消"
@@ -35,7 +35,7 @@
               <template #reference>
                 <el-button>删除</el-button>
               </template>
-            </el-popconfirm>
+            </el-popconfirm> -->
           </template>
         </el-table-column>
       </el-table>
@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import * as api from "../../api/index.js";
 

@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import * as api from "../../api/index.js";
 import { ElMessage } from "element-plus";
@@ -88,7 +88,7 @@ const deleteTag = async (id) => {
   let res = await api.tagDelete(id);
   if (res.code == 200) {
     loadTag();
-    ElMessage.success(res.msg);
+    ElMessage.success("删除成功");
   } else {
     ElMessage.error(res.msg);
   }

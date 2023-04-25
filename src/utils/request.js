@@ -1,6 +1,10 @@
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import { userStore } from "../stores/userStore.js";
+import { useRouter, useRoute } from "vue-router";
+
+const router = useRouter();
+const route = useRoute();
 
 const store = userStore()
 
@@ -21,11 +25,12 @@ request.interceptors.request.use((config) => {
 // 响应拦截器
 request.interceptors.response.use((res) => {
     // 如果发现token过期 清除store并跳转登录页面
+    if (res.data.code === 401) {
+        localStorage.clear();
+        ElMessage.error("请登录")
+    }
 
-    // 这里要做错误状态码处理 暂时放在这
-    // if (res.status !== 200) {
-    //     return ElMessage.error(res.data.msg)
-    // }
+    // 这里要做错误状态码处理
     return res.data
 })
 
